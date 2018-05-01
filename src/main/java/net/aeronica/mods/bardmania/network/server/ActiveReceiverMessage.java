@@ -2,6 +2,7 @@ package net.aeronica.mods.bardmania.network.server;
 
 import java.io.IOException;
 
+import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -60,7 +61,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
         {
             EntityPlayer personPlaying = (EntityPlayer) world.getEntityByID(entityId);
             IBlockState state = world.getBlockState(blockPos);
-/*
+
             if (state.getBlock() instanceof IActiveNoteReceiver)
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
@@ -70,7 +71,6 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
                 instrument.noteReceiver(world, blockPos, entityId, note, volume);
             }
-*/
         }
     }
 

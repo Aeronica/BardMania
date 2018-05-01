@@ -16,6 +16,8 @@
 package net.aeronica.mods.bardmania.item;
 
 import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
+import net.aeronica.mods.bardmania.common.MidiUtils;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +28,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemHandHeld extends Item
+public class ItemHandHeld extends Item implements IActiveNoteReceiver
 {
     private final byte foo;
     
@@ -60,10 +62,13 @@ public class ItemHandHeld extends Item
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) 
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
-        noteReceiver(worldIn, playerIn.getPosition(), playerIn.getEntityId(), this.getFoo(), (byte) 127);
+        playerIn.setActiveHand(handIn);
+        ModLogger.info("Right Clicked");
+        MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
         return new ActionResult<>(EnumActionResult.FAIL, heldItem);
     }
 
+    @Override
     public void noteReceiver(World worldIn, BlockPos posIn, int entityID, byte noteIn, byte volumeIn)
     {
         if (!worldIn.isRemote && volumeIn != 0)
@@ -76,7 +81,6 @@ public class ItemHandHeld extends Item
             // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
             worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.5D, (double)pos.getZ() + 0.5D, (double)pitch / 24.0D, 0.0D, 0.0D, new int[0]);
         }
-
     }
 
 }

@@ -5,6 +5,7 @@
 package net.aeronica.mods.bardmania.network;
 
 import net.aeronica.mods.bardmania.Reference;
+import net.aeronica.mods.bardmania.network.server.ActiveReceiverMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -60,7 +61,7 @@ public class PacketDispatcher
 //        registerMessage(StopPlayMessage.class);
 
         /** Packets handled on SERVER */
-//        registerMessage(ActiveReceiverMessage.class);   
+        registerMessage(ActiveReceiverMessage.class);
         
         /**
          * If you don't want to make a 'registerMessage' method, you can do it
