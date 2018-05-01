@@ -15,24 +15,22 @@
  */
 package net.aeronica.mods.bardmania.item;
 
-import net.aeronica.mods.bardmania.init.ModSoundEvents;
+import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.aeronica.mods.bardmania.BardMania;
 
 public class ItemHandHeld extends Item
 {
-    private final int foo;
+    private final byte foo;
     
-    public ItemHandHeld (int foo, String id)
+    public ItemHandHeld (byte foo, String id)
     {
         this.foo = foo;
         this.setRegistryName(id.toLowerCase());
@@ -41,8 +39,9 @@ public class ItemHandHeld extends Item
         this.setMaxStackSize(1);
     }
     
-    public int getFoo()
+    public byte getFoo()
     {
+        ModLogger.info("foo: %d", this.foo);
         return foo;
     }
    
@@ -61,9 +60,23 @@ public class ItemHandHeld extends Item
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) 
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
-        if (!worldIn.isRemote)
-            worldIn.playSound(null, playerIn.getPosition(), ModSoundEvents.CARILLON, SoundCategory.PLAYERS, 1.0F,0.5F);
+        noteReceiver(worldIn, playerIn.getPosition(), playerIn.getEntityId(), this.getFoo(), (byte) 127);
         return new ActionResult<>(EnumActionResult.FAIL, heldItem);
+    }
+
+    public void noteReceiver(World worldIn, BlockPos posIn, int entityID, byte noteIn, byte volumeIn)
+    {
+        if (!worldIn.isRemote && volumeIn != 0)
+        {
+            EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
+            BlockPos pos = player.getPosition();
+            byte pitch = (byte) (noteIn - 48);
+            float f = (float)Math.pow(2.0D, (double)(pitch - 12) / 12.0D);
+            worldIn.playSound((EntityPlayer) null, player.getPosition(), SoundEvents.BLOCK_NOTE_HARP, SoundCategory.RECORDS, 3.0F, f);
+            // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
+            worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.5D, (double)pos.getZ() + 0.5D, (double)pitch / 24.0D, 0.0D, 0.0D, new int[0]);
+        }
+
     }
 
 }

@@ -19,7 +19,7 @@ public class ModLogger {
     }
     
     /**
-     * Log a stack trace for &lt;T extends Throwable&gt; {@link e} at the specified log {@link level}
+     * Log a stack trace for &lt;T extends Throwable&gt; {@link Throwable} at the specified log {@link Level}
      * @param level     The specified log level
      * @param e         The raw exception 
      */
@@ -53,7 +53,7 @@ public class ModLogger {
     }
 
     /**
-     * Log a stack trace for &lt;T extends Exception&gt; {@link e} at log Level.INFO
+     * Log a stack trace for &lt;T extends Throwable&gt; {@link Throwable} at log Level.INFO
      * @param e The raw exception 
      */
     public static <T extends Throwable> void info(T e)
@@ -62,7 +62,7 @@ public class ModLogger {
     }
     
     /**
-     * Log a stack trace for &lt;T extends Throwable&gt; {@link e} at log Level.DEBUG
+     * Log a stack trace for &lt;T extends Throwable&gt; {@link Throwable} at log Level.DEBUG
      * @param e The raw exception 
      */
     public static <T extends Throwable> void debug(T e)
@@ -71,7 +71,7 @@ public class ModLogger {
     }
     
     /**
-     * Log a stack trace for &lt;T extends Throwable&gt; {@link e} at log Level.WARN
+     * Log a stack trace for &lt;T extends Throwable&gt; {@link Throwable} at log Level.WARN
      * @param e The raw exception 
      */
     public static <T extends Throwable> void warning(T e)
@@ -80,7 +80,7 @@ public class ModLogger {
     }
     
     /**
-     * Log a stack trace for &lt;T extends Throwable&gt; {@link e} at log Level.ERROR
+     * Log a stack trace for &lt;T extends Throwable&gt; {@link Throwable} at log Level.ERROR
      * @param e The raw exception 
      */
     public static <T extends Throwable> void error(T e)
@@ -89,7 +89,7 @@ public class ModLogger {
     }
     
     /**
-     * Log a stack trace for &lt;T extends Throwable&gt; {@link e} at log Level.FATAL
+     * Log a stack trace for &lt;T extends Throwable&gt; {@link Throwable} at log Level.FATAL
      * @param e The raw exception 
      */
     public static <T extends Throwable> void fatal(T e)

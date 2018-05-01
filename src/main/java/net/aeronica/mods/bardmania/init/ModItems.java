@@ -15,8 +15,8 @@ import net.aeronica.mods.bardmania.item.ItemHandHeld;
 public class ModItems
 {
   
-    public static final ItemHandHeld ITEM_FLUTE = new ItemHandHeld(0, "flute");
-    public static final ItemHandHeld ITEM_LUTE = new ItemHandHeld(1, "lute");
+    public static final ItemHandHeld ITEM_FLUTE = new ItemHandHeld((byte)60, "flute");
+    public static final ItemHandHeld ITEM_LUTE = new ItemHandHeld((byte)64, "lute");
     
 /*
     public static final ItemRightClickTest ITEM_RC_TEST = registerItem(new ItemRightClickTest(), "item_rc_test");
