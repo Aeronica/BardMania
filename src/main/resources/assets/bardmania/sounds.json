@@ -1,0 +1,3 @@
+{
+   "carillon": { "category": "player", "sounds": [{ "name": "bardmania:carillon", "stream": true }]}
+}

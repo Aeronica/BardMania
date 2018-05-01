@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
+
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+repositories {
+    maven { url = "https://mrcrayfish.com/maven" }
+}
+
+ext.buildProperties = file "build.properties"
+
+buildProperties.withReader {
+    def properties = new Properties()
+    properties.load(it)
+    ext.config = new ConfigSlurper().parse properties
+}
+
+version = "${config.modVersionMajor}.${config.modVersionMinor}.${config.modVersionRev}"
+group = "net.aeronica.mods.bardmania"
+archivesBaseName = "bardmania-${config.minecraftVersion}"
+
+minecraft {
+    version = "${config.minecraftVersion}-${config.forgeVersion}"
+    runDir = "${config.runDir}"
+	mappings = "${config.forgeMappings}"
+    
+	replaceIn "net/aeronica/mods/bardmania/Reference.java"
+    replace "{@MOD_VERSION}", project.version
+    replace "{@MC_VERSION}", "${config.minecraftVersion}"
+    replace "{@FORGE_VERSION}", "${config.minecraftVersion}-${config.forgeVersion}"
+}
+
+dependencies {
+    compile "com.mrcrayfish:obfuscate:0.2.3-1.12.2"
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

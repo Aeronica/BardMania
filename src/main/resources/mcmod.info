@@ -1,0 +1,14 @@
+[
+{
+  "modid": "bardmania",
+  "name": "Bard Mania",
+  "description": "Play musical instruments and annoy your friends",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "authorList": ["Aeronica"],
+  "credits": "The Forge and FML Team, The Modding Community, MrCrayfish, ModDevCafe",
+  "screenshots": [],
+  "dependencies": []
+}
+]
