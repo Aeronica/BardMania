@@ -31,6 +31,10 @@ $RECYCLE.BIN/
 .settings
 .gradle
 .launch
+.idea
+.iml
+.ipr
+.iws
 out
 bin
 build
@@ -39,6 +43,7 @@ minecraft
 mc10_2
 mc11_2
 mc12_0
+mc12_2
 lib
 !gradle
 !gradlew
@@ -69,4 +74,3 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-mc12_2/
