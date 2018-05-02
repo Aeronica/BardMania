@@ -65,7 +65,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
-        ModLogger.info("Right Clicked");SoundEvent.REGISTRY.getObject(new ResourceLocation("bardmania:carillon"));
+        ModLogger.info("Right Clicked");
         MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
         return new ActionResult<>(EnumActionResult.FAIL, heldItem);
     }

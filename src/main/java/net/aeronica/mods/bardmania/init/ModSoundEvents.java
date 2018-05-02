@@ -41,6 +41,13 @@ public class ModSoundEvents {
         }
     }
 
+    /**
+     * getSound
+     * TODO: Use the sound registry instead e.g.
+     * SoundEvent.REGISTRY.getObject( [ResourceLocation]));
+     * @param name
+     * @return
+     */
     @Nullable
     public static SoundEvent getSound(String name)
     {
