@@ -17,22 +17,23 @@ public class ModSoundEvents {
 
     private static final Map<String, SoundEvent> SOUNDS = new HashMap<>();
 
-    public static final SoundEvent CARILLON = registerSound("carillon");
-
     /**
      * Register a {@link SoundEvent}.
-     * 
-     * @author Choonster
+     *
      * @param soundName The SoundEvent's name without the [MOD_ID] prefix
      * @return The SoundEvent
+     * @author Choonster
      */
     private static SoundEvent registerSound(String soundName) {
         final ResourceLocation soundID = new ResourceLocation(Reference.MOD_ID, soundName);
         final SoundEvent soundEvent = new SoundEvent(soundID).setRegistryName(soundID);
+        // TODO: For this mod see if the soundName is already registered. Hmmm not sure other than MC sounds it that's possble.
+        // Anyway the sound name from the json file needs to allow specifying a sound resource from Vanilla or this mod.
+        // Probably can't use another mods sounds at this stage, but it should be possible to use Vanilla sounds.
         SOUNDS.put(soundName, soundEvent);
         return soundEvent;
     }
-    
+
     @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
     public static class RegistrationHandler {
         @SubscribeEvent
@@ -43,14 +44,14 @@ public class ModSoundEvents {
 
     /**
      * getSound
-     * TODO: Use the sound registry instead e.g.
+     * TODO: Use the sound registry instead e.g. ... No don't. Build a cache of the Minecraft and mod sounds required.
      * SoundEvent.REGISTRY.getObject( [ResourceLocation]));
-     * @param name
-     * @return
+     *
+     * @param name The name of the event less the modid
+     * @return SoundEvent
      */
     @Nullable
-    public static SoundEvent getSound(String name)
-    {
+    public static SoundEvent getSound(String name) {
         return SOUNDS.get(name);
     }
 

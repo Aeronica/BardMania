@@ -28,24 +28,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.animation.AnimationTESR;
-import net.minecraftforge.common.animation.Event;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.aeronica.mods.bardmania.common.IVariant;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -133,8 +128,6 @@ public class ModModelManager
         // registerItemModel(ModItems.ITEM_MUSIC_PAPER);
         // registerItemModel(ModItems.ITEM_SHEET_MUSIC);
 
-        // registerVariantItemModels(ModItems.ITEM_INSTRUMENT, "item_inst", ItemInstrument.EnumType.values());
-
         // Then register items with default model names
         // registerItemModel(ModItems.ITEM_FLUTE);
         // registerItemModel(ModItems.ITEM_LUTE);
@@ -209,23 +202,6 @@ public class ModModelManager
     }
 
     /**
-     * Register a model for each metadata value of an {@link Item} corresponding to the values in {@code values}.
-     * <p>
-     * Uses the registry name as the domain/path and {@code "[unlocalizedName]_[valueName]"} for the item/model json.
-     * <p>
-     * Uses {@link IVariant#getMeta()} to determine the metadata of each value.
-     *
-     * @param item        The Item
-     * @param values      The values
-     * @param <T>         The value type
-     */
-    private <T extends IVariant> void registerItemModelsWithSubtypes(Item item, T[] values) {
-        for (T value : values) {
-            registerItemModelForMetaAndType(item, value.getMeta(), value.getName());
-        }
-    }
-    
-    /**
      * Register a model for a metadata value an {@link Item}.
      * <p>
      * Uses the registry name as the domain/path and {@code type} as the variant.
@@ -236,25 +212,6 @@ public class ModModelManager
      */
     private void registerItemModelForMetaAndType(Item item, int metadata, String type) {
         registerItemModelForMeta(item, metadata, new ModelResourceLocation(new ResourceLocation(item.getRegistryName().toString() + "_" + type), "inventory"));
-    }
-
-    
-    /**
-     * Register a model for each metadata value of an {@link Item} corresponding to the values in {@code values}.
-     * <p>
-     * Uses the registry name as the domain/path and {@code "[variantName]=[valueName]"} as the variant.
-     * <p>
-     * Uses {@link IVariant#getMeta()} to determine the metadata of each value.
-     *
-     * @param item        The Item
-     * @param variantName The variant name
-     * @param values      The values
-     * @param <T>         The value type
-     */
-    private <T extends IVariant> void registerVariantItemModels(Item item, String variantName, T[] values) {
-        for (T value : values) {
-            registerItemModelForMeta(item, value.getMeta(), variantName + "=" + value.getName());
-        }
     }
 
     /**
