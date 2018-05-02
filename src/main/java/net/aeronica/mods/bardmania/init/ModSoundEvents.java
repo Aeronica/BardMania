@@ -1,6 +1,8 @@
 package net.aeronica.mods.bardmania.init;
 
 import net.aeronica.mods.bardmania.Reference;
+import net.aeronica.mods.bardmania.item.ItemHandHeld;
+import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,6 +19,25 @@ public class ModSoundEvents {
 
     private static final Map<String, SoundEvent> SOUNDS = new HashMap<>();
 
+    static
+    {
+        for(ItemHandHeld handHeld : ModInstruments.INSTRUMENTS)
+        {
+            Instrument instrument = handHeld.getInstrument();
+            if(!SOUNDS.containsKey(instrument.sounds.octave1))
+            {
+                SOUNDS.put(instrument.sounds.octave1, registerSound(instrument.sounds.octave1));
+            }
+            if(!SOUNDS.containsKey(instrument.sounds.octave2))
+            {
+                SOUNDS.put(instrument.sounds.octave1, registerSound(instrument.sounds.octave2));
+            }
+            if(!SOUNDS.containsKey(instrument.sounds.octave3))
+            {
+                SOUNDS.put(instrument.sounds.octave1, registerSound(instrument.sounds.octave3));
+            }
+        }
+    }
     /**
      * Register a {@link SoundEvent}.
      *
@@ -25,12 +46,11 @@ public class ModSoundEvents {
      * @author Choonster
      */
     private static SoundEvent registerSound(String soundName) {
-        final ResourceLocation soundID = new ResourceLocation(Reference.MOD_ID, soundName);
-        final SoundEvent soundEvent = new SoundEvent(soundID).setRegistryName(soundID);
+        ResourceLocation soundID = new ResourceLocation(Reference.MOD_ID, soundName);
+        SoundEvent soundEvent = new SoundEvent(soundID).setRegistryName(soundID);
         // TODO: For this mod see if the soundName is already registered. Hmmm not sure other than MC sounds it that's possble.
         // Anyway the sound name from the json file needs to allow specifying a sound resource from Vanilla or this mod.
-        // Probably can't use another mods sounds at this stage, but it should be possible to use Vanilla sounds.
-        SOUNDS.put(soundName, soundEvent);
+        // Probably can't use another mods sounds at this stage, but it should be possible to use Vanilla sounds
         return soundEvent;
     }
 
