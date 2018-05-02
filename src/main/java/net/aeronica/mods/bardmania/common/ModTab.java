@@ -2,6 +2,7 @@ package net.aeronica.mods.bardmania.common;
 
 import net.aeronica.mods.bardmania.Reference;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,6 +27,6 @@ public class ModTab extends CreativeTabs
     @SideOnly(Side.CLIENT)
     public ItemStack getTabIconItem()
     {
-        return new ItemStack(ModItems.ITEM_LUTE);
+        return new ItemStack(Items.APPLE);
     }
 }

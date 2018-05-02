@@ -2,6 +2,7 @@ package net.aeronica.mods.bardmania;
 
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.common.ModTab;
+import net.aeronica.mods.bardmania.init.ModInstruments;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -31,6 +32,7 @@ public class BardMania
     public void preInit(FMLPreInitializationEvent event)
     {
         ModLogger.setLogger(event.getModLog());
+        ModInstruments.register();
         PacketDispatcher.registerPackets();
         proxy.preInit();
         ModBlocks.registerTileEntities();
