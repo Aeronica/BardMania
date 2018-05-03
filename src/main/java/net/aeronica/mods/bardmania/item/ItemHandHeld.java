@@ -23,7 +23,6 @@ import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -79,7 +78,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
             BlockPos pos = player.getPosition();
             byte pitch = (byte) (noteIn - 48);
             float f = (float)Math.pow(2.0D, (double)(pitch - 12) / 12.0D);
-            worldIn.playSound((EntityPlayer) null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.octave1), SoundCategory.PLAYERS, 3.0F, f);
+            worldIn.playSound((EntityPlayer) null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
             // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
             worldIn.spawnParticle(EnumParticleTypes.NOTE, (double)pos.getX() + 0.5D, (double)pos.getY() + 2.5D, (double)pos.getZ() + 0.5D, (double)pitch / 24.0D, 0.0D, 0.0D, new int[0]);
         }

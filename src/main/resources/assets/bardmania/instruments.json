@@ -2,12 +2,10 @@
   {
     "id": "flute",
     "general": {
-      "gripType": "one_handed"
+      "gripType": "two_handed"
     },
     "sounds": {
-      "octave1": "carillon",
-      "octave2": "carillon",
-      "octave3": "carillon"
+      "timbre": "recorder"
     }
   },
   {
@@ -16,9 +14,7 @@
       "gripType": "two_handed"
     },
     "sounds": {
-      "octave1": "carillon",
-      "octave2": "carillon",
-      "octave3": "carillon"
+      "timbre": "lute"
     }
   },
   {
@@ -27,9 +23,16 @@
       "gripType": "drum"
     },
     "sounds": {
-      "octave1": "carillon",
-      "octave2": "carillon",
-      "octave3": "carillon"
+      "timbre": "drum"
+    }
+  },
+  {
+    "id": "bells",
+    "general": {
+      "gripType": "one_handed"
+    },
+    "sounds": {
+      "timbre": "carillon"
     }
   }
 ]

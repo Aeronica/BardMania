@@ -1,3 +1,6 @@
 {
-   "carillon": { "category": "player", "sounds": [{ "name": "bardmania:carillon", "stream": false }]}
+   "carillon": { "category": "player", "sounds": [{ "name": "bardmania:carillon", "stream": false }]},
+   "drum": { "category": "player", "sounds": [{ "name": "bardmania:drum", "stream": false }]},
+   "lute": { "category": "player", "sounds": [{ "name": "bardmania:lute", "stream": false }]},
+   "recorder": { "category": "player", "sounds": [{ "name": "bardmania:recorder", "stream": false }]}
 }

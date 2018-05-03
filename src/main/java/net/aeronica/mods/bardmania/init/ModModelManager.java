@@ -69,15 +69,7 @@ public class ModModelManager
 //                {
 //                }).build());
 
-/*        registerItemModel(ModBlocks.BLOCK_VQBTEST);
-        registerItemModel(ModBlocks.BLOCK_VQBTEST2);
-        registerItemModel(ModBlocks.BLOCK_HQBTEST);
-        registerItemModel(ModBlocks.FORGE_ANIM_TEST);
-        registerItemModel(ModBlocks.FORGE_SPIN_TEST);
-        registerItemModel(ModBlocks.EDGAR_ALLEN_BLOCK_LEVER);
-        registerItemModel(ModBlocks.ONE_SHOT);
-        registerItemModel(ModBlocks.TEST_ANIM);
-        registerItemModel(ModBlocks.ITEM_PULL_ROPE);
+/*
         registerItemModel(ModBlocks.ITEM_CARILLON);
 */
     }
@@ -88,23 +80,6 @@ public class ModModelManager
 //            @Override
 //            public void handleEvents(ForgeAnimTileEntity te, float time, Iterable<Event> pastEvents)
 //            {
-//                te.handleEvents(time, pastEvents);
-//            }
-//        });
-//        registerTESR(ForgeSpinTileEntity.class, new AnimationTESR<ForgeSpinTileEntity>()
-//        {
-//            @Override
-//            public void handleEvents(ForgeSpinTileEntity te, float time, Iterable<Event> pastEvents)
-//            {
-//                te.handleEvents(time, pastEvents);
-//            }
-//        });
-//        registerTESR(EdgarAllenTileEntity.class, new AnimationTESR<EdgarAllenTileEntity>()
-//        {
-//            @Override
-//            public void handleEvents(EdgarAllenTileEntity te, float time, Iterable<Event> pastEvents)
-//            {
-//                super.handleEvents(te, time, pastEvents);
 //                te.handleEvents(time, pastEvents);
 //            }
 //        });
@@ -126,11 +101,6 @@ public class ModModelManager
      */
     private void registerItemModels() {
         // registerItemModel(ModItems.ITEM_MUSIC_PAPER);
-        // registerItemModel(ModItems.ITEM_SHEET_MUSIC);
-
-        // Then register items with default model names
-        // registerItemModel(ModItems.ITEM_FLUTE);
-        // registerItemModel(ModItems.ITEM_LUTE);
         ModItems.RegistrationHandler.ITEMS.stream().filter(item -> !itemsRegistered.contains(item)).forEach(this::registerItemModel);
     }
     
@@ -210,9 +180,9 @@ public class ModModelManager
      * @param metadata The metadata
      * @param type  The type
      */
-    private void registerItemModelForMetaAndType(Item item, int metadata, String type) {
-        registerItemModelForMeta(item, metadata, new ModelResourceLocation(new ResourceLocation(item.getRegistryName().toString() + "_" + type), "inventory"));
-    }
+//    private void registerItemModelForMetaAndType(Item item, int metadata, String type) {
+//        registerItemModelForMeta(item, metadata, new ModelResourceLocation(new ResourceLocation(item.getRegistryName().toString() + "_" + type), "inventory"));
+//    }
 
     /**
      * Register a model for a metadata value an {@link Item}.
@@ -223,9 +193,9 @@ public class ModModelManager
      * @param metadata The metadata
      * @param variant  The variant
      */
-    private void registerItemModelForMeta(Item item, int metadata, String variant) {
-        registerItemModelForMeta(item, metadata, new ModelResourceLocation(item.getRegistryName(), variant));
-    }
+//    private void registerItemModelForMeta(Item item, int metadata, String variant) {
+//        registerItemModelForMeta(item, metadata, new ModelResourceLocation(item.getRegistryName(), variant));
+//    }
 
     /**
      * Register a model for a metadata value of an {@link Item}.
@@ -236,9 +206,9 @@ public class ModModelManager
      * @param metadata              The metadata
      * @param modelResourceLocation The full model location
      */
-    private void registerItemModelForMeta(Item item, int metadata, ModelResourceLocation modelResourceLocation) {
-        itemsRegistered.add(item);
-        ModelLoader.setCustomModelResourceLocation(item, metadata, modelResourceLocation);
-    }
+//    private void registerItemModelForMeta(Item item, int metadata, ModelResourceLocation modelResourceLocation) {
+//        itemsRegistered.add(item);
+//        ModelLoader.setCustomModelResourceLocation(item, metadata, modelResourceLocation);
+//    }
 
 }

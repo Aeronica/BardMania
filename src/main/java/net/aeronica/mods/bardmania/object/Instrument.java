@@ -17,9 +17,7 @@ public class Instrument {
 
     public static class Sounds
     {
-        @Optional public String octave1;
-        @Optional public String octave2;
-        @Optional public String octave3;
+        public String timbre;
     }
 
     @Retention(RetentionPolicy.RUNTIME)

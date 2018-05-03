@@ -24,17 +24,9 @@ public class ModSoundEvents {
         for(ItemHandHeld handHeld : ModInstruments.INSTRUMENTS)
         {
             Instrument instrument = handHeld.getInstrument();
-            if(!SOUNDS.containsKey(instrument.sounds.octave1))
+            if(!SOUNDS.containsKey(instrument.sounds.timbre))
             {
-                SOUNDS.put(instrument.sounds.octave1, registerSound(instrument.sounds.octave1));
-            }
-            if(!SOUNDS.containsKey(instrument.sounds.octave2))
-            {
-                SOUNDS.put(instrument.sounds.octave1, registerSound(instrument.sounds.octave2));
-            }
-            if(!SOUNDS.containsKey(instrument.sounds.octave3))
-            {
-                SOUNDS.put(instrument.sounds.octave1, registerSound(instrument.sounds.octave3));
+                SOUNDS.put(instrument.sounds.timbre, registerSound(instrument.sounds.timbre));
             }
         }
     }
