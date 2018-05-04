@@ -5,7 +5,7 @@
       "gripType": "two_handed"
     },
     "sounds": {
-      "timbre": "recorder"
+      "timbre": "bardmania:recorder"
     }
   },
   {
@@ -14,7 +14,7 @@
       "gripType": "two_handed"
     },
     "sounds": {
-      "timbre": "lute"
+      "timbre": "bardmania:lute"
     }
   },
   {
@@ -23,7 +23,7 @@
       "gripType": "drum"
     },
     "sounds": {
-      "timbre": "drum"
+      "timbre": "bardmania:drum"
     }
   },
   {
@@ -32,7 +32,16 @@
       "gripType": "one_handed"
     },
     "sounds": {
-      "timbre": "carillon"
+      "timbre": "bardmania:carillon"
+    }
+  },
+  {
+    "id": "note_block",
+    "general": {
+      "gripType": "one_handed"
+    },
+    "sounds": {
+      "timbre": "block.note.xylophone"
     }
   }
 ]
