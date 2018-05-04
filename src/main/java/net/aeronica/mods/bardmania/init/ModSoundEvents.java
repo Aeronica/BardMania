@@ -34,22 +34,21 @@ public class ModSoundEvents {
     /**
      * Register a {@link SoundEvent}.
      *
-     * @param soundName The SoundEvent's name with or without the [MOD_ID] prefix. With prefix uses the mods sound
-     *                  resource. Without the prefix it will attempt to use the vanilla sound resource.
+     * @param soundName The SoundEvent's name with or without the [MOD_ID] prefix. With prefix uses this mods sound
+     *                  resources. Without the prefix it will reference vanilla sound resources.
      * @return The SoundEvent
-     * @author Choonster
      */
     @Nullable
     private static SoundEvent registerSound(String soundName) {
+
         final ResourceLocation soundID = new ResourceLocation(soundName);
         SoundEvent soundEvent;
+
         if (soundName.contains(":"))
             soundEvent = new SoundEvent(soundID).setRegistryName(soundID);
         else
             soundEvent = SoundEvent.REGISTRY.getObject(soundID);
-        // TODO: For this mod see if the soundName is already registered. Hmmm not sure other than MC sounds it that's possble.
-        // Anyway the sound name from the json file needs to allow specifying a sound resource from Vanilla or this mod.
-        // Probably can't use another mods sounds at this stage, but it should be possible to use Vanilla sounds
+
         return soundEvent;
     }
 
@@ -62,16 +61,15 @@ public class ModSoundEvents {
     }
 
     /**
-     * getSound
-     * TODO: Use the sound registry instead e.g. ... No don't. Build a cache of the Minecraft and mod sounds required.
-     * SoundEvent.REGISTRY.getObject( [ResourceLocation]));
+     * Get a {@link SoundEvent} by name
      *
-     * @param name The name of the event less the modid
-     * @return SoundEvent
+     * @param soundName The name of the event with or without the MOD_ID. Only names referenced in the
+     *             instruments.json file can be returned.
+     * @return The SoundEvent
      */
     @Nullable
-    public static SoundEvent getSound(String name) {
-        return SOUNDS.get(name);
+    public static SoundEvent getSound(String soundName) {
+        return SOUNDS.get(soundName);
     }
 
 }
