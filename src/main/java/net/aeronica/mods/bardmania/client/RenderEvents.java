@@ -3,19 +3,22 @@ package net.aeronica.mods.bardmania.client;
 import com.mrcrayfish.obfuscate.client.event.ModelPlayerEvent;
 import com.mrcrayfish.obfuscate.client.event.RenderItemEvent;
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
-import net.aeronica.mods.bardmania.common.LocationArea;
+import net.aeronica.mods.bardmania.client.util.RenderUtil;
 import net.aeronica.mods.bardmania.common.IPlaceableBounding;
+import net.aeronica.mods.bardmania.common.LocationArea;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.Mod;
@@ -36,6 +39,7 @@ import java.util.Iterator;
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
  */
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class RenderEvents
 {
@@ -53,7 +57,6 @@ public class RenderEvents
         return ItemStack.EMPTY;
     }
 
-    @SuppressWarnings("unused")
     private static void renderBox(BlockPos pos, double partialTicks)
     {
         renderBox(new AxisAlignedBB(pos).grow(-0.00625d), partialTicks);
@@ -109,52 +112,48 @@ public class RenderEvents
             }
         }
     }
-    
-    // MrCrafish's Obfuscate Events
-    @SubscribeEvent
-    public static void ModelPlayerEvent(ModelPlayerEvent.SetupAngles event)
-    {
-//        ModelPlayer model = event.getModelPlayer();
-//        if (model != null)
-//            ModLogger.info("ModelPlayerEvent.SetupAngles %s", model.isSneak);
-    }
-    
-    @SubscribeEvent
-    public static void ModelPlayerEvent(ModelPlayerEvent.Render.Pre event)
-    {
-//       ModLogger.info("ModelPlayerEvent.Render.Pre %f", event.getPartialTicks());
-    }
-    
-    @SubscribeEvent
-    public static void RenderItemEvent(RenderItemEvent.Entity event)
-    {
-        //ModLogger.info("RenderItemEvent %f", event.getPartialTicks());
-    }
-    
-    @SubscribeEvent
-    public static void RenderItemEvent(RenderItemEvent.Gui event)
-    {
-        //ModLogger.info("RenderItemEvent %f", event.getPartialTicks());
-    }
-    
+
     @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
-        if(event.getEntity().getPrimaryHand() != event.getHandSide())
-        {
-            ItemStack heldItem = event.getEntity().getHeldItemMainhand();
-            if(!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
-            {
-                    event.setCanceled(true);
-                    return;
-            }
-        }
+
+    }
+
+    @SubscribeEvent
+    public static void onSetupAngles(ModelPlayerEvent.SetupAngles.Post event)
+    {
+
     }
     
     @SubscribeEvent
-    public static void EntityLivingInitEvent(EntityLivingInitEvent event)
+    public static void onRenderPlayer(RenderPlayerEvent.Pre event)
     {
-        //ModLogger.info("RenderItemEvent %f", event.getPartialTicks());
+
     }
     
+    @SubscribeEvent
+    public static void onRenderEntityItem(RenderItemEvent.Entity.Pre event)
+    {
+
+    }
+    
+    @SubscribeEvent
+    public static void onRenderEntityItem(RenderItemEvent.Gui.Pre event)
+    {
+
+    }
+
+    private boolean renderInstrument(ItemStack stack, ItemCameraTransforms.TransformType transformType)
+    {
+        if(stack.getItem() instanceof ItemHandHeld)
+        {
+            GlStateManager.pushMatrix();
+            RenderUtil.applyTransformType(stack, transformType);
+            RenderUtil.renderModel(stack);
+            GlStateManager.popMatrix();
+            return true;
+        }
+        return false;
+    }
+
 }

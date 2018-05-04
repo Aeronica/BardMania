@@ -63,7 +63,7 @@ public class ModSoundEvents {
     /**
      * Get a {@link SoundEvent} by name
      *
-     * @param soundName The name of the event with or without the MOD_ID. Only names referenced in the
+     * @param soundName The name of the event with or without the [MOD_ID] prefix. Only names referenced in the
      *             instruments.json file can be returned.
      * @return The SoundEvent
      */
