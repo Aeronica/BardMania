@@ -27,6 +27,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Iterator;
@@ -48,6 +49,8 @@ import java.util.Iterator;
 public class RenderEvents
 {
     private static Minecraft mc = Minecraft.getMinecraft();
+    private static float motionIncDec = 0.05F;
+    private static float motionSimple = 0F;
 
     private static ItemStack getHeldSelector()
     {
@@ -118,6 +121,14 @@ public class RenderEvents
     }
 
     @SubscribeEvent
+    public static void onTick(TickEvent.ClientTickEvent event)
+    {
+        motionSimple += motionIncDec;
+       if (motionSimple > 1F) motionIncDec = -0.05F;
+       if (motionSimple < 0F) motionIncDec = 0.05F;
+    }
+
+    @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
         if (event.getEntity().getPrimaryHand() != event.getHandSide())
@@ -140,7 +151,7 @@ public class RenderEvents
             event.setCanceled(true);
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(0);
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple);
             RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, ItemCameraTransforms.TransformType.NONE, event.getHandSide() == EnumHandSide.LEFT);
         }
@@ -155,9 +166,11 @@ public class RenderEvents
         {
             ModelPlayer model = event.getModelPlayer();
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, 0);
+            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, motionSimple);
             copyModelAngles(model.bipedRightArm, model.bipedRightArmwear);
             copyModelAngles(model.bipedLeftArm, model.bipedLeftArmwear);
+            copyModelAngles(model.bipedRightLeg, model.bipedRightLegwear);
+            copyModelAngles(model.bipedLeftLeg, model.bipedLeftLegwear);
         }
     }
 
@@ -169,7 +182,7 @@ public class RenderEvents
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
         {
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, 0);
+            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, motionSimple);
         }
 
     }

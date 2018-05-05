@@ -30,13 +30,15 @@ public enum HoldType
             model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F);
             model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(45F);
             model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F);
+
+            model.bipedLeftLeg.rotateAngleX = (float) Math.toRadians(-25F + aimProgress * 25F);
         }
 
         @Override
         public void applyPlayerPreRender(EntityPlayer player, float aimProgress)
         {
-            player.prevRenderYawOffset = player.prevRotationYaw + 40;
-            player.renderYawOffset = player.rotationYaw + 40;
+            player.prevRenderYawOffset = player.prevRotationYaw + 40 * aimProgress;
+            player.renderYawOffset = player.rotationYaw + 40 * aimProgress;
         }
 
         @Override
