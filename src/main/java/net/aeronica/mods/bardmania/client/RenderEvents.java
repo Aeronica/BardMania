@@ -2,18 +2,22 @@ package net.aeronica.mods.bardmania.client;
 
 import com.mrcrayfish.obfuscate.client.event.ModelPlayerEvent;
 import com.mrcrayfish.obfuscate.client.event.RenderItemEvent;
-import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
 import net.aeronica.mods.bardmania.client.util.RenderUtil;
 import net.aeronica.mods.bardmania.common.IPlaceableBounding;
 import net.aeronica.mods.bardmania.common.LocationArea;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
+import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.model.ModelPlayer;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -30,7 +34,7 @@ import java.util.Iterator;
 /*
  * box Rendering code mechanics by thebrightspark from the mod StructuralRelocation
  * https://github.com/thebrightspark/StructuralRelocation
- * 
+ *
  *                  GNU GENERAL PUBLIC LICENSE
  *                     Version 2, June 1991
  *
@@ -48,10 +52,10 @@ public class RenderEvents
     private static ItemStack getHeldSelector()
     {
         Iterator<ItemStack> heldItems = mc.player.getHeldEquipment().iterator();
-        while(heldItems.hasNext())
+        while (heldItems.hasNext())
         {
             ItemStack held = heldItems.next();
-            if(!held.isEmpty() && held.getItem() instanceof IPlaceableBounding)
+            if (!held.isEmpty() && held.getItem() instanceof IPlaceableBounding)
                 return held;
         }
         return ItemStack.EMPTY;
@@ -94,21 +98,21 @@ public class RenderEvents
     {
         //Get held Selector item
         ItemStack heldItem = getHeldSelector();
-        if(heldItem.isEmpty()) return;
-        
+        if (heldItem.isEmpty()) return;
+
         IPlaceableBounding blockPlacer = (IPlaceableBounding) heldItem.getItem();
         EntityPlayerSP player = mc.player;
         World world = player.getEntityWorld();
 
         RayTraceResult rayTraceResult = ForgeHooks.rayTraceEyes(player, 5);
 
-        if(rayTraceResult != null && rayTraceResult.typeOfHit.equals(RayTraceResult.Type.BLOCK) && rayTraceResult.sideHit.equals(EnumFacing.UP))
+        if (rayTraceResult != null && rayTraceResult.typeOfHit.equals(RayTraceResult.Type.BLOCK) && rayTraceResult.sideHit.equals(EnumFacing.UP))
         {
             BlockPos pos = rayTraceResult.getBlockPos();
             if (blockPlacer.canPlaceHere(player, world, heldItem, pos, rayTraceResult.sideHit))
-            {                
+            {
                 LocationArea boundingBox = blockPlacer.getBoundingBox(player, world, pos);
-                renderBox(boundingBox.getStartingPoint(), boundingBox.getStartPointPlusSize(), event.getPartialTicks());            
+                renderBox(boundingBox.getStartingPoint(), boundingBox.getStartPointPlusSize(), event.getPartialTicks());
             }
         }
     }
@@ -116,36 +120,77 @@ public class RenderEvents
     @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
+        if (event.getEntity().getPrimaryHand() != event.getHandSide())
+        {
+            ItemStack heldItem = event.getEntity().getHeldItemMainhand();
+            if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+            {
+                Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+                if (!instrument.general.holdType.canRenderOffhand())
+                {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
 
+        ItemStack heldItem = event.getItem();
+        if (heldItem.getItem() instanceof ItemHandHeld)
+        {
+            event.setCanceled(true);
+
+            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(0);
+            RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, ItemCameraTransforms.TransformType.NONE, event.getHandSide() == EnumHandSide.LEFT);
+        }
     }
 
     @SubscribeEvent
     public static void onSetupAngles(ModelPlayerEvent.SetupAngles.Post event)
     {
-
+        EntityPlayer player = event.getEntityPlayer();
+        ItemStack heldItem = player.getHeldItemMainhand();
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+        {
+            ModelPlayer model = event.getModelPlayer();
+            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, 0);
+            copyModelAngles(model.bipedRightArm, model.bipedRightArmwear);
+            copyModelAngles(model.bipedLeftArm, model.bipedLeftArmwear);
+        }
     }
-    
+
     @SubscribeEvent
     public static void onRenderPlayer(RenderPlayerEvent.Pre event)
     {
+        EntityPlayer player = event.getEntityPlayer();
+        ItemStack heldItem = player.getHeldItemMainhand();
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+        {
+            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, 0);
+        }
 
     }
-    
+
     @SubscribeEvent
     public static void onRenderEntityItem(RenderItemEvent.Entity.Pre event)
     {
-
+        // not really needed since this mod is not using any attachments, but might be fun to play with
+        event.setCanceled(renderInstrument(event.getItem(), event.getTransformType()));
     }
-    
+
     @SubscribeEvent
     public static void onRenderEntityItem(RenderItemEvent.Gui.Pre event)
     {
-
+        // not really needed since this mod is not using any attachments, but might be fun to play with
+        event.setCanceled(renderInstrument(event.getItem(), event.getTransformType()));
     }
 
-    private boolean renderInstrument(ItemStack stack, ItemCameraTransforms.TransformType transformType)
+    private static boolean renderInstrument(ItemStack stack, ItemCameraTransforms.TransformType transformType)
     {
-        if(stack.getItem() instanceof ItemHandHeld)
+        if (stack.getItem() instanceof ItemHandHeld)
         {
             GlStateManager.pushMatrix();
             RenderUtil.applyTransformType(stack, transformType);
@@ -156,4 +201,10 @@ public class RenderEvents
         return false;
     }
 
+    private static void copyModelAngles(ModelRenderer source, ModelRenderer dest)
+    {
+        dest.rotateAngleX = source.rotateAngleX;
+        dest.rotateAngleY = source.rotateAngleY;
+        dest.rotateAngleZ = source.rotateAngleZ;
+    }
 }

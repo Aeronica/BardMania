@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 public class Instrument {
     public String id;
+    public General general = new General();
     public Sounds sounds;
 
     public static class General

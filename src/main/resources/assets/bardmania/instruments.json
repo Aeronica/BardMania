@@ -2,7 +2,7 @@
   {
     "id": "flute",
     "general": {
-      "gripType": "two_handed"
+      "holdType": "two_handed_horizontal"
     },
     "sounds": {
       "timbre": "bardmania:recorder"
@@ -11,7 +11,7 @@
   {
     "id": "lute",
     "general": {
-      "gripType": "two_handed"
+      "holdType": "two_handed_guitar"
     },
     "sounds": {
       "timbre": "bardmania:lute"
@@ -20,7 +20,7 @@
   {
     "id": "drum",
     "general": {
-      "gripType": "drum"
+      "holdType": "two_handed_drum"
     },
     "sounds": {
       "timbre": "bardmania:drum"
@@ -29,7 +29,7 @@
   {
     "id": "bells",
     "general": {
-      "gripType": "one_handed"
+      "holdType": "one_handed"
     },
     "sounds": {
       "timbre": "bardmania:carillon"
@@ -38,7 +38,7 @@
   {
     "id": "note_block",
     "general": {
-      "gripType": "one_handed"
+      "holdType": "one_handed"
     },
     "sounds": {
       "timbre": "block.note.xylophone"
