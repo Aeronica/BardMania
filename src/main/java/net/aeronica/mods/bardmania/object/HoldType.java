@@ -28,29 +28,29 @@ public enum HoldType
             model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F);
 
             model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F);
-            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(45F);
+            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(55F);
             model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F);
 
-            model.bipedLeftLeg.rotateAngleX = (float) Math.toRadians(-25F + aimProgress * 25F);
+            // model.bipedLeftLeg.rotateAngleX = (float) Math.toRadians(-25F + aimProgress * 25F);
         }
 
         @Override
         public void applyPlayerPreRender(EntityPlayer player, float aimProgress)
         {
-            player.prevRenderYawOffset = player.prevRotationYaw + 40 * aimProgress;
-            player.renderYawOffset = player.rotationYaw + 40 * aimProgress;
+            player.prevRenderYawOffset = player.prevRotationYaw + 40 * 1;
+            player.renderYawOffset = player.rotationYaw + 40 * 1;
         }
 
         @Override
         public void applyHeldItemTransforms(float aimProgress)
         {
-            GlStateManager.translate(-0.33, 0.05, 0.1);
+            GlStateManager.translate(0, 0, 0);
             float invertRealProgress = 1.0F - aimProgress;
-            GlStateManager.rotate(0F * invertRealProgress, 0, 0, 1);
-            GlStateManager.rotate(50F * invertRealProgress + aimProgress * -5F, 0, 1, 0);
-            GlStateManager.rotate(0F * invertRealProgress + aimProgress, 1, 0, 0);
+            GlStateManager.rotate(45F, 0, 1, 0);
+            GlStateManager.rotate(90F, 0, 0, 1);
+            GlStateManager.rotate(-5F, 1, 0, 0);
         }
-    }, false),
+    }, true),
     @SerializedName("two_handed_vertical")
     TWO_HANDED_VERTICAL(new HeldAnimation()
     {
