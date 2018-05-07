@@ -4,7 +4,6 @@ package net.aeronica.mods.bardmania.item;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.MidiUtils;
-import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,12 +47,12 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
-        playerIn.setActiveHand(handIn);
-        MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
-        if (worldIn.isRemote)
-            return new ActionResult<>(EnumActionResult.FAIL, heldItem);
-        else
-            return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
+        if (this.instrument.general.holdType.canRenderOffhand())
+        {
+            playerIn.setActiveHand(handIn);
+            MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
             BlockPos pos = player.getPosition();
             byte pitch = (byte) (noteIn - 48);
             float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
-            worldIn.playSound((EntityPlayer) null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
+            worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
             // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
             worldIn.spawnParticle(EnumParticleTypes.NOTE, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.5D, (double) pos.getZ() + 0.5D, (double) pitch / 24.0D, 0.0D, 0.0D, new int[0]);
         }

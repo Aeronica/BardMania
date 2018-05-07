@@ -124,19 +124,24 @@ public class RenderEvents
     public static void onTick(TickEvent.ClientTickEvent event)
     {
         motionSimple += motionIncDec;
-       if (motionSimple > 1F) motionIncDec = -0.05F;
-       if (motionSimple < 0F) motionIncDec = 0.05F;
+        if (motionSimple > 1F) motionIncDec = -0.05F;
+        if (motionSimple < 0F) motionIncDec = 0.05F;
     }
 
     @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
+        ItemStack heldItem;
+        ItemStack itemMain = event.getEntity().getHeldItemMainhand();
+        ItemStack itemOff = event.getEntity().getHeldItemOffhand();
+        boolean isMainHandHeld = !itemMain.isEmpty() && itemMain.getItem() instanceof ItemHandHeld;
+        boolean isOffHandHeld = !itemOff.isEmpty() && itemOff.getItem() instanceof ItemHandHeld;
+
         if (event.getEntity().getPrimaryHand() != event.getHandSide())
         {
-            ItemStack heldItem = event.getEntity().getHeldItemMainhand();
-            if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+            if (isMainHandHeld)
             {
-                Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+                Instrument instrument = ((ItemHandHeld) itemMain.getItem()).getInstrument();
                 if (!instrument.general.holdType.canRenderOffhand())
                 {
                     event.setCanceled(true);
@@ -145,15 +150,15 @@ public class RenderEvents
             }
         }
 
-        ItemStack heldItem = event.getItem();
-        if (heldItem.getItem() instanceof ItemHandHeld)
+        heldItem = event.getItem();
+        if (isMainHandHeld && event.getHandSide().equals(event.getEntity().getPrimaryHand()))
         {
             event.setCanceled(true);
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple);
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, event.getHandSide().equals(EnumHandSide.LEFT));
             RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, ItemCameraTransforms.TransformType.NONE, event.getHandSide() == EnumHandSide.LEFT);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, ItemCameraTransforms.TransformType.NONE, event.getHandSide().equals(EnumHandSide.LEFT));
         }
     }
 
@@ -166,7 +171,7 @@ public class RenderEvents
         {
             ModelPlayer model = event.getModelPlayer();
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, motionSimple);
+            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
             copyModelAngles(model.bipedRightArm, model.bipedRightArmwear);
             copyModelAngles(model.bipedLeftArm, model.bipedLeftArmwear);
             copyModelAngles(model.bipedRightLeg, model.bipedRightLegwear);
@@ -182,7 +187,7 @@ public class RenderEvents
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
         {
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, motionSimple);
+            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
         }
 
     }
@@ -221,3 +226,4 @@ public class RenderEvents
         dest.rotateAngleZ = source.rotateAngleZ;
     }
 }
+

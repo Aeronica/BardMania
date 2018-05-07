@@ -1,6 +1,7 @@
 package net.aeronica.mods.bardmania.object;
 
 import com.google.gson.annotations.SerializedName;
+import com.sun.org.apache.bcel.internal.generic.SWAP;
 import net.aeronica.mods.bardmania.client.HeldAnimation;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
@@ -21,36 +22,42 @@ public enum HoldType
     TWO_HANDED_HORIZONTAL(new HeldAnimation()
     {
         @Override
-        public void applyPlayerModelRotation(ModelPlayer model, float aimProgress)
+        public void applyPlayerModelRotation(ModelPlayer model, float aimProgress, boolean leftHand)
         {
-            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-80F);
-            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25F);
-            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F);
+            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F));
+            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25F + (leftHand ? 180F : 0F));
+            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
 
-            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F);
-            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(55F);
-            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F);
+            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F));
+            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(55F + (leftHand ? 180F : 0F));
+            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
 
+            if (leftHand)
+            {
+                float temp =  model.bipedRightArm.rotateAngleY;
+                model.bipedRightArm.rotateAngleY = model.bipedLeftArm.rotateAngleY;
+                model.bipedLeftArm.rotateAngleY = temp;
+            }
             // model.bipedLeftLeg.rotateAngleX = (float) Math.toRadians(-25F + aimProgress * 25F);
         }
 
         @Override
-        public void applyPlayerPreRender(EntityPlayer player, float aimProgress)
+        public void applyPlayerPreRender(EntityPlayer player, float aimProgress, boolean leftHand)
         {
-            player.prevRenderYawOffset = player.prevRotationYaw + 40 * 1;
-            player.renderYawOffset = player.rotationYaw + 40 * 1;
+            player.prevRenderYawOffset = player.prevRotationYaw + 40 * (leftHand ? -1 : 1);
+            player.renderYawOffset = player.rotationYaw + 40 * (leftHand ? -1 : 1);
         }
 
         @Override
-        public void applyHeldItemTransforms(float aimProgress)
+        public void applyHeldItemTransforms(float aimProgress, boolean leftHand)
         {
-            GlStateManager.translate(0, 0, 0);
+            GlStateManager.translate(leftHand ? 0.5 : 0, 0, leftHand ? 0.5 : 0);
             float invertRealProgress = 1.0F - aimProgress;
-            GlStateManager.rotate(45F, 0, 1, 0);
-            GlStateManager.rotate(90F, 0, 0, 1);
-            GlStateManager.rotate(-5F, 1, 0, 0);
+            GlStateManager.rotate(0F, 0, 0, 1);
+            GlStateManager.rotate(40F * (leftHand ? -1F : 1F), 0, 1, 0);
+            GlStateManager.rotate(0F, 1, 0, 0);
         }
-    }, true),
+    }, false),
     @SerializedName("two_handed_vertical")
     TWO_HANDED_VERTICAL(new HeldAnimation()
     {
@@ -96,4 +103,5 @@ public enum HoldType
         dest.rotateAngleY = source.rotateAngleY;
         dest.rotateAngleZ = source.rotateAngleZ;
     }
+
 }
