@@ -47,11 +47,8 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
-        if (this.instrument.general.holdType.canRenderOffhand())
-        {
-            playerIn.setActiveHand(handIn);
-            MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
-        }
+        playerIn.setActiveHand(handIn);
+        MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
 

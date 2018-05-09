@@ -136,6 +136,7 @@ public class RenderEvents
         ItemStack itemOff = event.getEntity().getHeldItemOffhand();
         boolean isMainHandHeld = !itemMain.isEmpty() && itemMain.getItem() instanceof ItemHandHeld;
         boolean isOffHandHeld = !itemOff.isEmpty() && itemOff.getItem() instanceof ItemHandHeld;
+        boolean renderLeft = event.getHandSide().equals(EnumHandSide.LEFT);
 
         if (event.getEntity().getPrimaryHand() != event.getHandSide())
         {
@@ -156,9 +157,9 @@ public class RenderEvents
             event.setCanceled(true);
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, event.getHandSide().equals(EnumHandSide.LEFT));
-            RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, ItemCameraTransforms.TransformType.NONE, event.getHandSide().equals(EnumHandSide.LEFT));
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft);
+            RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, ItemCameraTransforms.TransformType.NONE, renderLeft);
         }
     }
 
