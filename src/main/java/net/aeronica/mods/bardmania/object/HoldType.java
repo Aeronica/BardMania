@@ -52,7 +52,7 @@ public enum HoldType
         @Override
         public void applyHeldItemTransforms(float aimProgress, boolean leftHand)
         {
-            GlStateManager.translate(leftHand ? 0.5 : 0, 0, leftHand ? 0.5 : 0);
+            GlStateManager.translate(0, 0, 0);
             float invertRealProgress = 1.0F - aimProgress;
             GlStateManager.rotate(0F, 0, 0, 1);
             GlStateManager.rotate(40F * (leftHand ? -1F : 1F), 0, 1, 0);
