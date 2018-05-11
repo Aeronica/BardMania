@@ -66,7 +66,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
                 instrument.noteReceiver(world, blockPos, entityId, note, volume);
-            } else if (entityId == player.getEntityId() && personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver)
+            } else if (entityId == player.getEntityId() && personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver && personPlaying.getActiveHand().equals(hand))
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
                 instrument.noteReceiver(world, blockPos, entityId, note, volume);
