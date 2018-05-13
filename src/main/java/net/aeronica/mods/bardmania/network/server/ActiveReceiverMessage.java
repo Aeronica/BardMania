@@ -16,11 +16,11 @@ import net.aeronica.mods.bardmania.network.AbstractMessage.AbstractServerMessage
 public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverMessage>
 {
 
-    BlockPos blockPos;
-    int entityId;
-    EnumHand hand;
-    byte note;
-    byte volume;
+    private BlockPos blockPos;
+    private int entityId;
+    private EnumHand hand;
+    private byte note;
+    private byte volume;
     
     public ActiveReceiverMessage() { /* empty */ }
     
@@ -66,7 +66,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
                 instrument.noteReceiver(world, blockPos, entityId, note, volume);
-            } else if (entityId == player.getEntityId() && personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver && personPlaying.getActiveHand().equals(hand))
+            } else if ((entityId == player.getEntityId()) && (personPlaying != null) && !personPlaying.getHeldItem(hand).isEmpty() && (personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver) && personPlaying.getActiveHand().equals(hand))
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
                 instrument.noteReceiver(world, blockPos, entityId, note, volume);

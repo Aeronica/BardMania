@@ -60,12 +60,15 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         if (!worldIn.isRemote && volumeIn != 0)
         {
             EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
-            BlockPos pos = player.getPosition();
-            byte pitch = (byte) (noteIn - 48);
-            float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
-            worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
-            // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
-            worldIn.spawnParticle(EnumParticleTypes.NOTE, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.5D, (double) pos.getZ() + 0.5D, (double) pitch / 24.0D, 0.0D, 0.0D, new int[0]);
+            if (player != null)
+            {
+                BlockPos pos = player.getPosition();
+                byte pitch = (byte) (noteIn - 48);
+                float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
+                worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
+                // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
+                worldIn.spawnParticle(EnumParticleTypes.NOTE, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.5D, (double) pos.getZ() + 0.5D, (double) pitch / 24.0D, 0.0D, 0.0D, new int[0]);
+            }
         }
     }
 
