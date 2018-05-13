@@ -3,9 +3,6 @@ package net.aeronica.mods.bardmania.init;
 import net.aeronica.mods.bardmania.Reference;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -18,14 +15,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ObjectHolder(Reference.MOD_ID)
-public class ModSoundEvents {
+public class ModSoundEvents
+{
 
     private static final Map<String, SoundEvent> SOUNDS = new HashMap<>();
 
-    static {
-        for (ItemHandHeld handHeld : ModInstruments.INSTRUMENTS) {
+    static
+    {
+        for (ItemHandHeld handHeld : ModInstruments.INSTRUMENTS)
+        {
             Instrument instrument = handHeld.getInstrument();
-            if (!SOUNDS.containsKey(instrument.sounds.timbre)) {
+            if (!SOUNDS.containsKey(instrument.sounds.timbre))
+            {
                 SOUNDS.put(instrument.sounds.timbre, registerSound(instrument.sounds.timbre));
             }
         }
@@ -39,12 +40,13 @@ public class ModSoundEvents {
      * @return The SoundEvent
      */
     @Nullable
-    private static SoundEvent registerSound(String soundName) {
+    private static SoundEvent registerSound(String soundName)
+    {
 
         final ResourceLocation soundID = new ResourceLocation(soundName);
         SoundEvent soundEvent;
 
-        if (soundName.contains(":"))
+        if (soundName.contains(Reference.MOD_ID + ":"))
             soundEvent = new SoundEvent(soundID).setRegistryName(soundID);
         else
             soundEvent = SoundEvent.REGISTRY.getObject(soundID);
@@ -53,9 +55,11 @@ public class ModSoundEvents {
     }
 
     @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
-    public static class RegistrationHandler {
+    public static class RegistrationHandler
+    {
         @SubscribeEvent
-        public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event) {
+        public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event)
+        {
             SOUNDS.values().forEach(event.getRegistry()::register);
         }
     }
@@ -64,11 +68,12 @@ public class ModSoundEvents {
      * Get a {@link SoundEvent} by name
      *
      * @param soundName The name of the event with or without the [MOD_ID] prefix. Only names referenced in the
-     *             instruments.json file can be returned.
+     *                  instruments.json file can be returned.
      * @return The SoundEvent
      */
     @Nullable
-    public static SoundEvent getSound(String soundName) {
+    public static SoundEvent getSound(String soundName)
+    {
         return SOUNDS.get(soundName);
     }
 

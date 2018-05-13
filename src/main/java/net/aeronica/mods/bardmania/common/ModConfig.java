@@ -9,40 +9,50 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = Reference.MOD_ID)
 @Config.LangKey("bardmania.config.title")
-public class ModConfig {
-
-    @Config.Comment("This is an example boolean property.")
-    public static boolean fooBar = false;
+public class ModConfig
+{
 
     public static final Client client = new Client();
 
-    public static class Client {
+    public static class Client
+    {
 
-        @Config.Comment("This is an example int property.")
-        public int baz = -100;
+        @Config.Comment("Use MIDI or PC Keyboard. Defaults to PC Keyboard")
+        public boolean useMIDI = false;
 
-        public final HUDPos chunkEnergyHUDPos = new HUDPos(0, 0);
+        @Config.Comment("MIDI Configuration")
+        public final MIDIOptions midiOptions = new MIDIOptions(true, false, 1);
 
-        public static class HUDPos {
-            public HUDPos(final int x, final int y) {
-                this.x = x;
-                this.y = y;
+        public static class MIDIOptions
+        {
+            public MIDIOptions(final boolean allChannels, final boolean sendNoteOff, int channel)
+            {
+                this.allChannels = allChannels;
+                this.sendNoteOff = sendNoteOff;
+                this.channel = channel;
             }
 
-            @Config.Comment("The x coordinate")
-            public int x;
+            @Config.Comment("Listen on all channels or specified channel")
+            public boolean allChannels;
 
-            @Config.Comment("The y coordinate")
-            public int y;
+            @Config.Comment("Send Note Off commands")
+            public boolean sendNoteOff;
+
+            @Config.RangeInt(min = 1, max = 16)
+            @Config.Comment("MIDI Channel [1-16]")
+            public int channel;
         }
     }
 
     @Mod.EventBusSubscriber
-    private static class EventHandler {
+    private static class EventHandler
+    {
 
         @SubscribeEvent
-        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event) {
-            if (event.getModID().equals(Reference.MOD_ID)) {
+        public static void onConfigChanged(final ConfigChangedEvent.OnConfigChangedEvent event)
+        {
+            if (event.getModID().equals(Reference.MOD_ID))
+            {
                 ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
             }
         }

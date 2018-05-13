@@ -46,7 +46,7 @@ public enum MidiUtils implements Receiver
         hitZ = hitZIn;
         stack = stackIn;
 
-        if (worldIn.isRemote)
+        if (worldIn.isRemote && ModConfig.client.useMIDI)
         {
             MidiDevice device;
             MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
@@ -103,8 +103,8 @@ public enum MidiUtils implements Receiver
         byte[] message = msg.getMessage();
         int command = msg.getStatus() & 0xF0;
         int channel = msg.getStatus() & 0x0F;
-        boolean allChannels = true;
-        boolean sendNoteOff = false;
+        boolean allChannels = ModConfig.client.midiOptions.allChannels;
+        boolean sendNoteOff = ModConfig.client.midiOptions.sendNoteOff;
         
         switch (command)
         {
@@ -117,7 +117,7 @@ public enum MidiUtils implements Receiver
             return;
         }
 
-        boolean channelFlag = allChannels ? true : channel == 1;
+        boolean channelFlag = allChannels ? true : channel == ModConfig.client.midiOptions.channel - 1;
         boolean noteOffFlag = sendNoteOff ? true : message[2] != 0;
         
         if (pos != null && channelFlag && noteOffFlag)
