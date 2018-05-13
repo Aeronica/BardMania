@@ -1,4 +1,11 @@
 < en_US.lang - English localization file >
-bardmania.config.title=Test Obfuscate Library
+config.bardmania.title=Bard Mania
+config.bardmania.client_options.title=Client Options
+config.bardmania.input_mode=Input Mode
+config.bardmania.input_mode.midi=MIDI
+config.bardmania.input_mode.keyboard=PC Keyboard
+config.bardmania.midi_options.title=MIDI Options
+config.bardmania.midi_options.all_channels=Listen on all channels
+config.bardmania.midi_options.channel=MIDI Channel [1-16]
 item.bardmania:flute.name=Flute
 item.bardmania:lute.name=Lute

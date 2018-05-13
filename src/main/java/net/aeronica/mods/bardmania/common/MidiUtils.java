@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import javax.sound.midi.*;
 
+import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
+
 public enum MidiUtils implements Receiver
 {
 
@@ -46,7 +48,7 @@ public enum MidiUtils implements Receiver
         hitZ = hitZIn;
         stack = stackIn;
 
-        if (worldIn.isRemote && ModConfig.client.useMIDI)
+        if (worldIn.isRemote && ModConfig.client.input_mode == MIDI)
         {
             MidiDevice device;
             MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
@@ -103,8 +105,8 @@ public enum MidiUtils implements Receiver
         byte[] message = msg.getMessage();
         int command = msg.getStatus() & 0xF0;
         int channel = msg.getStatus() & 0x0F;
-        boolean allChannels = ModConfig.client.midiOptions.allChannels;
-        boolean sendNoteOff = ModConfig.client.midiOptions.sendNoteOff;
+        boolean allChannels = ModConfig.client.midi_options.allChannels;
+        boolean sendNoteOff = ModConfig.client.midi_options.sendNoteOff;
         
         switch (command)
         {
@@ -117,8 +119,8 @@ public enum MidiUtils implements Receiver
             return;
         }
 
-        boolean channelFlag = allChannels ? true : channel == ModConfig.client.midiOptions.channel - 1;
-        boolean noteOffFlag = sendNoteOff ? true : message[2] != 0;
+        boolean channelFlag = allChannels || channel == ModConfig.client.midi_options.channel - 1;
+        boolean noteOffFlag = sendNoteOff || message[2] != 0;
         
         if (pos != null && channelFlag && noteOffFlag)
         {

@@ -14,6 +14,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Objects;
+
 public class ItemHandHeld extends Item implements IActiveNoteReceiver
 {
     private final Instrument instrument;
@@ -67,4 +69,9 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         }
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
+    {
+        return (newStack.getItem() instanceof ItemHandHeld) ? !Objects.equals(((ItemHandHeld) newStack.getItem()).getInstrument().id, ((ItemHandHeld) oldStack.getItem()).getInstrument().id) : slotChanged;
+    }
 }

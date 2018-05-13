@@ -8,20 +8,30 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = Reference.MOD_ID)
-@Config.LangKey("bardmania.config.title")
+@Config.LangKey("config.bardmania.title")
 public class ModConfig
 {
-
+    @Config.LangKey("config.bardmania.client_options.title")
+    @Config.Comment("Client Options")
     public static final Client client = new Client();
 
     public static class Client
     {
 
-        @Config.Comment("Use MIDI or PC Keyboard. Defaults to PC Keyboard")
-        public boolean useMIDI = false;
+        @Config.LangKey("config.bardmania.input_mode")
+        @Config.Comment("Input Mode: Use MIDI or PC Keyboard. Defaults to PC Keyboard")
+        public INPUT_MODE input_mode = INPUT_MODE.KEYBOARD;
 
-        @Config.Comment("MIDI Configuration")
-        public final MIDIOptions midiOptions = new MIDIOptions(true, false, 1);
+        public enum INPUT_MODE
+        {
+            @Config.LangKey("config.bardmania.input_mode.midi")
+            MIDI,
+            @Config.LangKey("config.bardmania.input_mode.keyboard")
+            KEYBOARD}
+
+        @Config.LangKey("config.bardmania.midi_options.title")
+        @Config.Comment("MIDI Options")
+        public final MIDIOptions midi_options = new MIDIOptions(true, false, 1);
 
         public static class MIDIOptions
         {
@@ -32,12 +42,14 @@ public class ModConfig
                 this.channel = channel;
             }
 
+            @Config.LangKey("config.bardmania.midi_options.all_channels")
             @Config.Comment("Listen on all channels or specified channel")
             public boolean allChannels;
 
             @Config.Comment("Send Note Off commands")
             public boolean sendNoteOff;
 
+            @Config.LangKey("config.bardmania.midi_options.channel")
             @Config.RangeInt(min = 1, max = 16)
             @Config.Comment("MIDI Channel [1-16]")
             public int channel;
