@@ -19,7 +19,6 @@ import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MID
 
 public enum MidiUtils implements Receiver
 {
-
     INSTANCE;
     static BiMap<Integer, BlockPos> playerIdUsingBlock = HashBiMap.create();
 
@@ -34,7 +33,7 @@ public enum MidiUtils implements Receiver
     static ItemStack stack = ItemStack.EMPTY;
 
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
-            float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
+                                float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
     {
         instrument = instrumentIn;
         world = worldIn;
@@ -78,13 +77,12 @@ public enum MidiUtils implements Receiver
                 {
                     ModLogger.error(e);
                 }
-
             }
         }
     }
 
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
-            float hitXIn, float hitYIn, float hitZIn)
+                                float hitXIn, float hitYIn, float hitZIn)
     {
         setNoteReceiver(instrumentIn, worldIn, posIn, stateIn, playerIn, handIn, facingIn, hitXIn, hitYIn, hitZIn, ItemStack.EMPTY);
     }
@@ -107,21 +105,21 @@ public enum MidiUtils implements Receiver
         int channel = msg.getStatus() & 0x0F;
         boolean allChannels = ModConfig.client.midi_options.allChannels;
         boolean sendNoteOff = ModConfig.client.midi_options.sendNoteOff;
-        
+
         switch (command)
         {
-        case ShortMessage.NOTE_OFF:
-            message[2] = 0;
-            break;
-        case ShortMessage.NOTE_ON:
-            break;
-        default:
-            return;
+            case ShortMessage.NOTE_OFF:
+                message[2] = 0;
+                break;
+            case ShortMessage.NOTE_ON:
+                break;
+            default:
+                return;
         }
 
         boolean channelFlag = allChannels || channel == ModConfig.client.midi_options.channel - 1;
         boolean noteOffFlag = sendNoteOff || message[2] != 0;
-        
+
         if (pos != null && channelFlag && noteOffFlag)
         {
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
@@ -157,5 +155,4 @@ public enum MidiUtils implements Receiver
             stack = ItemStack.EMPTY;
         }
     }
-
 }
