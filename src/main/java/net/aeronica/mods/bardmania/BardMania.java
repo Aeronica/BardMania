@@ -1,5 +1,6 @@
 package net.aeronica.mods.bardmania;
 
+import net.aeronica.mods.bardmania.client.gui.GuiHandler;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.common.ModTab;
 import net.aeronica.mods.bardmania.init.ModBlocks;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(
         modid = Reference.MOD_ID,
@@ -46,6 +48,7 @@ public class BardMania
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         proxy.init();
     }
 
