@@ -2,8 +2,10 @@
 package net.aeronica.mods.bardmania.item;
 
 import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.client.gui.GuiGui;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.MidiUtils;
+import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Objects;
+
+import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
 
 public class ItemHandHeld extends Item implements IActiveNoteReceiver
 {
@@ -51,6 +55,8 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         ItemStack heldItem = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
         MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
+        if (ModConfig.client.input_mode == KEYBOARD)
+            playerIn.openGui(BardMania.instance, GuiGui.KEYBOARD, worldIn, 0, 0, 0);
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
 

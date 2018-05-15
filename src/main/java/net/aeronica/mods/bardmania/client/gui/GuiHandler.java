@@ -29,6 +29,7 @@ public class GuiHandler implements IGuiHandler
     {
         switch (ID) {
             case KEYBOARD:
+                return new GuiKeyboard();
             default:
                 return null;
         }

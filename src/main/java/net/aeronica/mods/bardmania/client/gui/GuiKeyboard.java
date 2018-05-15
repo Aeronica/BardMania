@@ -1,6 +1,7 @@
 package net.aeronica.mods.bardmania.client.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -29,6 +30,10 @@ public class GuiKeyboard extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         drawDefaultBackground();
+        String localTITLE = "Gui Keyboard";
+        int posX = (this.width - getFontRenderer().getStringWidth(localTITLE)) / 2 ;
+        int posY = 10;
+        getFontRenderer().drawStringWithShadow(localTITLE, posX, posY, 0xD3D3D3);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -49,4 +54,12 @@ public class GuiKeyboard extends GuiScreen
     {
         super.setWorldAndResolution(mc, width, height);
     }
+
+    @Override
+    public boolean doesGuiPauseGame()
+    {
+        return false;
+    }
+
+    public FontRenderer getFontRenderer() {return mc.fontRenderer;}
 }
