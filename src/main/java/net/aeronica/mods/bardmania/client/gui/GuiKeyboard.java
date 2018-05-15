@@ -1,14 +1,33 @@
 package net.aeronica.mods.bardmania.client.gui;
 
+import net.aeronica.mods.bardmania.network.PacketDispatcher;
+import net.aeronica.mods.bardmania.network.server.ActiveReceiverMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
+import java.util.*;
 
 public class GuiKeyboard extends GuiScreen
 {
+    private static final Integer[][] KEY_VALUES = new Integer[][]{
+            {Keyboard.KEY_Q, 48}, {Keyboard.KEY_2, 49}, {Keyboard.KEY_W, 50}, {Keyboard.KEY_3, 51},
+            {Keyboard.KEY_E, 52}, {Keyboard.KEY_R, 53}, {Keyboard.KEY_5, 54}, {Keyboard.KEY_T, 55},
+            {Keyboard.KEY_6, 56}, {Keyboard.KEY_Y, 57}, {Keyboard.KEY_7, 58}, {Keyboard.KEY_U, 59},
+            {Keyboard.KEY_I, 60}};
+    private static final Map<Integer, Integer> keyMap;
+    static {
+        Map<Integer, Integer> aMap = new HashMap<>();
+        for (Integer[] key : KEY_VALUES)
+        {
+            aMap.put(key[0], key[1]);
+        }
+        keyMap = Collections.unmodifiableMap(aMap);
+    }
 
     public GuiKeyboard ()
     {
@@ -46,6 +65,8 @@ public class GuiKeyboard extends GuiScreen
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
+        if (keyMap.containsKey(keyCode))
+            sendNote(keyMap.get(keyCode) + (isShiftKeyDown() ? 12: 0));
         super.keyTyped(typedChar, keyCode);
     }
 
@@ -61,5 +82,13 @@ public class GuiKeyboard extends GuiScreen
         return false;
     }
 
-    public FontRenderer getFontRenderer() {return mc.fontRenderer;}
+    private void sendNote(int note)
+    {
+        EntityPlayer player = mc.player;
+        // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
+        ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), player.getActiveHand(), (byte)note, (byte)127);
+        PacketDispatcher.sendToServer(packet);
+    }
+
+    private FontRenderer getFontRenderer() {return mc.fontRenderer;}
 }
