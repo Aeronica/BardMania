@@ -7,5 +7,6 @@ config.bardmania.input_mode.keyboard=PC Keyboard
 config.bardmania.midi_options.title=MIDI Options
 config.bardmania.midi_options.all_channels=Listen on all channels
 config.bardmania.midi_options.channel=MIDI Channel [1-16]
+gui.bardmania.gui_keyboard.title=PC Piano Keyboard
 item.bardmania:flute.name=Flute
 item.bardmania:lute.name=Lute
