@@ -17,7 +17,6 @@ import java.util.Map;
 @ObjectHolder(Reference.MOD_ID)
 public class ModSoundEvents
 {
-
     private static final Map<String, SoundEvent> SOUNDS = new HashMap<>();
 
     static
@@ -42,7 +41,6 @@ public class ModSoundEvents
     @Nullable
     private static SoundEvent registerSound(String soundName)
     {
-
         final ResourceLocation soundID = new ResourceLocation(soundName);
         SoundEvent soundEvent;
 
@@ -76,5 +74,4 @@ public class ModSoundEvents
     {
         return SOUNDS.get(soundName);
     }
-
 }

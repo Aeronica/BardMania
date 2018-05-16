@@ -15,14 +15,13 @@ import net.aeronica.mods.bardmania.network.AbstractMessage.AbstractServerMessage
 
 public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverMessage>
 {
-
     private BlockPos blockPos;
     private int entityId;
     private EnumHand hand;
     private byte note;
     private byte volume;
     
-    public ActiveReceiverMessage() { /* empty */ }
+    public ActiveReceiverMessage() {/* empty */}
     
     public ActiveReceiverMessage(BlockPos pos, int entityId, EnumHand hand, byte note, byte volume)
     {
@@ -73,5 +72,4 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
             }
         }
     }
-
 }

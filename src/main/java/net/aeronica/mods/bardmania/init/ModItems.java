@@ -9,13 +9,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings("unused")
-public class ModItems {
-
+public class ModItems
+{
     @Mod.EventBusSubscriber
-    public static class RegistrationHandler {
+    public static class RegistrationHandler
+    {
         protected static final Set<Item> ITEMS = new HashSet<>();
 
-        static void add(Item item) {
+        static void add(Item item)
+        {
             ITEMS.add(item);
         }
 
@@ -25,9 +27,9 @@ public class ModItems {
          * @param event The event
          */
         @SubscribeEvent
-        public static void registerItems(RegistryEvent.Register<Item> event) {
+        public static void registerItems(RegistryEvent.Register<Item> event)
+        {
             ITEMS.forEach(item -> event.getRegistry().register(item));
         }
     }
-
 }

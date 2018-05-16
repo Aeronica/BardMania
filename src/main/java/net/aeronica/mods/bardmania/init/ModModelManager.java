@@ -21,7 +21,6 @@ import java.util.Set;
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ModModelManager
 {
-
     @SubscribeEvent
     public static void registerAllModels(ModelRegistryEvent event)
     {
@@ -105,5 +104,4 @@ public class ModModelManager
         itemsRegistered.add(item);
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(modelLocation, "inventory"));
     }
-
 }

@@ -51,5 +51,4 @@ public class BardMania
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         proxy.init();
     }
-
 }
