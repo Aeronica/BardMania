@@ -120,12 +120,20 @@ public enum MidiUtils implements Receiver
         boolean channelFlag = allChannels || channel == ModConfig.client.midi_options.channel - 1;
         boolean noteOffFlag = sendNoteOff || message[2] != 0;
 
-        if (pos != null && channelFlag && noteOffFlag)
+        if (channelFlag && noteOffFlag)
         {
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
-            ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, message[1], message[2]);
-            PacketDispatcher.sendToServer(packet);
+            send(message[1], message[2]);
             ModLogger.info("  msg: %x, %x, %x, %d", msg.getStatus(), message[1], message[2], timeStamp);
+        }
+    }
+
+    public void send(byte note, byte volume)
+    {
+        if (pos != null && player != null && hand != null)
+        {
+            ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, note, volume);
+            PacketDispatcher.sendToServer(packet);
         }
     }
 

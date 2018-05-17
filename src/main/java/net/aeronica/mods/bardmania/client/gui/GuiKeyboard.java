@@ -1,9 +1,7 @@
 package net.aeronica.mods.bardmania.client.gui;
 
-import net.aeronica.mods.bardmania.network.PacketDispatcher;
-import net.aeronica.mods.bardmania.network.server.ActiveReceiverMessage;
+import net.aeronica.mods.bardmania.common.MidiUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -95,9 +93,7 @@ public class GuiKeyboard extends GuiScreen
 
     private void sendNote(int note)
     {
-        EntityPlayerSP player = mc.player;
-        ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), player.getActiveHand(), (byte) note, (byte) 127);
-        PacketDispatcher.sendToServer(packet);
+        MidiUtils.INSTANCE.send((byte)note, (byte)127);
     }
 
     private FontRenderer getFontRenderer()
