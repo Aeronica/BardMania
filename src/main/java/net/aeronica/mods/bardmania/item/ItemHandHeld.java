@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.Objects;
 
+import static net.aeronica.mods.bardmania.common.MidiHelper.MIDI_NOTE_LOW;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
 
 public class ItemHandHeld extends Item implements IActiveNoteReceiver
@@ -69,7 +70,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
             if (player != null)
             {
                 BlockPos pos = player.getPosition();
-                byte pitch = (byte) (noteIn - 48);
+                byte pitch = (byte) (noteIn - MIDI_NOTE_LOW);
                 float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
                 worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
                 // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
