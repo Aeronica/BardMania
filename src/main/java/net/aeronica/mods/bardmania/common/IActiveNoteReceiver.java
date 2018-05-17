@@ -10,12 +10,12 @@ public interface IActiveNoteReceiver
     
     default public void notifyRemoved(World worldIn, BlockPos posIn)
     {
-        MidiUtils.INSTANCE.notifyRemoved(worldIn, posIn);
+        MidiHelper.INSTANCE.notifyRemoved(worldIn, posIn);
     }
     
     default public void notifyRemoved(World worldIn, ItemStack stackIn)
     {
-        MidiUtils.INSTANCE.notifyRemoved(worldIn, stackIn);
+        MidiHelper.INSTANCE.notifyRemoved(worldIn, stackIn);
     }
 
 }

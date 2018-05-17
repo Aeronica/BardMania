@@ -4,7 +4,7 @@ package net.aeronica.mods.bardmania.item;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.client.gui.GuiGui;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
-import net.aeronica.mods.bardmania.common.MidiUtils;
+import net.aeronica.mods.bardmania.common.MidiHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.object.Instrument;
@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.Objects;
 
+import static net.aeronica.mods.bardmania.common.MidiHelper.isMidiNoteInRange;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
 
 public class ItemHandHeld extends Item implements IActiveNoteReceiver
@@ -54,7 +55,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
-        MidiUtils.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
+        MidiHelper.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
         if (ModConfig.client.input_mode == KEYBOARD)
             playerIn.openGui(BardMania.instance, GuiGui.KEYBOARD, worldIn, 0, 0, 0);
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
@@ -66,7 +67,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         if (!worldIn.isRemote && volumeIn != 0)
         {
             EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
-            if (player != null)
+            if (player != null && isMidiNoteInRange(noteIn))
             {
                 BlockPos pos = player.getPosition();
                 byte pitch = (byte) (noteIn - 48);
