@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 
 import java.util.Objects;
 
-import static net.aeronica.mods.bardmania.common.MidiHelper.isMidiNoteInRange;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
 
 public class ItemHandHeld extends Item implements IActiveNoteReceiver
@@ -67,7 +66,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         if (!worldIn.isRemote && volumeIn != 0)
         {
             EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
-            if (player != null && isMidiNoteInRange(noteIn))
+            if (player != null)
             {
                 BlockPos pos = player.getPosition();
                 byte pitch = (byte) (noteIn - 48);

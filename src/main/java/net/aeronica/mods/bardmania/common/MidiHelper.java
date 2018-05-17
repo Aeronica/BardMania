@@ -70,11 +70,10 @@ public enum MidiHelper implements Receiver
         return keyNoteMap.containsValue(midiNote);
     }
 
-    public static boolean isMidiNoteInRange(int midiNote)
+    public static boolean isMidiNoteInRange(byte midiNote)
     {
         return midiNote >= MIDI_NOTE_LOW && midiNote <= MIDI_NOTE_HIGH;
     }
-
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
                                 float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
     {
@@ -173,7 +172,7 @@ public enum MidiHelper implements Receiver
 
     public void send(byte note, byte volume)
     {
-        if (pos != null && player != null && hand != null)
+        if (pos != null && player != null && hand != null && isMidiNoteInRange(note))
         {
             ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, note, volume);
             PacketDispatcher.sendToServer(packet);
