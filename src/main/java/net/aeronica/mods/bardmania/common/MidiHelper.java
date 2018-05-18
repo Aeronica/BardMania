@@ -15,9 +15,8 @@ import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import javax.sound.midi.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 
@@ -44,6 +43,7 @@ public enum MidiHelper implements Receiver
     }
 
     static BiMap<Integer, BlockPos> playerIdUsingBlock = HashBiMap.create();
+    private static Map<MidiDevice.Info[],MidiDevice> openDevices = new HashMap<>();
 
     static IActiveNoteReceiver instrument;
     static World world;
@@ -55,25 +55,17 @@ public enum MidiHelper implements Receiver
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
 
-    public static boolean hasKeyNoteMap(int scanCode)
-    {
-        return keyNoteMap.containsKey(scanCode);
-    }
+    public static boolean hasKeyNoteMap(int scanCode) {return keyNoteMap.containsKey(scanCode);}
 
-    public static int getKeyNoteMap(int scanCode)
-    {
-        return keyNoteMap.get(scanCode);
-    }
+    public static int getKeyNoteMap(int scanCode) {return keyNoteMap.get(scanCode);}
 
-    public static boolean isNoteInMap(int midiNote)
-    {
-        return keyNoteMap.containsValue(midiNote);
-    }
+    public static boolean isNoteInMap(int midiNote) {return keyNoteMap.containsValue(midiNote);}
 
     public static boolean isMidiNoteInRange(byte midiNote)
     {
         return midiNote >= MIDI_NOTE_LOW && midiNote <= MIDI_NOTE_HIGH;
     }
+
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
                                 float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
     {
@@ -89,6 +81,7 @@ public enum MidiHelper implements Receiver
         hitZ = hitZIn;
         stack = stackIn;
 
+        close();
         if (worldIn.isRemote && ModConfig.client.input_mode == MIDI)
         {
             MidiDevice device;
@@ -110,6 +103,7 @@ public enum MidiHelper implements Receiver
 
                         // open each device
                         device.open();
+                        openDevices.put(infos,device);
                         // if code gets this far without throwing an exception
                         // print a success message
                         ModLogger.info("%s was opened", device.getDeviceInfo());
@@ -118,6 +112,7 @@ public enum MidiHelper implements Receiver
                 } catch (MidiUnavailableException e)
                 {
                     ModLogger.error(e);
+                    openDevices.remove((infos));
                 }
             }
         }
@@ -182,8 +177,8 @@ public enum MidiHelper implements Receiver
     @Override
     public void close()
     {
-        pos = null;
-        stack = ItemStack.EMPTY;
+        openDevices.entrySet().stream().close();
+        openDevices.clear();
     }
 
     public void notifyRemoved(World worldIn, BlockPos posIn)
@@ -193,6 +188,7 @@ public enum MidiHelper implements Receiver
             ModLogger.info("ActiveNoteReceiver Removed: %s", posIn);
             pos = null;
             stack = ItemStack.EMPTY;
+            close();
         }
     }
 
@@ -203,6 +199,7 @@ public enum MidiHelper implements Receiver
             ModLogger.info("ActiveNoteReceiver Removed: %s", stackIn.getDisplayName());
             pos = null;
             stack = ItemStack.EMPTY;
+            close();
         }
     }
 }
