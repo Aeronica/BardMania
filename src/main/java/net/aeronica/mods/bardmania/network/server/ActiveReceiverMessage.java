@@ -1,8 +1,7 @@
 package net.aeronica.mods.bardmania.network.server;
 
-import java.io.IOException;
-
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
+import net.aeronica.mods.bardmania.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -10,8 +9,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
-//import net.aeronica.mods.bardmania.client.midi.IActiveNoteReceiver;
-import net.aeronica.mods.bardmania.network.AbstractMessage.AbstractServerMessage;
+
+import java.io.IOException;
 
 public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverMessage>
 {
@@ -20,9 +19,9 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     private EnumHand hand;
     private byte note;
     private byte volume;
-    
-    public ActiveReceiverMessage() {/* empty */}
-    
+
+    public ActiveReceiverMessage() {/* NOP */}
+
     public ActiveReceiverMessage(BlockPos pos, int entityId, EnumHand hand, byte note, byte volume)
     {
         this.blockPos = pos;
@@ -31,7 +30,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
         this.note = note;
         this.volume = volume;
     }
-    
+
     @Override
     protected void read(PacketBuffer buffer) throws IOException
     {
@@ -65,7 +64,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
                 instrument.noteReceiver(world, blockPos, entityId, note, volume);
-            } else if ((entityId == player.getEntityId()) && (personPlaying != null) && !personPlaying.getHeldItem(hand).isEmpty() && (personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver) && personPlaying.getActiveHand().equals(hand))
+            } else if ((entityId == player.getEntityId()) && (personPlaying != null) && !personPlaying.getHeldItem(hand).isEmpty() && (personPlaying.getHeldItem(hand).getItem() instanceof IActiveNoteReceiver) && hand.equals(EnumHand.MAIN_HAND))
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItem(hand).getItem();
                 instrument.noteReceiver(world, blockPos, entityId, note, volume);
