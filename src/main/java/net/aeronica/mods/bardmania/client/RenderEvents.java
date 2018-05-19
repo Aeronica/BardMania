@@ -17,12 +17,14 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.Mod;
@@ -118,6 +120,16 @@ public class RenderEvents
                 renderBox(boundingBox.getStartingPoint(), boundingBox.getStartPointPlusSize(), event.getPartialTicks());
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onRenderOverlay(RenderSpecificHandEvent event)
+    {
+        ItemStack heldItem = event.getItemStack();
+
+        if (!(heldItem.getItem() instanceof ItemHandHeld)) return;
+
+        if (event.getHand().equals(EnumHand.OFF_HAND)) event.setCanceled(true);
     }
 
     @SubscribeEvent
