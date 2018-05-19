@@ -8,14 +8,19 @@ import net.aeronica.mods.bardmania.common.MidiHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.object.Instrument;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import javax.sound.midi.MidiDevice;
+import java.util.List;
 import java.util.Objects;
 
 import static net.aeronica.mods.bardmania.common.MidiHelper.MIDI_NOTE_LOW;
@@ -55,9 +60,12 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     {
         ItemStack heldItem = playerIn.getHeldItem(handIn);
         playerIn.setActiveHand(handIn);
-        MidiHelper.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
-        if (ModConfig.client.input_mode == KEYBOARD)
-            playerIn.openGui(BardMania.instance, GuiGui.KEYBOARD, worldIn, 0, 0, 0);
+        if (worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND))
+        {
+            MidiHelper.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
+            if (ModConfig.client.input_mode == KEYBOARD)
+                playerIn.openGui(BardMania.instance, GuiGui.KEYBOARD, worldIn, 0, 0, 0);
+        }
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
 
@@ -83,5 +91,12 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
     {
         return (newStack.getItem() instanceof ItemHandHeld) ? !Objects.equals(((ItemHandHeld) newStack.getItem()).getInstrument().id, ((ItemHandHeld) oldStack.getItem()).getInstrument().id) : slotChanged;
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        for (MidiDevice.Info info : MidiHelper.INSTANCE.getOpenDeviceInfos())
+            tooltip.add(TextFormatting.RESET + info.getName());
     }
 }

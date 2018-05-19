@@ -9,17 +9,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import javax.sound.midi.*;
-import java.util.*;
-import java.util.function.BiConsumer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 
+@SideOnly(Side.CLIENT)
 public enum MidiHelper implements Receiver
 {
     INSTANCE;
@@ -43,7 +49,7 @@ public enum MidiHelper implements Receiver
     }
 
     static BiMap<Integer, BlockPos> playerIdUsingBlock = HashBiMap.create();
-    private static Map<MidiDevice.Info[],MidiDevice> openDevices = new HashMap<>();
+    private static HashMap<MidiDevice.Info, MidiDevice> openDevices = new HashMap<>();
 
     static IActiveNoteReceiver instrument;
     static World world;
@@ -51,15 +57,25 @@ public enum MidiHelper implements Receiver
     static IBlockState state;
     static EntityPlayer player;
     static EnumHand hand;
+    static EnumHandSide handSide;
     static EnumFacing facing;
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
 
-    public static boolean hasKeyNoteMap(int scanCode) {return keyNoteMap.containsKey(scanCode);}
+    public static boolean hasKeyNoteMap(int scanCode)
+    {
+        return keyNoteMap.containsKey(scanCode);
+    }
 
-    public static int getKeyNoteMap(int scanCode) {return keyNoteMap.get(scanCode);}
+    public static int getKeyNoteMap(int scanCode)
+    {
+        return keyNoteMap.get(scanCode);
+    }
 
-    public static boolean isNoteInMap(int midiNote) {return keyNoteMap.containsValue(midiNote);}
+    public static boolean isNoteInMap(int midiNote)
+    {
+        return keyNoteMap.containsValue(midiNote);
+    }
 
     public static boolean isMidiNoteInRange(byte midiNote)
     {
@@ -103,7 +119,7 @@ public enum MidiHelper implements Receiver
 
                         // open each device
                         device.open();
-                        openDevices.put(infos,device);
+                        openDevices.put(infos[i], device);
                         // if code gets this far without throwing an exception
                         // print a success message
                         ModLogger.info("%s was opened", device.getDeviceInfo());
@@ -112,7 +128,7 @@ public enum MidiHelper implements Receiver
                 } catch (MidiUnavailableException e)
                 {
                     ModLogger.error(e);
-                    openDevices.remove((infos));
+                    openDevices.remove((infos[i]));
                 }
             }
         }
@@ -127,6 +143,11 @@ public enum MidiHelper implements Receiver
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, EntityPlayer playerIn, EnumHand handIn, ItemStack stackIn)
     {
         setNoteReceiver(instrumentIn, worldIn, playerIn.getPosition(), null, playerIn, handIn, null, 0, 0, 0, stackIn);
+    }
+
+    public Set<MidiDevice.Info> getOpenDeviceInfos()
+    {
+        return openDevices.keySet();
     }
 
     private Receiver getReceiver()
