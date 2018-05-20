@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 
+@SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
 public enum MidiHelper implements Receiver
 {
@@ -60,25 +61,13 @@ public enum MidiHelper implements Receiver
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
 
-    public static boolean hasKeyNoteMap(int scanCode)
-    {
-        return keyNoteMap.containsKey(scanCode);
-    }
+    public static boolean hasKeyNoteMap(int scanCode) {return keyNoteMap.containsKey(scanCode);}
 
-    public static int getKeyNoteMap(int scanCode)
-    {
-        return keyNoteMap.get(scanCode);
-    }
+    public static int getKeyNoteMap(int scanCode) {return keyNoteMap.get(scanCode);}
 
-    public static boolean isNoteInMap(int midiNote)
-    {
-        return keyNoteMap.containsValue(midiNote);
-    }
+    public static boolean isNoteInMap(int midiNote) {return keyNoteMap.containsValue(midiNote);}
 
-    public static boolean isMidiNoteInRange(byte midiNote)
-    {
-        return midiNote >= MIDI_NOTE_LOW && midiNote <= MIDI_NOTE_HIGH;
-    }
+    public static boolean isMidiNoteInRange(byte midiNote) {return midiNote >= MIDI_NOTE_LOW && midiNote <= MIDI_NOTE_HIGH;}
 
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
                                 float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
@@ -122,7 +111,6 @@ public enum MidiHelper implements Receiver
                         // print a success message
                         ModLogger.info("%s was opened", device.getDeviceInfo());
                     }
-
                 } catch (MidiUnavailableException e)
                 {
                     ModLogger.error(e);
@@ -207,7 +195,6 @@ public enum MidiHelper implements Receiver
             {
                 ModLogger.error(e);
             }
-
         }
         openDevices.clear();
     }

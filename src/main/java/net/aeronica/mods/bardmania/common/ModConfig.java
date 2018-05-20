@@ -31,15 +31,13 @@ public class ModConfig
             KEYBOARD("config.bardmania.input_mode.keyboard");
 
             private String translateKey;
+
             INPUT_MODE(String translateKeyIn) {this.translateKey = translateKeyIn;}
 
             @SideOnly(Side.CLIENT)
             public INPUT_MODE toggle() {return this == KEYBOARD ? MIDI : KEYBOARD;}
 
-            public String toString()
-            {
-                return this.translateKey;
-            }
+            public String toString() {return this.translateKey;}
         }
 
         @Config.LangKey("config.bardmania.midi_options.title")
@@ -62,8 +60,7 @@ public class ModConfig
             @Config.Comment("Send Note Off commands")
             public boolean sendNoteOff;
 
-            @Config.LangKey("config.bardmania.midi_options.ch" +
-                    "annel")
+            @Config.LangKey("config.bardmania.midi_options.channel")
             @Config.RangeInt(min = 1, max = 16)
             @Config.Comment("MIDI Channel [1-16]")
             public int channel;
