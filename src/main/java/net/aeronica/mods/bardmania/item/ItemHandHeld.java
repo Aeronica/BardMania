@@ -4,10 +4,10 @@ package net.aeronica.mods.bardmania.item;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.client.gui.GuiGui;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
-import net.aeronica.mods.bardmania.common.MidiHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.object.Instrument;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,16 +15,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import javax.sound.midi.MidiDevice;
 import java.util.List;
 import java.util.Objects;
 
-import static net.aeronica.mods.bardmania.common.MidiHelper.MIDI_NOTE_LOW;
+import static net.aeronica.mods.bardmania.common.MidiHelper.*;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
+import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 
 public class ItemHandHeld extends Item implements IActiveNoteReceiver
 {
@@ -62,8 +63,16 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         playerIn.setActiveHand(handIn);
         if (worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND))
         {
-            MidiHelper.INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
-            if (ModConfig.client.input_mode == KEYBOARD)
+            if (playerIn.isSneaking())
+            {
+                ModConfig.toggleInputMode();
+                playerIn.sendStatusMessage(new TextComponentTranslation(String.format("%s%s %s%s", TextFormatting.WHITE,
+                        I18n.format("tooltip.bardmania.input_mode"),
+                        TextFormatting.WHITE, I18n.format((ModConfig.client.input_mode).toString())),
+                        new Object[0]), true);
+            }
+            INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
+            if (!playerIn.isSneaking() && ModConfig.client.input_mode == KEYBOARD)
                 playerIn.openGui(BardMania.instance, GuiGui.KEYBOARD, worldIn, 0, 0, 0);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
@@ -96,7 +105,16 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        for (MidiDevice.Info info : MidiHelper.INSTANCE.getOpenDeviceInfos())
-            tooltip.add(TextFormatting.RESET + info.getName());
+        if (ModConfig.client.input_mode == MIDI)
+        {
+            tooltip.add(String.format("%s%s", TextFormatting.GRAY, I18n.format("tooltip.bardmania.opened_midi_devices")));
+            getOpenDeviceNames().stream().map(s -> String.format("%s %s", TextFormatting.GOLD, s)).forEach(tooltip::add);
+            tooltip.add(String.format("%s%s", TextFormatting.GRAY, I18n.format("tooltip.bardmania.right_click_to_activate_midi_input")));
+        } else
+        {
+            tooltip.add(String.format("%s%s", TextFormatting.GRAY, I18n.format("tooltip.bardmania.right_click_to_activate_pc_keyboard")));
+        }
+        tooltip.add(String.format("%s%s %s%s", TextFormatting.GRAY, I18n.format("tooltip.bardmania.input_mode"), TextFormatting.BLUE, I18n.format((ModConfig.client.input_mode).toString())));
+        tooltip.add(String.format("%s%s", TextFormatting.GRAY, I18n.format("tooltip.bardmania.sneak_right_click_to_toggle_mode")));
     }
 }
