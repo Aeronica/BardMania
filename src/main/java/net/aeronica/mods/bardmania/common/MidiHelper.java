@@ -18,10 +18,8 @@ import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import javax.sound.midi.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 
@@ -49,7 +47,7 @@ public enum MidiHelper implements Receiver
     }
 
     static BiMap<Integer, BlockPos> playerIdUsingBlock = HashBiMap.create();
-    private static HashMap<MidiDevice.Info, MidiDevice> openDevices = new HashMap<>();
+    private static List<MidiDevice> openDevices = new ArrayList<>();
 
     static IActiveNoteReceiver instrument;
     static World world;
@@ -119,7 +117,7 @@ public enum MidiHelper implements Receiver
 
                         // open each device
                         device.open();
-                        openDevices.put(infos[i], device);
+                        openDevices.add(device);
                         // if code gets this far without throwing an exception
                         // print a success message
                         ModLogger.info("%s was opened", device.getDeviceInfo());
@@ -128,7 +126,7 @@ public enum MidiHelper implements Receiver
                 } catch (MidiUnavailableException e)
                 {
                     ModLogger.error(e);
-                    openDevices.remove((infos[i]));
+                    openDevices.remove(i);
                 }
             }
         }
@@ -145,9 +143,9 @@ public enum MidiHelper implements Receiver
         setNoteReceiver(instrumentIn, worldIn, playerIn.getPosition(), null, playerIn, handIn, null, 0, 0, 0, stackIn);
     }
 
-    public Set<MidiDevice.Info> getOpenDeviceInfos()
+    public static List<String> getOpenDeviceNames()
     {
-        return openDevices.keySet();
+        return openDevices.stream().map(d-> d.getDeviceInfo().getName()).collect(Collectors.toList());
     }
 
     private Receiver getReceiver()
@@ -198,7 +196,19 @@ public enum MidiHelper implements Receiver
     @Override
     public void close()
     {
-        openDevices.entrySet().stream().close();
+        for (MidiDevice device : openDevices)
+        {
+            if (device.isOpen()) device.close();
+            try
+            {
+                Transmitter trans = device.getTransmitter();
+                trans.close();
+            } catch (MidiUnavailableException e)
+            {
+                ModLogger.error(e);
+            }
+
+        }
         openDevices.clear();
     }
 

@@ -10,3 +10,10 @@ config.bardmania.midi_options.channel=MIDI Channel [1-16]
 gui.bardmania.gui_keyboard.title=PC Piano Keyboard
 item.bardmania:flute.name=Flute
 item.bardmania:lute.name=Lute
+tooltip.bardmania.opened_midi_devices=Open MIDI devices:
+tooltip.bardmania.opened_midi_devices=Open MIDI devices:
+tooltip.bardmania.input_mode=Input Mode:
+tooltip.bardmania.right_click_to_activate_pc_keyboard=Right Click to Activate PC Keyboard
+tooltip.bardmania.right_click_to_activate_midi_input=Right Click to Activate MIDI Input
+tooltip.bardmania.sneak_right_click_to_toggle_mode=Sneak+Right Click to Toggle Mode
+
