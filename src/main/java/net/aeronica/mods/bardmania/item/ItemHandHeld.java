@@ -40,21 +40,12 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         this.setMaxStackSize(1);
     }
 
-    public Instrument getInstrument()
-    {
-        return instrument;
-    }
+    public Instrument getInstrument() {return instrument;}
 
-    public int getMaxItemUseDuration(ItemStack stack)
-    {
-        return 72000;
-    }
+    public int getMaxItemUseDuration(ItemStack stack) {return 72000;}
 
     @Override
-    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack)
-    {
-        return true;
-    }
+    public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {return true;}
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
