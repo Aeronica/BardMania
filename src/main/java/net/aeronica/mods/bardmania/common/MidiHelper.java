@@ -101,9 +101,7 @@ public enum MidiHelper implements Receiver
 
                     if (device.getMaxTransmitters() != 0 && !(device instanceof Sequencer))
                     {
-                        Transmitter trans = device.getTransmitter();
-                        trans.setReceiver(getReceiver());
-
+                        device.getTransmitter().setReceiver(getReceiver());
                         // open each device
                         device.open();
                         openDevices.add(device);
@@ -189,8 +187,7 @@ public enum MidiHelper implements Receiver
             if (device.isOpen()) device.close();
             try
             {
-                Transmitter trans = device.getTransmitter();
-                trans.close();
+                device.getTransmitter().close();
             } catch (MidiUnavailableException e)
             {
                 ModLogger.error(e);
