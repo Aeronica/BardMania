@@ -31,10 +31,14 @@ public enum MidiHelper implements Receiver
     public static final int MIDI_NOTE_LOW = 48;
     public static final int MIDI_NOTE_HIGH = 72;
     private static final Integer[][] KEYNOTE_VALUES = new Integer[][]{
-            {Keyboard.KEY_Q, 48}, {Keyboard.KEY_2, 49}, {Keyboard.KEY_W, 50}, {Keyboard.KEY_3, 51},
-            {Keyboard.KEY_E, 52}, {Keyboard.KEY_R, 53}, {Keyboard.KEY_5, 54}, {Keyboard.KEY_T, 55},
-            {Keyboard.KEY_6, 56}, {Keyboard.KEY_Y, 57}, {Keyboard.KEY_7, 58}, {Keyboard.KEY_U, 59},
-            {Keyboard.KEY_I, 60}};
+            {Keyboard.KEY_Z, 0}, {Keyboard.KEY_S, 1}, {Keyboard.KEY_X, 2}, {Keyboard.KEY_D, 3},
+            {Keyboard.KEY_C, 4}, {Keyboard.KEY_V, 5}, {Keyboard.KEY_G, 6}, {Keyboard.KEY_B, 7},
+            {Keyboard.KEY_H, 8}, {Keyboard.KEY_N, 9}, {Keyboard.KEY_J, 10}, {Keyboard.KEY_M, 11},
+            {Keyboard.KEY_COMMA, 12},
+            {Keyboard.KEY_Q, 12}, {Keyboard.KEY_2, 13}, {Keyboard.KEY_W, 14}, {Keyboard.KEY_3, 15},
+            {Keyboard.KEY_E, 16}, {Keyboard.KEY_R, 17}, {Keyboard.KEY_5, 18}, {Keyboard.KEY_T, 19},
+            {Keyboard.KEY_6, 20}, {Keyboard.KEY_Y, 21}, {Keyboard.KEY_7, 22}, {Keyboard.KEY_U, 23},
+            {Keyboard.KEY_I, 24}};
     private static final Map<Integer, Integer> keyNoteMap;
 
     static
@@ -42,7 +46,7 @@ public enum MidiHelper implements Receiver
         Map<Integer, Integer> aMap = new HashMap<>();
         for (Integer[] key : MidiHelper.KEYNOTE_VALUES)
         {
-            aMap.put(key[0], key[1]);
+            aMap.put(key[0], key[1]+MIDI_NOTE_LOW);
         }
         keyNoteMap = Collections.unmodifiableMap(aMap);
     }
