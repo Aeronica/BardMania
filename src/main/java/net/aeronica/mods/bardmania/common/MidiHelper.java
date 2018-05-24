@@ -14,11 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import javax.sound.midi.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
@@ -28,32 +28,8 @@ import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MID
 public enum MidiHelper implements Receiver
 {
     INSTANCE;
-    public static final int MIDI_NOTE_LOW = 48;
-    public static final int MIDI_NOTE_HIGH = 72;
-    private static final Integer[][] KEYNOTE_VALUES = new Integer[][]{
-            {Keyboard.KEY_Z, 0}, {Keyboard.KEY_S, 1}, {Keyboard.KEY_X, 2}, {Keyboard.KEY_D, 3},
-            {Keyboard.KEY_C, 4}, {Keyboard.KEY_V, 5}, {Keyboard.KEY_G, 6}, {Keyboard.KEY_B, 7},
-            {Keyboard.KEY_H, 8}, {Keyboard.KEY_N, 9}, {Keyboard.KEY_J, 10}, {Keyboard.KEY_M, 11},
-            {Keyboard.KEY_COMMA, 12},
-            {Keyboard.KEY_Q, 12}, {Keyboard.KEY_2, 13}, {Keyboard.KEY_W, 14}, {Keyboard.KEY_3, 15},
-            {Keyboard.KEY_E, 16}, {Keyboard.KEY_R, 17}, {Keyboard.KEY_5, 18}, {Keyboard.KEY_T, 19},
-            {Keyboard.KEY_6, 20}, {Keyboard.KEY_Y, 21}, {Keyboard.KEY_7, 22}, {Keyboard.KEY_U, 23},
-            {Keyboard.KEY_I, 24}};
-    private static final Map<Integer, Integer> keyNoteMap;
-
-    static
-    {
-        Map<Integer, Integer> aMap = new HashMap<>();
-        for (Integer[] key : MidiHelper.KEYNOTE_VALUES)
-        {
-            aMap.put(key[0], key[1]+MIDI_NOTE_LOW);
-        }
-        keyNoteMap = Collections.unmodifiableMap(aMap);
-    }
-
     static BiMap<Integer, BlockPos> playerIdUsingBlock = HashBiMap.create();
     private static List<MidiDevice> openDevices = new ArrayList<>();
-
     static IActiveNoteReceiver instrument;
     static World world;
     static BlockPos pos = null;
@@ -64,14 +40,6 @@ public enum MidiHelper implements Receiver
     static EnumFacing facing;
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
-
-    public static boolean hasKeyNoteMap(int scanCode) {return keyNoteMap.containsKey(scanCode);}
-
-    public static int getKeyNoteMap(int scanCode) {return keyNoteMap.get(scanCode);}
-
-    public static boolean isNoteInMap(int midiNote) {return keyNoteMap.containsValue(midiNote);}
-
-    public static boolean isMidiNoteInRange(byte midiNote) {return midiNote >= MIDI_NOTE_LOW && midiNote <= MIDI_NOTE_HIGH;}
 
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
                                 float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
@@ -176,7 +144,7 @@ public enum MidiHelper implements Receiver
 
     public void send(byte note, byte volume)
     {
-        if (pos != null && player != null && hand != null && isMidiNoteInRange(note))
+        if ((pos != null) && (player != null) && (hand != null) && KeyHelper.isMidiNoteInRange(note))
         {
             ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, note, volume);
             PacketDispatcher.sendToServer(packet);

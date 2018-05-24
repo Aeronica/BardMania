@@ -4,6 +4,7 @@ package net.aeronica.mods.bardmania.item;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.client.gui.GuiGui;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
+import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.object.Instrument;
@@ -23,7 +24,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-import static net.aeronica.mods.bardmania.common.MidiHelper.*;
+import static net.aeronica.mods.bardmania.common.MidiHelper.INSTANCE;
+import static net.aeronica.mods.bardmania.common.MidiHelper.getOpenDeviceNames;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 
@@ -78,7 +80,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
             if (player != null)
             {
                 BlockPos pos = player.getPosition();
-                byte pitch = (byte) (noteIn - MIDI_NOTE_LOW);
+                byte pitch = (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
                 float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
                 worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
                 // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
