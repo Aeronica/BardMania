@@ -1,7 +1,6 @@
 package net.aeronica.mods.bardmania.proxy;
 
 import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,8 +15,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-
-import net.aeronica.mods.bardmania.proxy.CommonProxy;
 
 public class ClientProxy extends CommonProxy
 {
@@ -37,10 +34,7 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void init()
-    {
-        super.init();       
-    }
+    public void init() {super.init();}
 
     @Override
     public void postInit()

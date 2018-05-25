@@ -22,12 +22,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber
 public class CommonEvents
 {
-
     @SubscribeEvent
     public static void EntityLivingInitEvent(EntityLivingInitEvent event)
     {
-//        if (!(event.getEntity() instanceof EntityPlayer))   
+//        if (!(event.getEntity() instanceof EntityPlayer))
 //            ModLogger.info("EntityLivingInitEvent %s", event.getEntity().getName());
     }
-
 }
