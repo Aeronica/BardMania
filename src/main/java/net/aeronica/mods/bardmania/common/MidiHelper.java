@@ -84,7 +84,8 @@ public enum MidiHelper implements Receiver
                 } catch (MidiUnavailableException e)
                 {
                     ModLogger.error(e);
-                    openDevices.remove(i);
+                    if (openDevices.contains(i))
+                        openDevices.remove(i);
                 }
             }
         }
