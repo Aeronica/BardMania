@@ -121,8 +121,8 @@ public class GuiKeyboard extends GuiScreen
                 if (raiseOctave) i += 13;
                 buttonList.add(new GuiKeyButton(KEYNOTE_VALUES[i][0], x, yIn, 20, 20,
                         I18n.format("gui.bardmania.gui_key_" + (KEY_TOPS.subSequence(i, i + 1).equals(",") ? "COMMA" : KEY_TOPS.subSequence(i, i + 1)))));
-                x += 26;
-            } else x += 26;
+            }
+            x += 26;
         }
     }
 }
