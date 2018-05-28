@@ -1,7 +1,6 @@
 package net.aeronica.mods.bardmania.object;
 
 import com.google.gson.annotations.SerializedName;
-import com.sun.org.apache.bcel.internal.generic.SWAP;
 import net.aeronica.mods.bardmania.client.HeldAnimation;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
@@ -9,7 +8,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.util.vector.Quaternion;
 
 public enum HoldType
 {
@@ -74,8 +72,17 @@ public enum HoldType
     @SerializedName("two_handed_drum")
     TWO_HANDED_DRUM(new HeldAnimation()
     {
+        @Override
+        public void applyPlayerModelRotation(ModelPlayer model, float aimProgress, boolean leftHand)
+        {
+            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-60F + (leftHand ? 180F : 0F));
+            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-8F + (leftHand ? 180F : 0F));
+            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
 
-
+            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-60F + (leftHand ? 180F : 0F));
+            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(8F + (leftHand ? 180F : 0F));
+            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
+        }
     }, false);
 
     private final HeldAnimation heldAnimation;
