@@ -8,12 +8,9 @@ import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-
-import java.util.Map;
 
 public class LayerMelodicToms implements LayerRenderer<EntityLivingBase>
 {
@@ -50,12 +47,11 @@ public class LayerMelodicToms implements LayerRenderer<EntityLivingBase>
         if (isAdded) return;
         try
         {
-            for (Map.Entry<String, RenderPlayer> e : Minecraft.getMinecraft().getRenderManager().getSkinMap().entrySet())
-            {
+            Minecraft.getMinecraft().getRenderManager().getSkinMap().entrySet().forEach(e -> {
                 e.getValue().addLayer(LAYER_MELODIC_TOMS);
                 isAdded = true;
                 ModLogger.info("LayerMelodicToms added %s", e.toString());
-            }
+            });
         } catch (Exception e)
         {
             ModLogger.error(e);
