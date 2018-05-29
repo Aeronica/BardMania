@@ -171,10 +171,23 @@ public class RenderEvents
             event.setCanceled(true);
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            if (instrument.general.wearable) return;
             instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft);
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
+
+        if (heldItem.getItem() instanceof ItemHandHeld && !event.getHandSide().equals(event.getEntity().getPrimaryHand()))
+        {
+            event.setCanceled(true);
+
+            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            if (instrument.general.wearable) return;
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft);
+            // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
+        }
+
     }
 
     @SubscribeEvent
