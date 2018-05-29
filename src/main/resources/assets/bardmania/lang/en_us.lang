@@ -36,6 +36,7 @@ gui.bardmania.gui_key_U=U
 gui.bardmania.gui_key_I=I
 item.bardmania:flute.name=Flute
 item.bardmania:lute.name=Lute
+item.bardmania:melodic_toms.name=Melodic Toms
 tooltip.bardmania.opened_midi_devices=Open MIDI devices:
 tooltip.bardmania.opened_midi_devices=Open MIDI devices:
 tooltip.bardmania.input_mode=Input Mode:
