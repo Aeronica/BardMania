@@ -45,7 +45,7 @@ public class ModLogger
 
     public static void debug(String format, Object... data) {log(Level.DEBUG, MOD_MARKER, format, data);}
 
-    public static void warning(String format, Object... data) {log(Level.WARN, MOD_MARKER, format, data);}
+    public static void warn(String format, Object... data) {log(Level.WARN, MOD_MARKER, format, data);}
 
     public static void error(String format, Object... data) {log(Level.ERROR, MOD_MARKER, format, data);}
 
@@ -70,7 +70,7 @@ public class ModLogger
      *
      * @param e The raw exception
      */
-    public static <T extends Throwable> void warning(T e) {log(Level.WARN, e);}
+    public static <T extends Throwable> void warn(T e) {log(Level.WARN, e);}
 
     /**
      * Log a stack trace for &lt;T extends Throwable&gt; {@link Throwable} at log Level.ERROR

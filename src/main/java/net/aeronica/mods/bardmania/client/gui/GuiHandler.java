@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import javax.annotation.Nullable;
 
-import static net.aeronica.mods.bardmania.client.gui.GuiGui.KEYBOARD;
+import static net.aeronica.mods.bardmania.client.gui.GuiGuid.KEYBOARD;
 
 public class GuiHandler implements IGuiHandler
 {

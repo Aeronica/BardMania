@@ -2,7 +2,7 @@
 package net.aeronica.mods.bardmania.item;
 
 import net.aeronica.mods.bardmania.BardMania;
-import net.aeronica.mods.bardmania.client.gui.GuiGui;
+import net.aeronica.mods.bardmania.client.gui.GuiGuid;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
@@ -66,7 +66,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
             }
             INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
             if (!playerIn.isSneaking() && ModConfig.client.input_mode == KEYBOARD)
-                playerIn.openGui(BardMania.instance, GuiGui.KEYBOARD, worldIn, 0, 0, 0);
+                playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, worldIn, 0, 0, 0);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
