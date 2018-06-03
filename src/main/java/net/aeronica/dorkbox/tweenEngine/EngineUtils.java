@@ -19,9 +19,9 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import dorkbox.tweenEngine.pool.ObjectPool;
-import dorkbox.tweenEngine.pool.ObjectPoolSoft;
-import dorkbox.tweenEngine.pool.PoolableObject;
+import net.aeronica.dorkbox.tweenEngine.pool.ObjectPool;
+import net.aeronica.dorkbox.tweenEngine.pool.ObjectPoolSoft;
+import net.aeronica.dorkbox.tweenEngine.pool.PoolableObject;
 
 /**
  * Methods that are not compatible with GWT, and are changed when compiling GWT

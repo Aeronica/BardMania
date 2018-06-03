@@ -23,8 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import dorkbox.tweenEngine.pool.ObjectPool;
-import dorkbox.tweenEngine.pool.PoolableObject;
+import net.aeronica.dorkbox.tweenEngine.pool.ObjectPool;
+import net.aeronica.dorkbox.tweenEngine.pool.PoolableObject;
 
 /**
  * The TweenEngine is responsible for creating Tweens and Timelines, and can be either managed, or un-managed.
