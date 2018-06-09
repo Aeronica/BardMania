@@ -25,7 +25,7 @@ BardMania is licensed under the [Apache 2.0 License][4]
   * http://www.schristiancollins.com
   * GeneralUser GS is a GM and GS compatible SoundFont bank.
 
-[1]: ./LICENSE.md
+[1]: ./LICENSE
 [2]: https://minecraft.curseforge.com/projects/obfuscate?gameCategorySlug=mc-mods&projectID=289380
 [3]: https://github.com/dorkbox/TweenEngine
 [4]: ./LICENSE.GeneralUserGS
