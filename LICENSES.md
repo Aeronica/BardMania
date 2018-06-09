@@ -1,6 +1,6 @@
-### License
+### Licenses
 
-BardMania is licensed under the [Apache 2.0 License][4]
+BardMania is licensed under the [Apache 2.0 License][1]
 
 ##### Other licenses
 * [Obfuscate][2] by MrCrayFish - All Rights Reserved
