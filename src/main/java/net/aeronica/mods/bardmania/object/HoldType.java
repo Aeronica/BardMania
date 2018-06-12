@@ -33,7 +33,7 @@ public enum HoldType
 
             if (leftHand)
             {
-                float temp =  model.bipedRightArm.rotateAngleY;
+                float temp = model.bipedRightArm.rotateAngleY;
                 model.bipedRightArm.rotateAngleY = model.bipedLeftArm.rotateAngleY;
                 model.bipedLeftArm.rotateAngleY = temp;
             }
@@ -75,13 +75,15 @@ public enum HoldType
         @Override
         public void applyPlayerModelRotation(ModelPlayer model, float aimProgress, boolean leftHand)
         {
-            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-60F + (leftHand ? 180F : 0F));
-            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-8F + (leftHand ? 180F : 0F));
-            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
+            final float range = 30F;
+            final float halfRange = range / 2F;
+            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-60F - (aimProgress * range) + halfRange);
+            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(-8F);
+            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F);
 
-            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-60F + (leftHand ? 180F : 0F));
-            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(8F + (leftHand ? 180F : 0F));
-            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
+            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-60F + (aimProgress * range) - halfRange);
+            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(8F);
+            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F);
         }
     }, false);
 
