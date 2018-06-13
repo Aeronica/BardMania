@@ -37,9 +37,10 @@
     }
   },
   {
-    "id": "note_block",
+    "id": "xylophone",
     "general": {
-      "holdType": "one_handed"
+      "wearable": true,
+      "holdType": "two_handed_drum"
     },
     "sounds": {
       "timbre": "block.note.xylophone"

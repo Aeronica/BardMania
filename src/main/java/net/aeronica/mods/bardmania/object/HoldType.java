@@ -60,8 +60,17 @@ public enum HoldType
     @SerializedName("two_handed_vertical")
     TWO_HANDED_VERTICAL(new HeldAnimation()
     {
+        @Override
+        public void applyPlayerModelRotation(ModelPlayer model, float aimProgress, boolean leftHand)
+        {
+            super.applyPlayerModelRotation(model, aimProgress, leftHand);
+        }
 
-
+        @Override
+        public void applyHeldItemTransforms(float aimProgress, boolean leftHand)
+        {
+            super.applyHeldItemTransforms(aimProgress, leftHand);
+        }
     }, false),
     @SerializedName("two_handed_guitar")
     TWO_HANDED_GUITAR(new HeldAnimation()
