@@ -19,7 +19,6 @@ package net.aeronica.mods.bardmania.client.render;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
-import net.aeronica.mods.bardmania.object.HoldType;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,9 +27,9 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 
-public class LayerMelodicToms implements LayerRenderer<EntityLivingBase>
+public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
 {
-    private static final LayerMelodicToms LAYER_MELODIC_TOMS = new LayerMelodicToms();
+    private static final LayerWearableInstrument LAYER_WEARABLE_INSTRUMENT = new LayerWearableInstrument();
     private static boolean isAdded = false;
 
     @Override
@@ -40,7 +39,7 @@ public class LayerMelodicToms implements LayerRenderer<EntityLivingBase>
         {
             Instrument instrument = ((ItemHandHeld) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
             ItemStack itemStack = entitylivingbaseIn.getHeldItemMainhand();
-            if (instrument.general.holdType.equals(HoldType.TWO_HANDED_DRUM) && instrument.id.equalsIgnoreCase("melodic_toms"))
+            if (instrument.general.wearable)
             {
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(0, 0.0625 * 9, -0.0625 * 9);
@@ -64,9 +63,9 @@ public class LayerMelodicToms implements LayerRenderer<EntityLivingBase>
         try
         {
             Minecraft.getMinecraft().getRenderManager().getSkinMap().entrySet().forEach(e -> {
-                e.getValue().addLayer(LAYER_MELODIC_TOMS);
+                e.getValue().addLayer(LAYER_WEARABLE_INSTRUMENT);
                 isAdded = true;
-                ModLogger.info("LayerMelodicToms added %s", e.toString());
+                ModLogger.info("LayerWearableInstrument added %s", e.toString());
             });
         } catch (Exception e)
         {
