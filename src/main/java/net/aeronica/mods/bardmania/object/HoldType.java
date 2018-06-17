@@ -2,6 +2,8 @@ package net.aeronica.mods.bardmania.object;
 
 import com.google.gson.annotations.SerializedName;
 import net.aeronica.mods.bardmania.client.HeldAnimation;
+import net.aeronica.mods.bardmania.client.action.ModelAccessor.Part;
+import net.aeronica.mods.bardmania.client.action.ModelDummy;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,7 +23,7 @@ public enum HoldType
     TWO_HANDED_HORIZONTAL(new HeldAnimation()
     {
         @Override
-        public void applyPlayerModelRotation(ModelPlayer model, float aimProgress, boolean leftHand)
+        public void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand)
         {
             model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F));
             model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25F + (leftHand ? 180F : 0F));
@@ -61,9 +63,9 @@ public enum HoldType
     TWO_HANDED_VERTICAL(new HeldAnimation()
     {
         @Override
-        public void applyPlayerModelRotation(ModelPlayer model, float aimProgress, boolean leftHand)
+        public void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand)
         {
-            super.applyPlayerModelRotation(model, aimProgress, leftHand);
+            super.applyPlayerModelRotation(model, actions, aimProgress, leftHand);
         }
 
         @Override
@@ -75,14 +77,21 @@ public enum HoldType
     @SerializedName("two_handed_guitar")
     TWO_HANDED_GUITAR(new HeldAnimation()
     {
+        @Override
+        public void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand) {
+            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-20F);
+            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(10F);
 
 
+            model.bipedLeftArm.rotateAngleY  =  (float) Math.toRadians(-30F) + actions.getPartValue(Part.LEFT_ARM_ROT_Y);
+            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-45F);
+        }
     }, false),
     @SerializedName("two_handed_drum")
     TWO_HANDED_DRUM(new HeldAnimation()
     {
         @Override
-        public void applyPlayerModelRotation(ModelPlayer model, float aimProgress, boolean leftHand)
+        public void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand)
         {
             final float range = 30F;
             final float halfRange = range / 2F;
