@@ -1,5 +1,6 @@
 package net.aeronica.mods.bardmania.client.action;
 
+@SuppressWarnings("unused")
 public class ModelDummy
 {
     public void ModelDummy() {/* NOP */}
@@ -22,8 +23,7 @@ public class ModelDummy
 
     public void reset() {for(int i = 0 ;i < parts.length;) parts[i++] = 0f;}
 
-    public float getPartValue(ModelAccessor.Part part)
-    {
-        return parts[part.getTweenType()];
-    }
+    public float getPartValue(ModelAccessor.Part part) {return parts[part.getTweenType()];}
+
+    public void setPartValue(ModelAccessor.Part part, float value) {parts[part.getTweenType()] = value;}
 }

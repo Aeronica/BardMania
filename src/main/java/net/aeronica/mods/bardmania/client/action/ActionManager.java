@@ -44,7 +44,7 @@ public class ActionManager {
 
     public static ModelDummy modelDummy = new ModelDummy();
     private static WeakHashMap<EntityPlayer, Timeline> playerTween = new WeakHashMap<>();
-    static Timeline timeline;
+    private static Timeline timeline;
 
     public ActionManager instance = new ActionManager();
 
@@ -75,10 +75,6 @@ public class ActionManager {
     private static int ticksInGame = 0;
     private static float fullDuration = 0F;
     private static float currentTime = 0F;
-    private static int teenListSize = 0;
-    private static float[] zero = new float[] {0f};
-    private static float[] targetValues = zero;
-
 
     private static void calcDelta() {
         float oldTotal = total;
@@ -97,11 +93,6 @@ public class ActionManager {
         if ((player != null) && playerTween.containsKey(player)) {
             fullDuration = playerTween.get(player).getFullDuration();
             currentTime = playerTween.get(player).getCurrentTime();
-            teenListSize = playerTween.get(player).getChildren().size();
-            if (teenListSize == 1)
-            {}
-            else
-            {}
         }
 
         if ((player != null) && playerTween.containsKey(player) && !(playerTween.get(player).getFullDuration() > 0.0F)) {
@@ -112,11 +103,11 @@ public class ActionManager {
         calcDelta();
         tweenEngine.update(deltaTime);
 
-        if (ticksInGame % 60 == 0) {
-            ModLogger.info("deltaTime: %10.6f, total: %010d, full: %10.2f, curr: %10.2f, ts: %2d, tv: %10.2f", deltaTime, ticksInGame / 60, fullDuration, currentTime, teenListSize, modelDummy.getPartValue(Part.LEFT_ARM_ROT_Y));
+        if (ticksInGame++ % 60 == 0) {
+            ModLogger.info("deltaTime: %10.6f, total: %010d, full: %10.2f, curr: %10.2f", deltaTime, ticksInGame / 60, fullDuration, currentTime);
         }
 
-        if (ticksInGame++ % 90 == 0) {
+        if (ticksInGame % 90 == 0) {
             triggerAction(Minecraft.getMinecraft().player);
         }
     }
