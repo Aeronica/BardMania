@@ -16,9 +16,7 @@
 
 package net.aeronica.mods.bardmania.client.action;
 
-import net.aeronica.dorkbox.tweenEngine.Timeline;
-import net.aeronica.dorkbox.tweenEngine.TweenEngine;
-import net.aeronica.dorkbox.tweenEngine.TweenEquations;
+import net.aeronica.dorkbox.tweenEngine.*;
 import net.aeronica.mods.bardmania.Reference;
 import net.aeronica.mods.bardmania.client.action.ModelAccessor.Part;
 import net.aeronica.mods.bardmania.common.ModLogger;
@@ -60,8 +58,19 @@ public class ActionManager {
         tweenEngine.cancelAll();
 
         timeline = tweenEngine.createSequential()
+                .addCallback(new TweenCallback(TweenCallback.Events.COMPLETE) {
+                    @Override
+                    public void onEvent(int type, BaseTween<?> source)
+                    {
+                        ModLogger.info("Tween Complete");
+                        playerTween.clear();
+                    }
+                })
                 .beginSequential()
-                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.5F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.25F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.25F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
 
         timeline.repeat(1, 0f);
@@ -95,10 +104,10 @@ public class ActionManager {
             currentTime = playerTween.get(player).getCurrentTime();
         }
 
-        if ((player != null) && playerTween.containsKey(player) && !(playerTween.get(player).getFullDuration() > 0.0F)) {
-            ModLogger.info("Tween done");
-            playerTween.clear();
-        }
+//        if ((player != null) && playerTween.containsKey(player) && !(playerTween.get(player).getFullDuration() > 0.0F)) {
+//            ModLogger.info("Tween done");
+//            playerTween.clear();
+//        }
 
         calcDelta();
         tweenEngine.update(deltaTime);

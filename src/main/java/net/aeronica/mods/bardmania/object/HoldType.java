@@ -84,7 +84,7 @@ public enum HoldType
 
 
             model.bipedLeftArm.rotateAngleY  =  (float) Math.toRadians(-30F) + actions.getPartValue(Part.LEFT_ARM_ROT_Y);
-            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-45F) + actions.getPartValue(Part.LEFT_ARM_OFF_X);
+            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-45F) + actions.getPartValue(Part.LEFT_ARM_ROT_X);
         }
     }, false),
     @SerializedName("two_handed_drum")
