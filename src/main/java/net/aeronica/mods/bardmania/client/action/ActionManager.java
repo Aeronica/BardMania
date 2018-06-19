@@ -67,13 +67,17 @@ public class ActionManager {
                     }
                 })
                 .beginSequential()
+                .beginParallel()
                 .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.25F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.25F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
+                .end()
+                .beginParallel()
                 .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+                .end()
                 .end();
 
-        timeline.repeat(1, 0f);
+        timeline.repeat(3, 0f);
         timeline.start();
         playerTween.put(player, timeline);
     }
@@ -116,7 +120,7 @@ public class ActionManager {
             ModLogger.info("deltaTime: %10.6f, total: %010d, full: %10.2f, curr: %10.2f", deltaTime, ticksInGame / 60, fullDuration, currentTime);
         }
 
-        if (ticksInGame % 90 == 0) {
+        if (ticksInGame % 240 == 0) {
             triggerAction(Minecraft.getMinecraft().player);
         }
     }
