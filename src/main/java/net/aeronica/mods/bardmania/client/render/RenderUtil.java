@@ -1,4 +1,4 @@
-package net.aeronica.mods.bardmania.client.util;
+package net.aeronica.mods.bardmania.client.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
