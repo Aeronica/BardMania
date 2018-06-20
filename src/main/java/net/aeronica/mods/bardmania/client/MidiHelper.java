@@ -14,10 +14,14 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bardmania.common;
+package net.aeronica.mods.bardmania.client;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
+import net.aeronica.mods.bardmania.common.KeyHelper;
+import net.aeronica.mods.bardmania.common.ModConfig;
+import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
 import net.aeronica.mods.bardmania.network.server.ActiveReceiverMessage;
 import net.minecraft.block.state.IBlockState;
@@ -186,22 +190,20 @@ public enum MidiHelper implements Receiver
     public void notifyRemoved(World worldIn, BlockPos posIn)
     {
         if (pos != null && pos.equals(posIn))
-        {
-            ModLogger.info("ActiveNoteReceiver Removed: %s", posIn);
-            pos = null;
-            stack = ItemStack.EMPTY;
-            close();
-        }
+            invalidate(posIn.toString());
     }
 
     public void notifyRemoved(World worldIn, ItemStack stackIn)
     {
-        if (stackIn.equals(stack) && stack.getMetadata() == stackIn.getMetadata())
-        {
-            ModLogger.info("ActiveNoteReceiver Removed: %s", stackIn.getDisplayName());
-            pos = null;
-            stack = ItemStack.EMPTY;
-            close();
-        }
+        if (stackIn.equals(stack) && (stack.getMetadata() == stackIn.getMetadata()))
+            invalidate(stackIn.getDisplayName());
+    }
+
+    private void invalidate(String message)
+    {
+        ModLogger.info("ActiveNoteReceiver Removed: %s", message);
+        pos = null;
+        stack = ItemStack.EMPTY;
+        close();
     }
 }

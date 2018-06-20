@@ -16,6 +16,7 @@
 
 package net.aeronica.mods.bardmania.common;
 
+import net.aeronica.mods.bardmania.client.MidiHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

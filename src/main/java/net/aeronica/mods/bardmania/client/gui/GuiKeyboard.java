@@ -17,8 +17,8 @@
 package net.aeronica.mods.bardmania.client.gui;
 
 import net.aeronica.mods.bardmania.Reference;
+import net.aeronica.mods.bardmania.client.MidiHelper;
 import net.aeronica.mods.bardmania.common.KeyHelper;
-import net.aeronica.mods.bardmania.common.MidiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;

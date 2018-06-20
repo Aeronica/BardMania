@@ -1,11 +1,9 @@
-package net.aeronica.mods.bardmania.client;
+package net.aeronica.mods.bardmania.client.render;
 
 import com.mrcrayfish.obfuscate.client.event.ModelPlayerEvent;
 import com.mrcrayfish.obfuscate.client.event.RenderItemEvent;
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
 import net.aeronica.mods.bardmania.client.action.ActionManager;
-import net.aeronica.mods.bardmania.client.render.LayerWearableInstrument;
-import net.aeronica.mods.bardmania.client.util.RenderUtil;
 import net.aeronica.mods.bardmania.common.IPlaceableBounding;
 import net.aeronica.mods.bardmania.common.LocationArea;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;

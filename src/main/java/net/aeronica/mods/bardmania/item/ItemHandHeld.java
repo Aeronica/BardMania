@@ -40,8 +40,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-import static net.aeronica.mods.bardmania.common.MidiHelper.INSTANCE;
-import static net.aeronica.mods.bardmania.common.MidiHelper.getOpenDeviceNames;
+import static net.aeronica.mods.bardmania.client.MidiHelper.INSTANCE;
+import static net.aeronica.mods.bardmania.client.MidiHelper.getOpenDeviceNames;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 

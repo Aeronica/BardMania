@@ -87,5 +87,5 @@ public class ModSoundEvents
      *                  will be the vanilla note block 'pling' sound.
      * @return The SoundEvent
      */
-    public static SoundEvent getSound(String soundName) {return SOUNDS.getOrDefault(soundName,SoundEvents.BLOCK_NOTE_PLING);}
+    public static SoundEvent getSound(String soundName) {return SOUNDS.getOrDefault(soundName, SoundEvents.BLOCK_NOTE_PLING);}
 }
