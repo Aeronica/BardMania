@@ -167,6 +167,7 @@ public enum MidiHelper implements Receiver
         {
             ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, note, volume);
             PacketDispatcher.sendToServer(packet);
+            SoundHelper.playSound(player, note, volume);
         }
     }
 

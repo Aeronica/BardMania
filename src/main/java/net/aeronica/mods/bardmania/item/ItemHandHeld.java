@@ -20,9 +20,9 @@ package net.aeronica.mods.bardmania.item;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.client.gui.GuiGuid;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
-import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
-import net.aeronica.mods.bardmania.init.ModSoundEvents;
+import net.aeronica.mods.bardmania.network.PacketDispatcher;
+import net.aeronica.mods.bardmania.network.client.PlaySoundMessage;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -30,7 +30,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -95,12 +97,13 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
             EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
             if (player != null)
             {
-                BlockPos pos = player.getPosition();
-                byte pitch = (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
-                float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
-                worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
-                // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
-                worldIn.spawnParticle(EnumParticleTypes.NOTE, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.5D, (double) pos.getZ() + 0.5D, (double) pitch / 24.0D, 0.0D, 0.0D, new int[0]);
+                BlockPos pos = new BlockPos(player.posX, player.posY, player.posZ);
+                PacketDispatcher.sendToAllAround(new PlaySoundMessage(entityID, instrument.sounds.timbre, noteIn, volumeIn), player, 64f);
+//                byte pitch = (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
+//                float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
+//                worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
+//                // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
+//                worldIn.spawnParticle(EnumParticleTypes.NOTE, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.5D, (double) pos.getZ() + 0.5D, (double) pitch / 24.0D, 0.0D, 0.0D, new int[0]);
             }
         }
     }
