@@ -22,12 +22,15 @@ import net.aeronica.mods.bardmania.client.gui.GuiGuid;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
+import net.aeronica.mods.bardmania.network.client.NotifyRemovedMessage;
 import net.aeronica.mods.bardmania.network.client.PlaySoundMessage;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -58,6 +61,8 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         this.setUnlocalizedName(getRegistryName().toString());
         this.setCreativeTab(BardMania.MOD_TAB);
         this.setMaxStackSize(1);
+        this.setHasSubtypes(false);
+        this.setMaxDamage(0);
     }
 
     public Instrument getInstrument() {return instrument;}
@@ -82,11 +87,33 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
                         TextFormatting.WHITE, I18n.format((ModConfig.client.input_mode).toString())),
                         new Object[0]), true);
             }
-            INSTANCE.setNoteReceiver(this, worldIn, playerIn, handIn, heldItem);
+            INSTANCE.setNoteReceiver(this, worldIn, playerIn, heldItem);
             if (!playerIn.isSneaking() && ModConfig.client.input_mode == KEYBOARD)
                 playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, worldIn, 0, 0, 0);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
+    {
+        if(worldIn.isRemote && isSelected && (stack.getRepairCost() != itemSlot) && (entityIn instanceof EntityPlayer))
+        {
+            stack.setRepairCost(itemSlot);
+            INSTANCE.setNoteReceiver(this, worldIn, (EntityPlayer) entityIn, stack);
+        } else if(worldIn.isRemote && !isSelected)
+        {
+            stack.setRepairCost(-1);
+            INSTANCE.notifyRemoved(worldIn, stack);
+        }
+    }
+
+    @Override
+    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+    {
+        item.setRepairCost(-1);
+        PacketDispatcher.sendTo(new NotifyRemovedMessage(), (EntityPlayerMP) player);
+        return true;
     }
 
     @Override
@@ -97,13 +124,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
             EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
             if (player != null)
             {
-                BlockPos pos = new BlockPos(player.posX, player.posY, player.posZ);
                 PacketDispatcher.sendToAllAround(new PlaySoundMessage(entityID, instrument.sounds.timbre, noteIn, volumeIn), player, 64f);
-//                byte pitch = (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
-//                float f = (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
-//                worldIn.playSound(null, player.getPosition(), ModSoundEvents.getSound(instrument.sounds.timbre), SoundCategory.PLAYERS, 3.0F, f);
-//                // spawnParticle does nothing server side. A special packet is needed to do this on the client side.
-//                worldIn.spawnParticle(EnumParticleTypes.NOTE, (double) pos.getX() + 0.5D, (double) pos.getY() + 2.5D, (double) pos.getZ() + 0.5D, (double) pitch / 24.0D, 0.0D, 0.0D, new int[0]);
             }
         }
     }

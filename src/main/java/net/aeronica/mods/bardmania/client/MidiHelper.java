@@ -55,13 +55,12 @@ public enum MidiHelper implements Receiver
     static BlockPos pos = null;
     static IBlockState state;
     static EntityPlayer player;
-    static EnumHand hand;
     static EnumHandSide handSide;
     static EnumFacing facing;
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
 
-    public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
+    public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, @Nullable EnumFacing facingIn,
                                 float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
     {
         instrument = instrumentIn;
@@ -69,7 +68,6 @@ public enum MidiHelper implements Receiver
         pos = posIn;
         state = stateIn;
         player = playerIn;
-        hand = handIn;
         facing = facingIn;
         hitX = hitXIn;
         hitY = hitYIn;
@@ -112,12 +110,12 @@ public enum MidiHelper implements Receiver
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, EnumHand handIn, @Nullable EnumFacing facingIn,
                                 float hitXIn, float hitYIn, float hitZIn)
     {
-        setNoteReceiver(instrumentIn, worldIn, posIn, stateIn, playerIn, handIn, facingIn, hitXIn, hitYIn, hitZIn, ItemStack.EMPTY);
+        setNoteReceiver(instrumentIn, worldIn, posIn, stateIn, playerIn, facingIn, hitXIn, hitYIn, hitZIn, ItemStack.EMPTY);
     }
 
-    public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, EntityPlayer playerIn, EnumHand handIn, ItemStack stackIn)
+    public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, EntityPlayer playerIn, ItemStack stackIn)
     {
-        setNoteReceiver(instrumentIn, worldIn, playerIn.getPosition(), null, playerIn, handIn, null, 0, 0, 0, stackIn);
+        setNoteReceiver(instrumentIn, worldIn, playerIn.getPosition(), null, playerIn, null, 0, 0, 0, stackIn);
     }
 
     public static List<String> getOpenDeviceNames()
@@ -163,9 +161,9 @@ public enum MidiHelper implements Receiver
 
     public void send(byte note, byte volume)
     {
-        if ((pos != null) && (player != null) && (hand != null) && KeyHelper.isMidiNoteInRange(note))
+        if ((pos != null) && (player != null) && KeyHelper.isMidiNoteInRange(note))
         {
-            ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), hand, note, volume);
+            ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), note, volume);
             PacketDispatcher.sendToServer(packet);
             SoundHelper.playSound(player, note, volume);
         }
@@ -186,6 +184,11 @@ public enum MidiHelper implements Receiver
             }
         }
         openDevices.clear();
+    }
+
+    public void notifyRemoved()
+    {
+        invalidate("Generic");
     }
 
     public void notifyRemoved(World worldIn, BlockPos posIn)

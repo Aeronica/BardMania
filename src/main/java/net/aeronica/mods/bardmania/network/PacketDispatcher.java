@@ -5,6 +5,7 @@
 package net.aeronica.mods.bardmania.network;
 
 import net.aeronica.mods.bardmania.Reference;
+import net.aeronica.mods.bardmania.network.client.NotifyRemovedMessage;
 import net.aeronica.mods.bardmania.network.client.PlaySoundMessage;
 import net.aeronica.mods.bardmania.network.server.ActiveReceiverMessage;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,6 +60,7 @@ public class PacketDispatcher
     {
         /** Packets handled on CLIENT */
         registerMessage(PlaySoundMessage.class);
+        registerMessage(NotifyRemovedMessage.class);
 
         /** Packets handled on SERVER */
         registerMessage(ActiveReceiverMessage.class);

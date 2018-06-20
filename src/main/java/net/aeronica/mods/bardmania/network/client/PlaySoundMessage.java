@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 
-public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage
+public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<PlaySoundMessage>
 {
     private int entityId;
     private String soundName;
