@@ -19,6 +19,7 @@ package net.aeronica.mods.bardmania.init;
 import net.aeronica.mods.bardmania.Reference;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -82,12 +83,9 @@ public class ModSoundEvents
      * Get a {@link SoundEvent} by name
      *
      * @param soundName The name of the event with or without the [MOD_ID] prefix. Only names referenced in the
-     *                  instruments.json file can be returned.
+     *                  instruments.json file can be returned. However, in the event a key is not found the default
+     *                  will be the vanilla note block 'pling' sound.
      * @return The SoundEvent
      */
-    @Nullable
-    public static SoundEvent getSound(String soundName)
-    {
-        return SOUNDS.get(soundName);
-    }
+    public static SoundEvent getSound(String soundName) {return SOUNDS.getOrDefault(soundName,SoundEvents.BLOCK_NOTE_PLING);}
 }
