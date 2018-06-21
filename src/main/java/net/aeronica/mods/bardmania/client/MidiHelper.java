@@ -186,9 +186,9 @@ public enum MidiHelper implements Receiver
         openDevices.clear();
     }
 
-    public void notifyRemoved()
+    public void notifyRemoved(String message)
     {
-        invalidate("Generic");
+        invalidate(message);
     }
 
     public void notifyRemoved(World worldIn, BlockPos posIn)
