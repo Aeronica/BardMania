@@ -33,6 +33,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -40,6 +41,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -94,6 +96,25 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
 
+    /**
+     * <pre>
+     * ItemStack nbt "RepairCost" is used as a flag to facilitate the automatic activation and removal of the active
+     *   note receiver focus. This is tied to the MidiHelper class via two main methods setNoteReceiver and
+     *   notifyRemoved.
+     *
+     * Three methods on the ItemHandHeld class set and read the stack repair cost and provide several key features.
+     *
+     * onUpdate: changes active receiver focus when instruments are selected/deselect and/ro added and removed
+     *   from the hot-bar.
+     *
+     * onDroppedByPlayer removes active receiver focus when an instrument is tossed into the world. A packet is
+     *   used in this case to notify the client as this methods only seems to run from the server side.
+     *
+     * initCapabilities is used to set the stack repair cost to -1, an unselected value. This is to ensure
+     *   onUpdate will set the instrument as active if it's selected on the hot-bar when the player joins the world.
+     *   A useful hack since it's called once and provides the ItemStack.
+     *  </pre>
+     */
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
@@ -114,6 +135,14 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         item.setRepairCost(-1);
         PacketDispatcher.sendTo(new NotifyRemovedMessage(), (EntityPlayerMP) player);
         return true;
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
+    {
+        if(!stack.isEmpty()) stack.setRepairCost(-1);
+        return null;
     }
 
     @Override
