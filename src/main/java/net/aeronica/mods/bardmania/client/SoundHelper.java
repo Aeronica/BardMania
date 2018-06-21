@@ -41,7 +41,7 @@ public class SoundHelper
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
         {
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.0f, f);
+            playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.5f, f);
             worldClient.spawnParticle(EnumParticleTypes.NOTE, (double) playerIn.posX, (double) playerIn.posY + 2.5D, (double) playerIn.posZ, (double) pitch / 24.0D, 0.0D, 0.0D, new int[0]);
         }
     }
