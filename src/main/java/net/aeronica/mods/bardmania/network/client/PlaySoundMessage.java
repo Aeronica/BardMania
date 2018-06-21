@@ -46,6 +46,6 @@ public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<Play
     @Override
     public void process(EntityPlayer player, Side side)
     {
-        SoundHelper.playSound(player, entityId, soundName, noteIn, volumeIn);
+        if(side.isClient()) SoundHelper.playSound(player, entityId, soundName, noteIn, volumeIn);
     }
 }
