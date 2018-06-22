@@ -1,7 +1,7 @@
 package net.aeronica.mods.bardmania.proxy;
 
 import com.google.common.collect.ImmutableMap;
-import net.aeronica.mods.bardmania.client.SoundHelper;
+import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
@@ -26,7 +26,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy
 {
-
     public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn)
     {
         WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();
@@ -34,8 +33,8 @@ public class ClientProxy extends CommonProxy
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
         {
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.5f, SoundHelper.calculatePitch(noteIn));
-            worldClient.spawnParticle(EnumParticleTypes.NOTE, (double) playerIn.posX, (double) playerIn.posY + 2.5D, (double) playerIn.posZ, (double) SoundHelper.calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D, new int[0]);
+            playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.5f, calculatePitch(noteIn));
+            worldClient.spawnParticle(EnumParticleTypes.NOTE, playerIn.posX, playerIn.posY + 2.5D, playerIn.posZ, (double) calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D);
         }
     }
 
@@ -46,9 +45,15 @@ public class ClientProxy extends CommonProxy
         EntityPlayer playingPlayer = (EntityPlayer) worldClient.getEntityByID(entityId);
         if ((playerIn.getEntityId()) != entityId)
         {
-            worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 3.0F, SoundHelper.calculatePitch(noteIn), false);
-            worldClient.spawnParticle(EnumParticleTypes.NOTE, (double) playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, (double) SoundHelper.calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D, new int[0]);
+            worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 3.0F, calculatePitch(noteIn), false);
+            worldClient.spawnParticle(EnumParticleTypes.NOTE, playingPlayer.posX, playingPlayer.posY + 2.5D, playingPlayer.posZ, (double) calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D);
         }
+    }
+
+    private float calculatePitch(byte noteIn)
+    {
+        byte pitch = (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
+        return (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
     }
 
     @Override

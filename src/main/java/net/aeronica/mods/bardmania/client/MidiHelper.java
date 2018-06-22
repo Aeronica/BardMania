@@ -156,8 +156,11 @@ public enum MidiHelper implements Receiver
         if (channelFlag && noteOffFlag)
         {
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
-            send(message[1], message[2]);
-            ModLogger.info("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);
+            Minecraft.getMinecraft().addScheduledTask(() -> {
+                send(message[1], message[2]);
+                ModLogger.debug("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);
+            });
+
         }
     }
 
@@ -165,11 +168,9 @@ public enum MidiHelper implements Receiver
     {
         if ((pos != null) && (player != null) && KeyHelper.isMidiNoteInRange(note))
         {
-            Minecraft.getMinecraft().addScheduledTask(() -> {
                 ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), note, volume);
                 PacketDispatcher.sendToServer(packet);
                 BardMania.proxy.playSound(player, note, volume);
-            });
         }
     }
 
