@@ -1,12 +1,20 @@
 package net.aeronica.mods.bardmania.proxy;
 
 import com.google.common.collect.ImmutableMap;
+import net.aeronica.mods.bardmania.client.SoundHelper;
+import net.aeronica.mods.bardmania.init.ModSoundEvents;
+import net.aeronica.mods.bardmania.item.ItemHandHeld;
+import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.animation.ITimeValue;
@@ -18,6 +26,30 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy
 {
+
+    public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn)
+    {
+        WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();
+        ItemStack heldItem = playerIn.getHeldItemMainhand();
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+        {
+            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.5f, SoundHelper.calculatePitch(noteIn));
+            worldClient.spawnParticle(EnumParticleTypes.NOTE, (double) playerIn.posX, (double) playerIn.posY + 2.5D, (double) playerIn.posZ, (double) SoundHelper.calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D, new int[0]);
+        }
+    }
+
+    @Override
+    public void playSound(EntityPlayer playerIn, int entityId, String soundName, byte noteIn, byte volumeIn)
+    {
+        WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();
+        EntityPlayer playingPlayer = (EntityPlayer) worldClient.getEntityByID(entityId);
+        if ((playerIn.getEntityId()) != entityId)
+        {
+            worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 3.0F, SoundHelper.calculatePitch(noteIn), false);
+            worldClient.spawnParticle(EnumParticleTypes.NOTE, (double) playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, (double) SoundHelper.calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D, new int[0]);
+        }
+    }
 
     @Override
     public void preInit()

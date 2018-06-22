@@ -15,10 +15,7 @@
  */
 package net.aeronica.mods.bardmania.proxy;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,24 +25,22 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
+import javax.annotation.Nullable;
+
 public class CommonProxy
 {
-	
-    public void preInit()
-    {
-	}
+    public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn) {/* NOP */}
 
-    public void init()
-    {
-    }
+    public void playSound(EntityPlayer playerIn, int entityId, String soundName, byte noteIn, byte volumeIn) {/* NOP */}
 
-    public void postInit()
-    {
-    }
+    public void preInit() {/* NOP */}
+
+    public void init() {/* NOP */}
+
+    public void postInit() {/* NOP */}
 
     public Side getPhysicalSide() {return Side.SERVER;}
 
@@ -86,9 +81,9 @@ public class CommonProxy
         return ctx.getServerHandler().player;
     }
     
-    public void spawnTimpaniParticle(World world, double x, double y, double z) {}
+    public void spawnTimpaniParticle(World world, double x, double y, double z) {/* NOP */}
     
-    public void spawnRopeParticle(World world, double x, double y, double z) {}
+    public void spawnRopeParticle(World world, double x, double y, double z) {/* NOP */}
  
     @Nullable
     public IAnimationStateMachine load(ResourceLocation location, ImmutableMap<String, ITimeValue> parameters)

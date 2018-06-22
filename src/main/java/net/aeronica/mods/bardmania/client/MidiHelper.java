@@ -18,6 +18,7 @@ package net.aeronica.mods.bardmania.client;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
@@ -165,7 +166,7 @@ public enum MidiHelper implements Receiver
         {
             ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), note, volume);
             PacketDispatcher.sendToServer(packet);
-            SoundHelper.playSound(player, note, volume);
+            BardMania.proxy.playSound(player, note, volume);
         }
     }
 

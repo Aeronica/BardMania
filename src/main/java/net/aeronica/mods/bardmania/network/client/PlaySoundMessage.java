@@ -1,6 +1,6 @@
 package net.aeronica.mods.bardmania.network.client;
 
-import net.aeronica.mods.bardmania.client.SoundHelper;
+import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.network.AbstractMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
@@ -46,6 +46,6 @@ public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<Play
     @Override
     public void process(EntityPlayer player, Side side)
     {
-        if(side.isClient()) SoundHelper.playSound(player, entityId, soundName, noteIn, volumeIn);
+        if(side.isClient()) BardMania.proxy.playSound(player, entityId, soundName, noteIn, volumeIn);
     }
 }
