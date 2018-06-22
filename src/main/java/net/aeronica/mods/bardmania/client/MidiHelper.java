@@ -26,6 +26,7 @@ import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
 import net.aeronica.mods.bardmania.network.server.ActiveReceiverMessage;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -164,9 +165,11 @@ public enum MidiHelper implements Receiver
     {
         if ((pos != null) && (player != null) && KeyHelper.isMidiNoteInRange(note))
         {
-            ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), note, volume);
-            PacketDispatcher.sendToServer(packet);
-            BardMania.proxy.playSound(player, note, volume);
+            Minecraft.getMinecraft().addScheduledTask(() -> {
+                ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), note, volume);
+                PacketDispatcher.sendToServer(packet);
+                BardMania.proxy.playSound(player, note, volume);
+            });
         }
     }
 
