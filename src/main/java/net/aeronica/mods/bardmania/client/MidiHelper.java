@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static net.aeronica.mods.bardmania.client.action.ActionManager.triggerAction;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
 
 @SuppressWarnings("unused")
@@ -171,6 +172,7 @@ public enum MidiHelper implements Receiver
                 ActiveReceiverMessage packet = new ActiveReceiverMessage(pos, player.getEntityId(), note, volume);
                 PacketDispatcher.sendToServer(packet);
                 BardMania.proxy.playSound(player, note, volume);
+                triggerAction(player);
         }
     }
 
