@@ -23,6 +23,7 @@ import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -66,33 +67,30 @@ public class ActionManager {
                         playerTween.clear();
                     }
                 })
-                .beginSequential()
+//                .beginSequential()
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.25F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.25F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.10F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.10F).target((float) Math.PI / 6f).ease(TweenEquations.Sine_InOut))
                 .end()
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
-                .end()
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_Y.getTweenType(), 0.10F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, Part.LEFT_ARM_ROT_X.getTweenType(), 0.10F).target(0f).ease(TweenEquations.Sine_InOut))
+//                .end()
                 .end();
 
-        timeline.repeat(3, 0f);
+        timeline.repeat(0, 0.0f);
         timeline.start();
         playerTween.put(player, timeline);
     }
 
     private static float deltaTime = 0F;
-    private static float total = 0F;
+    private static double total = 0F;
     private static float partialTicks = 0F;
-    private static int ticksInGame = 0;
-    private static float fullDuration = 0F;
-    private static float currentTime = 0F;
 
-    private static void calcDelta() {
-        float oldTotal = total;
-        total = ticksInGame + partialTicks;
-        deltaTime = (total - oldTotal) / 60f;
+    private static void calcDelta(World world, float partialTicks) {
+        double oldTotal = total;
+        total = getWorldTime(world, partialTicks);
+        deltaTime = (float) (total - oldTotal);
     }
 
     @SubscribeEvent
@@ -103,25 +101,14 @@ public class ActionManager {
         }
 
         EntityPlayerSP player = Minecraft.getMinecraft().player;
-        if ((player != null) && playerTween.containsKey(player)) {
-            fullDuration = playerTween.get(player).getFullDuration();
-            currentTime = playerTween.get(player).getCurrentTime();
-        }
-
-//        if ((player != null) && playerTween.containsKey(player) && !(playerTween.get(player).getFullDuration() > 0.0F)) {
-//            ModLogger.info("Tween done");
-//            playerTween.clear();
-//        }
-
-        calcDelta();
+        if(player != null)
+            calcDelta(player.getEntityWorld(), partialTicks);
         tweenEngine.update(deltaTime);
+    }
 
-        if (ticksInGame++ % 60 == 0) {
-            ModLogger.info("deltaTime: %10.6f, total: %010d, full: %10.2f, curr: %10.2f", deltaTime, ticksInGame / 60, fullDuration, currentTime);
-        }
-
-        if (ticksInGame % 240 == 0) {
-            triggerAction(Minecraft.getMinecraft().player);
-        }
+    public static double getWorldTime(World world, float partialTicks)
+    {
+        long time = world != null ? world.getTotalWorldTime() : 0L;
+        return (time + partialTicks) / 20;
     }
 }
