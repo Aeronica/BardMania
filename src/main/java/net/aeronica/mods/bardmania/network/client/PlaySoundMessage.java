@@ -46,6 +46,9 @@ public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<Play
     @Override
     public void process(EntityPlayer player, Side side)
     {
-        if(side.isClient()) BardMania.proxy.playSound(player, entityId, soundName, noteIn, volumeIn);
+        if(side.isClient())
+        {
+            BardMania.proxy.playSound(player, entityId, soundName, noteIn, volumeIn);
+        }
     }
 }

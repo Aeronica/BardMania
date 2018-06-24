@@ -198,7 +198,7 @@ public class RenderEvents
         {
             ModelPlayer model = event.getModelPlayer();
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, ActionManager.modelDummy, motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
+            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
             copyModelAngles(model.bipedRightArm, model.bipedRightArmwear);
             copyModelAngles(model.bipedLeftArm, model.bipedLeftArmwear);
             copyModelAngles(model.bipedRightLeg, model.bipedRightLegwear);

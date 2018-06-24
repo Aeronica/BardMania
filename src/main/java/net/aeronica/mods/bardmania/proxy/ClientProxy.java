@@ -1,6 +1,7 @@
 package net.aeronica.mods.bardmania.proxy;
 
 import com.google.common.collect.ImmutableMap;
+import net.aeronica.mods.bardmania.client.action.ActionManager;
 import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
@@ -34,7 +35,8 @@ public class ClientProxy extends CommonProxy
         {
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.5f, calculatePitch(noteIn));
-            worldClient.spawnParticle(EnumParticleTypes.NOTE, playerIn.posX, playerIn.posY + 2.5D, playerIn.posZ, (double) calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D);
+            worldClient.spawnParticle(EnumParticleTypes.NOTE, playerIn.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, playerIn.posY + 2.5D, playerIn.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
+            ActionManager.triggerAction(playerIn);
         }
     }
 
@@ -46,14 +48,24 @@ public class ClientProxy extends CommonProxy
         if ((playerIn.getEntityId()) != entityId)
         {
             worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 3.0F, calculatePitch(noteIn), false);
-            worldClient.spawnParticle(EnumParticleTypes.NOTE, playingPlayer.posX, playingPlayer.posY + 2.5D, playingPlayer.posZ, (double) calculatePitch(noteIn) / 24.0D, 0.0D, 0.0D);
+            worldClient.spawnParticle(EnumParticleTypes.NOTE, playingPlayer.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D , playingPlayer.posY + 2.5D, playingPlayer.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
+            ActionManager.triggerAction(playingPlayer);
         }
+    }
+
+    /**
+     * Returns a zero based note from a midi note. In vanilla note block context 0-24
+     * @param noteIn
+     * @return
+     */
+    private byte normalizeNote(byte noteIn)
+    {
+        return (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
     }
 
     private float calculatePitch(byte noteIn)
     {
-        byte pitch = (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
-        return (float) Math.pow(2.0D, (double) (pitch - 12) / 12.0D);
+        return (float) Math.pow(2.0D, (double) (normalizeNote(noteIn) - 12) / 12.0D);
     }
 
     @Override
