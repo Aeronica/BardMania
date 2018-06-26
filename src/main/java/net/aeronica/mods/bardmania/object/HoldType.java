@@ -18,7 +18,7 @@ public enum HoldType
     {
 
 
-    }, true),
+    }, false),
     @SerializedName("two_handed_horizontal")
     TWO_HANDED_HORIZONTAL(new HeldAnimation()
     {

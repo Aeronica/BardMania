@@ -144,6 +144,13 @@ public class RenderEvents
     @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
+        // Offhand ONLY instruments render normally. TODO: Simplify
+        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemHandHeld))
+        {
+            event.setCanceled(false);
+            return;
+        }
+
         ItemStack heldItem;
         ItemStack itemMain = event.getEntity().getHeldItemMainhand();
         ItemStack itemOff = event.getEntity().getHeldItemOffhand();
@@ -186,7 +193,6 @@ public class RenderEvents
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
-
     }
 
     @SubscribeEvent
