@@ -179,14 +179,15 @@ public enum MidiHelper implements Receiver
     {
         for (MidiDevice device : openDevices)
         {
-            if (device.isOpen()) device.close();
-            try
-            {
-                device.getTransmitter().close();
-            } catch (MidiUnavailableException e)
-            {
-                ModLogger.error(e);
-            }
+            if (device.isOpen())
+                try
+                {
+                    device.getTransmitter().close();
+                    device.close();
+                } catch (MidiUnavailableException e)
+                {
+                    ModLogger.error(e);
+                }
         }
         openDevices.clear();
     }
