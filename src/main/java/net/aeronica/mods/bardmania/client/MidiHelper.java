@@ -39,8 +39,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import javax.sound.midi.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
@@ -51,7 +51,7 @@ public enum MidiHelper implements Receiver
 {
     INSTANCE;
     static BiMap<Integer, BlockPos> playerIdUsingBlock = HashBiMap.create();
-    private static List<MidiDevice> openDevices = new ArrayList<>();
+    private static List<MidiDevice> openDevices = new CopyOnWriteArrayList<>();
     static IActiveNoteReceiver instrument;
     static World world;
     static BlockPos pos = null;
