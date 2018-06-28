@@ -61,7 +61,7 @@ public class ModSoundEvents
         final ResourceLocation soundID = new ResourceLocation(soundName);
         SoundEvent soundEvent;
 
-        if (soundName.contains(Reference.MOD_ID + ":"))
+        if (soundName.contains(Reference.MOD_DOMAIN))
             soundEvent = new SoundEvent(soundID).setRegistryName(soundID);
         else
             soundEvent = SoundEvent.REGISTRY.getObject(soundID);
@@ -75,7 +75,7 @@ public class ModSoundEvents
         @SubscribeEvent
         public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event)
         {
-            SOUNDS.values().forEach(event.getRegistry()::register);
+            SOUNDS.keySet().stream().filter(soundName -> soundName.contains(Reference.MOD_DOMAIN)).forEach(soundName -> event.getRegistry().register(SOUNDS.get(soundName)));
         }
     }
 

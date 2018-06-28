@@ -18,6 +18,7 @@ package net.aeronica.mods.bardmania;
 
 public class Reference {
     public static final String MOD_ID = "bardmania";
+    public static final String MOD_DOMAIN = MOD_ID + ":";
     public static final String MOD_NAME = "Bard Mania";
     public static final String MOD_VERSION = "{@MOD_VERSION}";
     public static final String MC_VERSION = "[1.12.2,1.13]";
