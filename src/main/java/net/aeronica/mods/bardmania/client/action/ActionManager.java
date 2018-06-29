@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused")
@@ -35,7 +36,7 @@ public enum ActionManager
 {
     INSTANCE;
     public static final ModelDummy modelDummy = new ModelDummy();
-    private static ConcurrentHashMap<EntityPlayer, TriggerAction> playerTriggers = new ConcurrentHashMap<>();
+    private static Map<EntityPlayer, TriggerAction> playerTriggers = new ConcurrentHashMap<>();
     private static float deltaTime = 0F;
     private static double total = 0F;
     private static float partialTicks = 0F;
