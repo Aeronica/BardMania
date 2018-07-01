@@ -43,7 +43,7 @@ public class ActionManager
 {
     private ActionManager instance = new ActionManager();
     private static final ModelDummy modelDummy = new ModelDummy();
-    private static Map<EntityPlayer, ModelDummy> playerModels = new ConcurrentHashMap<>();
+    private static Map<Integer, ModelDummy> playerModels = new ConcurrentHashMap<>();
     private static List<ActionBase> actions =  new CopyOnWriteArrayList<>();
     private static float deltaTime = 0F;
     private static double total = 0F;
@@ -53,50 +53,53 @@ public class ActionManager
 
     public static void triggerAction(EntityPlayer playerIn)
     {
-        if (!playerModels.containsKey(playerIn))
+        Integer playerId = playerIn.getEntityId();
+        if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
-            playerModels.put(playerIn, modelDummy);
+            playerModels.put(playerId, modelDummy);
             actions.add(new PlayAction(playerIn, modelDummy));
         }
         else
         {
-            actions.add(new PlayAction(playerIn, playerModels.get(playerIn)));
+            actions.add(new PlayAction(playerIn, playerModels.get(playerId)));
         }
     }
 
     public static void triggerPose(EntityPlayer playerIn)
     {
-        if (!playerModels.containsKey(playerIn))
+        Integer playerId = playerIn.getEntityId();
+        if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
-            playerModels.put(playerIn, modelDummy);
+            playerModels.put(playerId, modelDummy);
             actions.add(new PoseAction(playerIn, modelDummy));
         }
         else
         {
-            actions.add(new PoseAction(playerIn, playerModels.get(playerIn)));
+            actions.add(new PoseAction(playerIn, playerModels.get(playerId)));
         }
     }
 
     public static void triggerPoseReverse(EntityPlayer playerIn)
     {
-        if (!playerModels.containsKey(playerIn))
+        Integer playerId = playerIn.getEntityId();
+        if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
-            playerModels.put(playerIn, modelDummy);
+            playerModels.put(playerId, modelDummy);
             actions.add(new PoseReverseAction(playerIn, modelDummy));
         }
         else
         {
-            actions.add(new PoseReverseAction(playerIn, playerModels.get(playerIn)));
+            actions.add(new PoseReverseAction(playerIn, playerModels.get(playerId)));
         }
     }
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)
     {
-        if (!playerModels.isEmpty() && playerModels.get(playerIn) != null)
-            return playerModels.get(playerIn);
+        if (!playerModels.isEmpty() && playerModels.get(playerIn.getEntityId()) != null)
+            return playerModels.get(playerIn.getEntityId());
         else
             return modelDummy;
     }
@@ -112,6 +115,11 @@ public class ActionManager
         for (ActionBase action : actions)
             if (action.isDone())
                 actions.remove(action);
+
+        if (total % 20 == 0)
+            for (Integer playerId : playerModels.keySet())
+                if (playerId != null && ((getThePlayer().getEntityWorld().getEntityByID(playerId)) == null))
+                    playerModels.remove(playerId);
     }
 
     @SubscribeEvent

@@ -23,6 +23,7 @@ import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
+import net.aeronica.mods.bardmania.network.bi.PoseActionMessage;
 import net.aeronica.mods.bardmania.network.server.ActiveReceiverMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,6 +68,7 @@ public enum MidiHelper implements Receiver
             inUse = true;
             ActionManager.getModelDummy(player).reset();
             ActionManager.triggerPose(player);
+            PacketDispatcher.sendToServer(new PoseActionMessage(player, PoseActionMessage.HOLD));
         }
 
         close();
@@ -180,6 +182,7 @@ public enum MidiHelper implements Receiver
     {
         ModLogger.info("ActiveNoteReceiver Removed: %s", message);
         ActionManager.triggerPoseReverse(player); // TODO: For testing
+        PacketDispatcher.sendToServer(new PoseActionMessage(player, PoseActionMessage.REMOVE));
         stack = ItemStack.EMPTY;
         close();
         inUse = false;
