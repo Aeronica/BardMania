@@ -25,8 +25,8 @@ import net.minecraft.world.World;
 public interface IPlaceableBounding
 {
 
-    public boolean canPlaceHere(EntityPlayer playerIn, World worldIn, ItemStack stack, BlockPos posIn, EnumFacing facingIn);
+    boolean canPlaceHere(EntityPlayer playerIn, World worldIn, ItemStack stack, BlockPos posIn, EnumFacing facingIn);
     
-    public LocationArea getBoundingBox(EntityPlayer playerIn, World worldIn, BlockPos posIn);
+    LocationArea getBoundingBox(EntityPlayer playerIn, World worldIn, BlockPos posIn);
     
 }

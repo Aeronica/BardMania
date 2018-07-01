@@ -27,7 +27,7 @@ public class NotifyRemovedMessage extends AbstractMessage.AbstractClientMessage<
     @Override
     public void process(EntityPlayer player, Side side)
     {
-        MidiHelper.INSTANCE.notifyRemoved(player.getEntityWorld(), player.getHeldItemMainhand());
+        MidiHelper.INSTANCE.notifyRemoved(player.getHeldItemMainhand());
         player.getHeldItemMainhand().setRepairCost(-1);
     }
 }

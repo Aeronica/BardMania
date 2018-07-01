@@ -18,12 +18,12 @@
 package net.aeronica.mods.bardmania.item;
 
 import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.client.MidiHelper;
 import net.aeronica.mods.bardmania.client.action.ActionManager;
 import net.aeronica.mods.bardmania.client.gui.GuiGuid;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
-import net.aeronica.mods.bardmania.network.client.NotifyRemovedMessage;
 import net.aeronica.mods.bardmania.network.client.PlaySoundMessage;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.resources.I18n;
@@ -31,7 +31,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,7 +47,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-import static net.aeronica.mods.bardmania.client.MidiHelper.INSTANCE;
 import static net.aeronica.mods.bardmania.client.MidiHelper.getOpenDeviceNames;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
 import static net.aeronica.mods.bardmania.common.ModConfig.Client.INPUT_MODE.MIDI;
@@ -84,6 +82,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         {
             if (playerIn.isSneaking())
             {
+                MidiHelper.INSTANCE.notifyRemoved(heldItem);
                 ModConfig.toggleInputMode();
                 playerIn.sendStatusMessage(new TextComponentTranslation(String.format("%s%s %s%s", TextFormatting.WHITE,
                         I18n.format("tooltip.bardmania.input_mode"),
@@ -91,7 +90,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
                         new Object[0]), true);
             } else
             {
-                INSTANCE.setNoteReceiver(this, worldIn, playerIn, heldItem);
+                MidiHelper.INSTANCE.setNoteReceiver(this, playerIn, heldItem);
                 if (ModConfig.client.input_mode == KEYBOARD)
                     playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, worldIn, 0, 0, 0);
             }
@@ -125,20 +124,11 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         {
             stack.setRepairCost(itemSlot);
             ActionManager.getModelDummy((EntityPlayer) entityIn).reset(); //TODO: for testing
-//            INSTANCE.setNoteReceiver(this, worldIn, (EntityPlayer) entityIn, stack);
         } else if(worldIn.isRemote && !isSelected)
         {
             stack.setRepairCost(-1);
-            INSTANCE.notifyRemoved(worldIn, stack);
+            MidiHelper.INSTANCE.notifyRemoved(stack);
         }
-    }
-
-    @Override
-    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
-    {
-        item.setRepairCost(-1);
-        PacketDispatcher.sendTo(new NotifyRemovedMessage(), (EntityPlayerMP) player);
-        return true;
     }
 
     @Nullable

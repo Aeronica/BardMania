@@ -16,11 +16,17 @@
 
 package net.aeronica.mods.bardmania.client.action;
 
+import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.Reference;
+import net.aeronica.mods.bardmania.client.MidiHelper;
+import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.GuiContainerEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -33,15 +39,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
-public enum ActionManager
+public class ActionManager
 {
-    INSTANCE;
-    public static final ModelDummy modelDummy = new ModelDummy();
+    private ActionManager instance = new ActionManager();
+    private static final ModelDummy modelDummy = new ModelDummy();
     private static Map<EntityPlayer, ModelDummy> playerModels = new ConcurrentHashMap<>();
     private static List<ActionBase> actions =  new CopyOnWriteArrayList<>();
     private static float deltaTime = 0F;
     private static double total = 0F;
     private static float partialTicks = 0F;
+
+    private ActionManager() {/* NOP */}
 
     public static void triggerAction(EntityPlayer playerIn)
     {
@@ -121,11 +129,10 @@ public enum ActionManager
 
     private static void calcDelta()
     {
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
-        if (player != null)
+        if (getThePlayer() != null)
         {
             double oldTotal = total;
-            total = getWorldTime(player.getEntityWorld(), partialTicks);
+            total = getWorldTime(getThePlayer().getEntityWorld(), partialTicks);
             deltaTime = (float) (total - oldTotal);
         }
     }
@@ -134,5 +141,32 @@ public enum ActionManager
     {
         long time = world != null ? world.getTotalWorldTime() : 0L;
         return (time + partialTicks) / 20;
+    }
+
+    @SubscribeEvent
+    public static void onContainerOpen(GuiContainerEvent event)
+    {
+        if (MidiHelper.INSTANCE.isInUse())
+            MidiHelper.INSTANCE.notifyRemoved("Inventory Opened");
+    }
+
+    @SubscribeEvent
+    public static void onItemTossEvent(ItemTossEvent event)
+    {
+        ItemStack itemStack = event.getEntityItem().getItem();
+        if((itemStack.getItem() instanceof ItemHandHeld))
+        {
+            MidiHelper.INSTANCE.notifyRemoved(event.getPlayer().getDisplayName().getUnformattedText() + " dropped a " + itemStack.getDisplayName());
+        }
+    }
+
+    private static EntityPlayerSP getThePlayer()
+    {
+        return (EntityPlayerSP) BardMania.proxy.getClientPlayer();
+    }
+
+    private static Minecraft getMinecraft()
+    {
+        return BardMania.proxy.getMinecraft();
     }
 }
