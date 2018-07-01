@@ -19,6 +19,7 @@ package net.aeronica.mods.bardmania.client;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.client.action.ActionManager;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.common.ModConfig;
@@ -62,6 +63,8 @@ public enum MidiHelper implements Receiver
     static float hitX, hitY, hitZ;
     static ItemStack stack = ItemStack.EMPTY;
 
+    static boolean inUse = false; // TODO: for testing
+
     public void setNoteReceiver(IActiveNoteReceiver instrumentIn, World worldIn, BlockPos posIn, @Nullable IBlockState stateIn, EntityPlayer playerIn, @Nullable EnumFacing facingIn,
                                 float hitXIn, float hitYIn, float hitZIn, ItemStack stackIn)
     {
@@ -75,6 +78,18 @@ public enum MidiHelper implements Receiver
         hitY = hitYIn;
         hitZ = hitZIn;
         stack = stackIn;
+
+        // TODO: For testing
+        if (inUse)
+        {
+            INSTANCE.notifyRemoved("Done");
+            return;
+        } else
+        {
+            inUse = true;
+            ActionManager.getModelDummy(player).reset();
+            ActionManager.triggerPose(player);
+        }
 
         close();
         if (worldIn.isRemote && ModConfig.client.input_mode == MIDI)
@@ -215,5 +230,12 @@ public enum MidiHelper implements Receiver
         pos = null;
         stack = ItemStack.EMPTY;
         close();
+        ActionManager.triggerPoseReverse(player); // TODO: For testing
+        inUse = false;
+    }
+
+    public static boolean isInUse()
+    {
+        return inUse;
     }
 }

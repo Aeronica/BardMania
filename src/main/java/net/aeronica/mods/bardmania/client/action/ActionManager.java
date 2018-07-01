@@ -17,7 +17,6 @@
 package net.aeronica.mods.bardmania.client.action;
 
 import net.aeronica.mods.bardmania.Reference;
-import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,8 +26,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
@@ -36,44 +37,73 @@ public enum ActionManager
 {
     INSTANCE;
     public static final ModelDummy modelDummy = new ModelDummy();
-    private static Map<EntityPlayer, TriggerAction> playerTriggers = new ConcurrentHashMap<>();
+    private static Map<EntityPlayer, ModelDummy> playerModels = new ConcurrentHashMap<>();
+    private static List<ActionBase> actions =  new CopyOnWriteArrayList<>();
     private static float deltaTime = 0F;
     private static double total = 0F;
     private static float partialTicks = 0F;
 
     public static void triggerAction(EntityPlayer playerIn)
     {
-        if (!playerTriggers.containsKey(playerIn) || playerTriggers.get(playerIn).isDone())
-            playerTriggers.put(playerIn, new TriggerAction(playerIn));
+        if (!playerModels.containsKey(playerIn))
+        {
+            ModelDummy modelDummy = new ModelDummy();
+            playerModels.put(playerIn, modelDummy);
+            actions.add(new PlayAction(playerIn, modelDummy));
+        }
+        else
+        {
+            actions.add(new PlayAction(playerIn, playerModels.get(playerIn)));
+        }
+    }
+
+    public static void triggerPose(EntityPlayer playerIn)
+    {
+        if (!playerModels.containsKey(playerIn))
+        {
+            ModelDummy modelDummy = new ModelDummy();
+            playerModels.put(playerIn, modelDummy);
+            actions.add(new PoseAction(playerIn, modelDummy));
+        }
+        else
+        {
+            actions.add(new PoseAction(playerIn, playerModels.get(playerIn)));
+        }
+    }
+
+    public static void triggerPoseReverse(EntityPlayer playerIn)
+    {
+        if (!playerModels.containsKey(playerIn))
+        {
+            ModelDummy modelDummy = new ModelDummy();
+            playerModels.put(playerIn, modelDummy);
+            actions.add(new PoseReverseAction(playerIn, modelDummy));
+        }
+        else
+        {
+            actions.add(new PoseReverseAction(playerIn, playerModels.get(playerIn)));
+        }
     }
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)
     {
-        if (!playerTriggers.isEmpty() && playerTriggers.get(playerIn) != null)
-            return playerTriggers.get(playerIn).getModelDummy();
+        if (!playerModels.isEmpty() && playerModels.get(playerIn) != null)
+            return playerModels.get(playerIn);
         else
             return modelDummy;
     }
 
     private static void update(float deltaTime)
     {
-        if (!playerTriggers.isEmpty())
-            playerTriggers.values().forEach(triggerAction -> triggerAction.update(deltaTime));
+        if (actions.size() > 0)
+            actions.forEach(triggerAction -> triggerAction.update(deltaTime));
     }
 
     private static void cleanup()
     {
-        if (playerTriggers.isEmpty())
-            return;
-
-        for (EntityPlayer entityPlayer : playerTriggers.keySet())
-        {
-            if (playerTriggers.get(entityPlayer) == null || playerTriggers.get(entityPlayer).isDone())
-            {
-                playerTriggers.remove(entityPlayer);
-                ModLogger.info("trigger cleaned for %s, triggers size %d", entityPlayer.getDisplayName().getUnformattedText(), playerTriggers.size());
-            }
-        }
+        for (ActionBase action : actions)
+            if (action.isDone())
+                actions.remove(action);
     }
 
     @SubscribeEvent

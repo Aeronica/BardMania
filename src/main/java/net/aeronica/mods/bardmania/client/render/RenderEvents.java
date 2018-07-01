@@ -200,7 +200,7 @@ public class RenderEvents
     {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack heldItem = player.getHeldItemMainhand();
-        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemHandHeld))
         {
             ModelPlayer model = event.getModelPlayer();
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();

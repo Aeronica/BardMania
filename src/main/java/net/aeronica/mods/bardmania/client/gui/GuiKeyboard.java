@@ -61,6 +61,7 @@ public class GuiKeyboard extends GuiScreen
     @Override
     public void onGuiClosed()
     {
+        MidiHelper.INSTANCE.notifyRemoved("Gui  Keyboard Closed"); // TODO: for testing
         super.onGuiClosed();
     }
 

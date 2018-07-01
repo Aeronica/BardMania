@@ -1,30 +1,21 @@
 package net.aeronica.mods.bardmania.client.action;
 
-import net.aeronica.dorkbox.tweenEngine.*;
+import net.aeronica.dorkbox.tweenEngine.BaseTween;
+import net.aeronica.dorkbox.tweenEngine.Timeline;
+import net.aeronica.dorkbox.tweenEngine.TweenCallback;
+import net.aeronica.dorkbox.tweenEngine.TweenEquations;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class TriggerAction
+public class PlayAction extends ActionBase
 {
-    private EntityPlayer player;
-    private ModelDummy modelDummy = new ModelDummy();
-    private boolean isDone = false;
-
-    private TweenEngine tweenEngine = TweenEngine.create()
-            .unsafe()
-            .setWaypointsLimit(10)
-            .setCombinedAttributesLimit(3)
-            .registerAccessor(ModelDummy.class, new ModelAccessor())
-            .build();
-
-    public TriggerAction(EntityPlayer playerIn)
+    public PlayAction(EntityPlayer playerIn, ModelDummy modelDummy)
     {
-        this.player = playerIn;
-        ModLogger.info("Triggered      %s", player.getDisplayName().getUnformattedText());
-        start();
+        super(playerIn, modelDummy);
     }
 
-    private void start()
+    @Override
+    protected void start()
     {
         Timeline timeline = tweenEngine.createSequential()
                 .addCallback(new TweenCallback(TweenCallback.Events.COMPLETE)
@@ -49,20 +40,5 @@ public class TriggerAction
 
         //timeline.repeat(0, 0f);
         timeline.start();
-    }
-
-    public void update(float deltaTime)
-    {
-        tweenEngine.update(deltaTime);
-    }
-
-    public ModelDummy getModelDummy()
-    {
-        return modelDummy;
-    }
-
-    public boolean isDone()
-    {
-        return isDone;
     }
 }

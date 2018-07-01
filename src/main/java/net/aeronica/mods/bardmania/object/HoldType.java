@@ -25,21 +25,27 @@ public enum HoldType
         @Override
         public void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand)
         {
-            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
-            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
-            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
+//            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
+//            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
+//            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
+//
+//            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 9;
+//            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(55F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 5;
+//            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
+//
+//            if (leftHand)
+//            {
+//                float temp = model.bipedRightArm.rotateAngleY;
+//                model.bipedRightArm.rotateAngleY = model.bipedLeftArm.rotateAngleY;
+//                model.bipedLeftArm.rotateAngleY = temp;
+//            }
+            model.bipedRightArm.rotateAngleX += actions.getPartValue(Part.RIGHT_ARM_OFF_X) - actions.getPartValue(Part.LEFT_ARM_ROT_X)  /8;
+            model.bipedRightArm.rotateAngleY += actions.getPartValue(Part.RIGHT_ARM_OFF_Y) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
+            model.bipedRightArm.rotateAngleZ += 0f;
 
-            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 9;
-            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(55F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 5;
-            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
-
-            if (leftHand)
-            {
-                float temp = model.bipedRightArm.rotateAngleY;
-                model.bipedRightArm.rotateAngleY = model.bipedLeftArm.rotateAngleY;
-                model.bipedLeftArm.rotateAngleY = temp;
-            }
-            // model.bipedLeftLeg.rotateAngleX = (float) Math.toRadians(-25F + aimProgress * 25F);
+            model.bipedLeftArm.rotateAngleX = +actions.getPartValue(Part.LEFT_ARM_OFF_X) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 9;
+            model.bipedLeftArm.rotateAngleY = +actions.getPartValue(Part.LEFT_ARM_OFF_Y) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 5;
+            model.bipedLeftArm.rotateAngleZ += 0f;
         }
 
         @Override

@@ -18,6 +18,7 @@
 package net.aeronica.mods.bardmania.item;
 
 import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.client.action.ActionManager;
 import net.aeronica.mods.bardmania.client.gui.GuiGuid;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.ModConfig;
@@ -88,10 +89,12 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
                         I18n.format("tooltip.bardmania.input_mode"),
                         TextFormatting.WHITE, I18n.format((ModConfig.client.input_mode).toString())),
                         new Object[0]), true);
+            } else
+            {
+                INSTANCE.setNoteReceiver(this, worldIn, playerIn, heldItem);
+                if (ModConfig.client.input_mode == KEYBOARD)
+                    playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, worldIn, 0, 0, 0);
             }
-            INSTANCE.setNoteReceiver(this, worldIn, playerIn, heldItem);
-            if (!playerIn.isSneaking() && ModConfig.client.input_mode == KEYBOARD)
-                playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, worldIn, 0, 0, 0);
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
@@ -121,7 +124,8 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         if(worldIn.isRemote && isSelected && (stack.getRepairCost() != itemSlot) && (entityIn instanceof EntityPlayer))
         {
             stack.setRepairCost(itemSlot);
-            INSTANCE.setNoteReceiver(this, worldIn, (EntityPlayer) entityIn, stack);
+            ActionManager.getModelDummy((EntityPlayer) entityIn).reset(); //TODO: for testing
+//            INSTANCE.setNoteReceiver(this, worldIn, (EntityPlayer) entityIn, stack);
         } else if(worldIn.isRemote && !isSelected)
         {
             stack.setRepairCost(-1);
