@@ -26,7 +26,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiContainerEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -156,6 +159,32 @@ public class ActionManager
     {
         if (MidiHelper.INSTANCE.isInUse())
             MidiHelper.INSTANCE.notifyRemoved("Inventory Opened");
+    }
+
+    @SubscribeEvent
+    public static void onPlayerContainerEvent(PlayerContainerEvent event)
+    {
+        if (MidiHelper.INSTANCE.isInUse())
+            MidiHelper.INSTANCE.notifyRemoved("Player Inventory Opened");
+    }
+
+    @SubscribeEvent
+    public static void onPlayerSleepInBedEvent(PlayerSleepInBedEvent event)
+    {
+        if (event.getEntityPlayer() instanceof EntityPlayerSP)
+            if (MidiHelper.INSTANCE.isInUse())
+                MidiHelper.INSTANCE.notifyRemoved("Sleep in bed");
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
+    {
+        if (event.getEntity() instanceof EntityPlayerSP)
+            if (MidiHelper.INSTANCE.isInUse())
+            {
+                ActionManager.getModelDummy((EntityPlayer) event.getEntity()).reset();
+                MidiHelper.INSTANCE.notifyRemoved("Join World");
+            }
     }
 
     @SubscribeEvent
