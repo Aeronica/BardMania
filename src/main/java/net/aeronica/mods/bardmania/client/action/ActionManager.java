@@ -129,7 +129,6 @@ public class ActionManager
                     playerModels.remove(playerId);
                     ModLogger.info("cleanup of playerModels: size %d", playerModels.size());
                 }
-            ModLogger.info("ping");
         }
     }
 
@@ -166,8 +165,8 @@ public class ActionManager
     @SubscribeEvent
     public static void onContainerOpen(GuiContainerEvent event)
     {
-        if (MidiHelper.isInUse())
-            MidiHelper.INSTANCE.notifyRemoved("Inventory Opened");
+//        if (MidiHelper.isInUse())
+//            MidiHelper.INSTANCE.notifyRemoved("Inventory Opened");
     }
 
     @SubscribeEvent
@@ -206,15 +205,9 @@ public class ActionManager
         }
     }
 
-    private static EntityPlayerSP getThePlayer()
-    {
-        return (EntityPlayerSP) BardMania.proxy.getClientPlayer();
-    }
+    private static EntityPlayerSP getThePlayer() {return (EntityPlayerSP) BardMania.proxy.getClientPlayer();}
 
-    private static Minecraft getMinecraft()
-    {
-        return BardMania.proxy.getMinecraft();
-    }
+    private static Minecraft getMinecraft() {return BardMania.proxy.getMinecraft();}
 
     private static EntityPlayer getPlayerById(Integer entityId)
     {
