@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
 {
-    public static final int HOLD = 0;
+    public static final int EQUIP = 0;
     public static final int REMOVE = 1;
     private int posingPlayerId;
     private int actionId;
@@ -49,26 +49,35 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
             processClient(player);
     }
 
-    public void processServer(EntityPlayer player)
+    private void processServer(EntityPlayer player)
     {
         EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
-        if (actionId == HOLD)
-            PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, HOLD), player, 64);
-        if (actionId == REMOVE)
-            PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, REMOVE), player, 64);
+        if (posingPlayer != null)
+        {
+            if (actionId == EQUIP)
+                PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, EQUIP), player, 64);
+            else if (actionId == REMOVE)
+                PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, REMOVE), player, 64);
+            else
+                ModLogger.debug("Pose Action id %d does not exist", actionId);
+        }
     }
 
     @SideOnly(Side.CLIENT)
-    public void processClient(EntityPlayer player)
+    private void processClient(EntityPlayer player)
     {
-        if (player.getEntityId() == posingPlayerId) return;
-
-        EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
-        if (actionId == HOLD)
-            ActionManager.triggerPose(posingPlayer);
-        if (actionId == REMOVE)
-            ActionManager.triggerPoseReverse(posingPlayer);
-
-        ModLogger.info("PoseActionMessage %d, %s", actionId, posingPlayer.getDisplayName().getUnformattedText());
+        if (player.getEntityId() != posingPlayerId)
+        {
+            EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
+            if (posingPlayer != null)
+            {
+                if (actionId == EQUIP)
+                    ActionManager.triggerEquipActionPose(posingPlayer);
+                else if (actionId == REMOVE)
+                    ActionManager.triggerRemoveActionPose(posingPlayer);
+                else
+                    ModLogger.debug("Pose Action id %d does not exist", actionId);
+            }
+        }
     }
 }

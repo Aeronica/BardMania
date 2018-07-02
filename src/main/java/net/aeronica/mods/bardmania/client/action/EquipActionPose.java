@@ -7,10 +7,10 @@ import net.aeronica.dorkbox.tweenEngine.TweenEquations;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class PoseAction extends ActionBase
+public class EquipActionPose extends ActionBase
 {
 
-    public PoseAction(EntityPlayer playerIn, ModelDummy modelDummy)
+    public EquipActionPose(EntityPlayer playerIn, ModelDummy modelDummy)
     {
         super(playerIn, modelDummy);
     }

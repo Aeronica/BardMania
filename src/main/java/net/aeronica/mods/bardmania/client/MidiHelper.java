@@ -67,8 +67,8 @@ public enum MidiHelper implements Receiver
         {
             inUse = true;
             ActionManager.getModelDummy(player).reset();
-            ActionManager.triggerPose(player);
-            PacketDispatcher.sendToServer(new PoseActionMessage(player, PoseActionMessage.HOLD));
+            ActionManager.triggerEquipActionPose(player);
+            PacketDispatcher.sendToServer(new PoseActionMessage(player, PoseActionMessage.EQUIP));
         }
 
         close();
@@ -163,7 +163,15 @@ public enum MidiHelper implements Receiver
     {
         for (MidiDevice device : openDevices)
             if (device.isOpen())
-                device.close();
+                try
+                {
+                    device.getTransmitter().close();
+                    device.close();
+                } catch (MidiUnavailableException e)
+                {
+                    ModLogger.error(e);
+                }
+
         openDevices.clear();
     }
 
@@ -181,7 +189,7 @@ public enum MidiHelper implements Receiver
     private void invalidate(String message)
     {
         ModLogger.info("ActiveNoteReceiver Removed: %s", message);
-        ActionManager.triggerPoseReverse(player); // TODO: For testing
+        ActionManager.triggerRemoveActionPose(player); // TODO: For testing
         PacketDispatcher.sendToServer(new PoseActionMessage(player, PoseActionMessage.REMOVE));
         stack = ItemStack.EMPTY;
         close();

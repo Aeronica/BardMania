@@ -19,12 +19,13 @@ package net.aeronica.mods.bardmania.client.action;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.Reference;
 import net.aeronica.mods.bardmania.client.MidiHelper;
+import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -51,6 +52,7 @@ public class ActionManager
     private static float deltaTime = 0F;
     private static double total = 0F;
     private static float partialTicks = 0F;
+    private static int cleanupTicks = 0;
 
     private ActionManager() {/* NOP */}
 
@@ -69,33 +71,33 @@ public class ActionManager
         }
     }
 
-    public static void triggerPose(EntityPlayer playerIn)
+    public static void triggerEquipActionPose(EntityPlayer playerIn)
     {
         Integer playerId = playerIn.getEntityId();
         if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
-            actions.add(new PoseAction(playerIn, modelDummy));
+            actions.add(new EquipActionPose(playerIn, modelDummy));
         }
         else
         {
-            actions.add(new PoseAction(playerIn, playerModels.get(playerId)));
+            actions.add(new EquipActionPose(playerIn, playerModels.get(playerId)));
         }
     }
 
-    public static void triggerPoseReverse(EntityPlayer playerIn)
+    public static void triggerRemoveActionPose(EntityPlayer playerIn)
     {
         Integer playerId = playerIn.getEntityId();
         if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
-            actions.add(new PoseReverseAction(playerIn, modelDummy));
+            actions.add(new RemoveActionPose(playerIn, modelDummy));
         }
         else
         {
-            actions.add(new PoseReverseAction(playerIn, playerModels.get(playerId)));
+            actions.add(new RemoveActionPose(playerIn, playerModels.get(playerId)));
         }
     }
 
@@ -119,10 +121,16 @@ public class ActionManager
             if (action.isDone())
                 actions.remove(action);
 
-        if (total % 20 == 0)
+        if (cleanupTicks++ % 60 == 0)
+        {
             for (Integer playerId : playerModels.keySet())
-                if (playerId != null && ((getThePlayer().getEntityWorld().getEntityByID(playerId)) == null))
+                if (getPlayerById(playerId) == null)
+                {
                     playerModels.remove(playerId);
+                    ModLogger.info("cleanup of playerModels: size %d", playerModels.size());
+                }
+            ModLogger.info("ping");
+        }
     }
 
     @SubscribeEvent
@@ -143,13 +151,14 @@ public class ActionManager
         if (getThePlayer() != null)
         {
             double oldTotal = total;
-            total = getWorldTime(getThePlayer().getEntityWorld(), partialTicks);
+            total = getElapsedWorldTime(partialTicks);
             deltaTime = (float) (total - oldTotal);
         }
     }
 
-    public static double getWorldTime(World world, float partialTicks)
+    public static double getElapsedWorldTime(float partialTicks)
     {
+        WorldClient world = getMinecraft().world;
         long time = world != null ? world.getTotalWorldTime() : 0L;
         return (time + partialTicks) / 20;
     }
@@ -157,14 +166,14 @@ public class ActionManager
     @SubscribeEvent
     public static void onContainerOpen(GuiContainerEvent event)
     {
-        if (MidiHelper.INSTANCE.isInUse())
+        if (MidiHelper.isInUse())
             MidiHelper.INSTANCE.notifyRemoved("Inventory Opened");
     }
 
     @SubscribeEvent
     public static void onPlayerContainerEvent(PlayerContainerEvent event)
     {
-        if (MidiHelper.INSTANCE.isInUse())
+        if (MidiHelper.isInUse())
             MidiHelper.INSTANCE.notifyRemoved("Player Inventory Opened");
     }
 
@@ -172,7 +181,7 @@ public class ActionManager
     public static void onPlayerSleepInBedEvent(PlayerSleepInBedEvent event)
     {
         if (event.getEntityPlayer() instanceof EntityPlayerSP)
-            if (MidiHelper.INSTANCE.isInUse())
+            if (MidiHelper.isInUse())
                 MidiHelper.INSTANCE.notifyRemoved("Sleep in bed");
     }
 
@@ -180,7 +189,7 @@ public class ActionManager
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
     {
         if (event.getEntity() instanceof EntityPlayerSP)
-            if (MidiHelper.INSTANCE.isInUse())
+            if (MidiHelper.isInUse())
             {
                 ActionManager.getModelDummy((EntityPlayer) event.getEntity()).reset();
                 MidiHelper.INSTANCE.notifyRemoved("Join World");
@@ -205,5 +214,10 @@ public class ActionManager
     private static Minecraft getMinecraft()
     {
         return BardMania.proxy.getMinecraft();
+    }
+
+    private static EntityPlayer getPlayerById(Integer entityId)
+    {
+        return (getThePlayer() != null) && (entityId != null) ? (EntityPlayer) getThePlayer().getEntityWorld().getEntityByID(entityId) : null;
     }
 }
