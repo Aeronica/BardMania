@@ -58,13 +58,13 @@ public enum HoldType
         }
 
         @Override
-        public void applyHeldItemTransforms(float aimProgress, boolean leftHand)
+        public void applyHeldItemTransforms(float aimProgress, boolean leftHand, ModelDummy actions)
         {
-            GlStateManager.translate(0, 0, 0);
+            GlStateManager.translate(actions.getPartValue(ITEM_TRANS_X), actions.getPartValue(ITEM_TRANS_Y), actions.getPartValue(ITEM_TRANS_Z));
             float invertRealProgress = 1.0F - aimProgress;
-            GlStateManager.rotate(0F, 0, 0, 1);
-            GlStateManager.rotate(40F * (leftHand ? -1F : 1F), 0, 1, 0);
-            GlStateManager.rotate(0F, 1, 0, 0);
+            GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Z), 0, 0, 1);
+            GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Y), 0, 1, 0);
+            GlStateManager.rotate(actions.getPartValue(ITEM_ROT_X), 1, 0, 0);
         }
     }, false),
     @SerializedName("two_handed_vertical")
@@ -77,9 +77,9 @@ public enum HoldType
         }
 
         @Override
-        public void applyHeldItemTransforms(float aimProgress, boolean leftHand)
+        public void applyHeldItemTransforms(float aimProgress, boolean leftHand, ModelDummy actions)
         {
-            super.applyHeldItemTransforms(aimProgress, leftHand);
+            super.applyHeldItemTransforms(aimProgress, leftHand, actions);
         }
     }, false),
     @SerializedName("two_handed_guitar")

@@ -61,6 +61,14 @@ public class ModelAccessor implements TweenAccessor<ModelDummy> {
 
     public static final int PLAYER_POSE_ROTATION_YAW = 36;
 
+    public static final int ITEM_TRANS_X = 37;
+    public static final int ITEM_TRANS_Y = 38;
+    public static final int ITEM_TRANS_Z = 39;
+
+    public static final int ITEM_ROT_X = 40;
+    public static final int ITEM_ROT_Y = 41;
+    public static final int ITEM_ROT_Z = 42;
+
 
     public void ModelAccesor() {/* NOP */}
 

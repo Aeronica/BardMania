@@ -37,6 +37,8 @@ public class RemoveActionPose extends ActionBase
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_Y, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
 
                 .push(tweenEngine.to(modelDummy, PLAYER_POSE_ROTATION_YAW, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+
+                .push(tweenEngine.to(modelDummy, ITEM_ROT_Y, 0.25F).target(0F).ease(TweenEquations.Sine_InOut))
                 .end();
 
         //timeline.repeat(0, 0f);

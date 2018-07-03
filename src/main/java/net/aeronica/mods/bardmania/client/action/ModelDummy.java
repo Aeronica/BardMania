@@ -20,6 +20,8 @@ public class ModelDummy
             0f, 0f, 0f, // right_leg_pose_rot_x, right_leg_pose_rot_y, right_leg_pose_rot_z
             0f, 0f, 0f, // left_leg_pose_rot_x, left_leg_pose_rot_y, left_leg_pose_rot_z
             0f, // player_pose_rotation_yaw
+            0f, 0f, 0f, // item_trans_x, item_trans_y, item_trans_z
+            0f, 0f, 0f, // item_rot_x, item_rot_y, item_rot_z
     };
 
     public void reset() {for(int i = 0 ;i < parts.length;) parts[i++] = 0f;}

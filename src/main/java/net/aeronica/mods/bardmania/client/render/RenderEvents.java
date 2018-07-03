@@ -157,6 +157,7 @@ public class RenderEvents
         boolean isMainHandHeld = !itemMain.isEmpty() && itemMain.getItem() instanceof ItemHandHeld;
         boolean isOffHandHeld = !itemOff.isEmpty() && itemOff.getItem() instanceof ItemHandHeld;
         boolean renderLeft = event.getHandSide().equals(EnumHandSide.LEFT);
+        EntityPlayer player = (EntityPlayer) event.getEntity();
 
         if (event.getEntity().getPrimaryHand() != event.getHandSide())
         {
@@ -178,7 +179,7 @@ public class RenderEvents
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft);
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft, ActionManager.getModelDummy(player));
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
@@ -189,7 +190,7 @@ public class RenderEvents
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft);
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft, ActionManager.getModelDummy(player));
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
