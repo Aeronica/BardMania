@@ -4,6 +4,7 @@ import com.mrcrayfish.obfuscate.client.event.ModelPlayerEvent;
 import com.mrcrayfish.obfuscate.client.event.RenderItemEvent;
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
 import net.aeronica.mods.bardmania.client.action.ActionManager;
+import net.aeronica.mods.bardmania.client.action.ModelDummy;
 import net.aeronica.mods.bardmania.common.IPlaceableBounding;
 import net.aeronica.mods.bardmania.common.LocationArea;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
@@ -34,6 +35,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Iterator;
+
+import static net.aeronica.mods.bardmania.client.action.ModelAccessor.*;
 
 /*
  * box Rendering code mechanics by thebrightspark from the mod StructuralRelocation
@@ -179,7 +182,7 @@ public class RenderEvents
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft, ActionManager.getModelDummy(player));
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
@@ -190,7 +193,7 @@ public class RenderEvents
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(motionSimple, renderLeft, ActionManager.getModelDummy(player));
+            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
@@ -267,6 +270,47 @@ public class RenderEvents
         {
             LayerWearableInstrument.addLayer();
         }
+    }
+
+    private static void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand)
+    {
+        model.bipedHead.rotateAngleX += actions.getPartValue(HEAD_POSE_ROT_X) - actions.getPartValue(HEAD_ACTION_ROT_X);
+        model.bipedHead.rotateAngleY += actions.getPartValue(HEAD_POSE_ROT_Y) - actions.getPartValue(HEAD_ACTION_ROT_Y);
+        model.bipedHead.rotateAngleZ += actions.getPartValue(HEAD_POSE_ROT_Z) - actions.getPartValue(HEAD_ACTION_ROT_Z);
+
+        model.bipedBody.rotateAngleX += actions.getPartValue(BODY_POSE_ROT_X) - actions.getPartValue(BODY_ACTION_ROT_X);
+        model.bipedBody.rotateAngleX += actions.getPartValue(BODY_POSE_ROT_Y) - actions.getPartValue(BODY_ACTION_ROT_Y);
+        model.bipedBody.rotateAngleX += actions.getPartValue(BODY_POSE_ROT_Z) - actions.getPartValue(BODY_ACTION_ROT_Z);
+
+        model.bipedRightArm.rotateAngleX = actions.getPartValue(RIGHT_ARM_POSE_ROT_X) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_X) + aimProgress / 30f;
+        model.bipedRightArm.rotateAngleY = actions.getPartValue(RIGHT_ARM_POSE_ROT_Y) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_Y) - aimProgress / 30f;
+        model.bipedRightArm.rotateAngleZ = actions.getPartValue(RIGHT_ARM_POSE_ROT_Z) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_Z);
+
+        model.bipedLeftArm.rotateAngleX = actions.getPartValue(LEFT_ARM_POSE_ROT_X) - actions.getPartValue(LEFT_ARM_ACTION_ROT_X) - aimProgress / 30f;
+        model.bipedLeftArm.rotateAngleY = actions.getPartValue(LEFT_ARM_POSE_ROT_Y) - actions.getPartValue(LEFT_ARM_ACTION_ROT_Y) + aimProgress / 30f;
+        model.bipedLeftArm.rotateAngleZ = actions.getPartValue(LEFT_ARM_POSE_ROT_Z) - actions.getPartValue(LEFT_ARM_ACTION_ROT_Z);
+
+        model.bipedRightLeg.rotateAngleX += actions.getPartValue(RIGHT_LEG_POSE_ROT_X) - actions.getPartValue(RIGHT_LEG_ACTION_ROT_X);
+        model.bipedRightLeg.rotateAngleY += actions.getPartValue(RIGHT_LEG_POSE_ROT_Y) - actions.getPartValue(RIGHT_LEG_ACTION_ROT_Y);
+        model.bipedRightLeg.rotateAngleZ += actions.getPartValue(RIGHT_LEG_POSE_ROT_Z) - actions.getPartValue(RIGHT_LEG_ACTION_ROT_Z);
+
+        model.bipedLeftLeg.rotateAngleX += actions.getPartValue(LEFT_LEG_POSE_ROT_X) - actions.getPartValue(LEFT_LEG_ACTION_ROT_X);
+        model.bipedLeftLeg.rotateAngleY += actions.getPartValue(LEFT_LEG_POSE_ROT_Y) - actions.getPartValue(LEFT_LEG_ACTION_ROT_Y);
+        model.bipedLeftLeg.rotateAngleZ += actions.getPartValue(LEFT_LEG_POSE_ROT_Z) - actions.getPartValue(LEFT_LEG_ACTION_ROT_Z);
+    }
+
+    private static void applyPlayerPreRender(EntityPlayer player, ModelDummy actions, float aimProgress, boolean leftHand)
+    {
+        player.prevRenderYawOffset = player.prevRotationYaw + actions.getPartValue(PLAYER_POSE_ROTATION_YAW);
+        player.renderYawOffset = player.rotationYaw + actions.getPartValue(PLAYER_POSE_ROTATION_YAW);
+    }
+
+    private static void applyHeldItemTransforms(ModelDummy actions, float aimProgress, boolean leftHand)
+    {
+        GlStateManager.translate(actions.getPartValue(ITEM_TRANS_X), actions.getPartValue(ITEM_TRANS_Y), actions.getPartValue(ITEM_TRANS_Z));
+        GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Z), 0, 0, 1);
+        GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Y), 0, 1, 0);
+        GlStateManager.rotate(actions.getPartValue(ITEM_ROT_X), 1, 0, 0);
     }
 }
 

@@ -17,13 +17,6 @@ public class EquipActionPose extends ActionBase
         super(playerIn, modelDummy);
     }
 
-//            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
-//            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
-//            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
-//
-//            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 9;
-//            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(55F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 5;
-//            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
     @Override
     protected void start()
     {
@@ -48,8 +41,6 @@ public class EquipActionPose extends ActionBase
 
                 .push(tweenEngine.to(modelDummy, ITEM_ROT_Y, 0.25F).target(40f).ease(TweenEquations.Sine_InOut))
                 .end();
-
-        //timeline.repeat(0, 0f);
         timeline.start();
     }
 }
