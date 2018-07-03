@@ -137,8 +137,8 @@ public class RenderEvents
     public static void onTick(TickEvent.ClientTickEvent event)
     {
         motionSimple += motionIncDec;
-        if (motionSimple > 1F) motionIncDec = -0.05F;
-        if (motionSimple < 0F) motionIncDec = 0.05F;
+        if (motionSimple > 1F) motionIncDec = -0.0125F;
+        if (motionSimple < -1F) motionIncDec = 0.0125F;
     }
 
     @SubscribeEvent
@@ -220,7 +220,7 @@ public class RenderEvents
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
         {
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
+            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
         }
 
     }

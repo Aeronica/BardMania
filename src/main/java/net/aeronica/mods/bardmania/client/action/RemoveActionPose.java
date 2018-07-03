@@ -7,21 +7,15 @@ import net.aeronica.dorkbox.tweenEngine.TweenEquations;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
+import static net.aeronica.mods.bardmania.client.action.ModelAccessor.*;
+
 public class RemoveActionPose extends ActionBase
 {
-
     public RemoveActionPose(EntityPlayer playerIn, ModelDummy modelDummy)
     {
         super(playerIn, modelDummy);
     }
 
-//            model.bipedRightArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
-//            model.bipedRightArm.rotateAngleY = (float) Math.toRadians(25F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 8;
-//            model.bipedRightArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
-//
-//            model.bipedLeftArm.rotateAngleX = (float) Math.toRadians(-80F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 9;
-//            model.bipedLeftArm.rotateAngleY = (float) Math.toRadians(55F + (leftHand ? 180F : 0F)) - actions.getPartValue(Part.LEFT_ARM_ROT_X) / 5;
-//            model.bipedLeftArm.rotateAngleZ = (float) Math.toRadians(0F + (leftHand ? 180F : 0F));
     @Override
     protected void start()
     {
@@ -36,11 +30,13 @@ public class RemoveActionPose extends ActionBase
                     }
                 })
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.RIGHT_ARM_OFF_X.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.RIGHT_ARM_OFF_Y.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_POSE_ROT_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_POSE_ROT_Y, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
 
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.LEFT_ARM_OFF_X.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.LEFT_ARM_OFF_Y.getTweenType(), 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_Y, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+
+                .push(tweenEngine.to(modelDummy, PLAYER_POSE_ROTATION_YAW, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
 
         //timeline.repeat(0, 0f);

@@ -161,18 +161,21 @@ public enum MidiHelper implements Receiver
     @Override
     public void close()
     {
-        for (MidiDevice device : openDevices)
-            if (device.isOpen())
-                try
-                {
-                    device.getTransmitter().close();
-                    device.close();
-                } catch (MidiUnavailableException e)
-                {
-                    ModLogger.error(e);
-                }
+        synchronized (INSTANCE)
+        {
+            for (MidiDevice device : openDevices)
+                if (device.isOpen())
+                    try
+                    {
+                        device.getTransmitter().close();
+                        device.close();
+                    } catch (MidiUnavailableException e)
+                    {
+                        ModLogger.error(e);
+                    }
 
-        openDevices.clear();
+            openDevices.clear();
+        }
     }
 
     public void notifyRemoved(String message)

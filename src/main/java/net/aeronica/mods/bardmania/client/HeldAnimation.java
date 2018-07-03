@@ -11,7 +11,7 @@ public class HeldAnimation
 {
     public void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand) {}
 
-    public void applyPlayerPreRender(EntityPlayer player, float aimProgress, boolean leftHand) {}
+    public void applyPlayerPreRender(EntityPlayer player, ModelDummy actions, float aimProgress, boolean leftHand) {}
 
     public void applyHeldItemTransforms(float aimProgress, boolean leftHand) {}
 }

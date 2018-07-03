@@ -7,6 +7,8 @@ import net.aeronica.dorkbox.tweenEngine.TweenEquations;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
+import static net.aeronica.mods.bardmania.client.action.ModelAccessor.*;
+
 public class EquipActionPose extends ActionBase
 {
 
@@ -36,11 +38,13 @@ public class EquipActionPose extends ActionBase
                     }
                 })
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.RIGHT_ARM_OFF_X.getTweenType(), 0.25F).target(-1.308996939f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.RIGHT_ARM_OFF_Y.getTweenType(), 0.25F).target(0.436332313f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_POSE_ROT_X, 0.25F).target(-1.570796327f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_POSE_ROT_Y, 0.25F).target(0.436332313f).ease(TweenEquations.Sine_InOut))
 
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.LEFT_ARM_OFF_X.getTweenType(), 0.25F).target(-1.570796327f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, ModelAccessor.Part.LEFT_ARM_OFF_Y.getTweenType(), 0.25F).target(0.959931089f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_X, 0.25F).target(-1.570796327f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_Y, 0.25F).target(0.959931089f).ease(TweenEquations.Sine_InOut))
+
+                .push(tweenEngine.to(modelDummy, PLAYER_POSE_ROTATION_YAW, 0.25F).target(40f).ease(TweenEquations.Sine_InOut))
                 .end();
 
         //timeline.repeat(0, 0f);
