@@ -169,7 +169,7 @@ public enum MidiHelper implements Receiver
                     {
                         device.getTransmitter().close();
                         device.close();
-                    } catch (MidiUnavailableException e)
+                    } catch (NullPointerException | MidiUnavailableException e)
                     {
                         ModLogger.error(e);
                     }

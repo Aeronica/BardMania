@@ -6,12 +6,15 @@ import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.entity.player.EntityPlayer;
 
+import static net.aeronica.mods.bardmania.common.KeyHelper.normalizeNote;
+
 public abstract class ActionBase
 {
     protected EntityPlayer player;
     protected ModelDummy modelDummy;
     protected boolean isDone = false;
     protected String instId;
+    protected int note;
 
     protected TweenEngine tweenEngine = TweenEngine.create()
             .unsafe()
@@ -20,11 +23,12 @@ public abstract class ActionBase
             .registerAccessor(ModelDummy.class, new ModelAccessor())
             .build();
 
-    public ActionBase(EntityPlayer playerIn, ModelDummy modelDummy)
+    public ActionBase(EntityPlayer playerIn, ModelDummy modelDummy, int noteIn)
     {
         Instrument instrument;
         this.player = playerIn;
         this.modelDummy = modelDummy;
+        this.note = normalizeNote(noteIn);
         if (!player.getHeldItemMainhand().isEmpty() && (player.getHeldItemMainhand().getItem() instanceof ItemHandHeld))
         {
             instId = ((ItemHandHeld) player.getHeldItemMainhand().getItem()).getInstrument().id;

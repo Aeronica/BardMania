@@ -169,12 +169,8 @@ public class RenderEvents
         {
             if (isMainHandHeld)
             {
-                Instrument instrument = ((ItemHandHeld) itemMain.getItem()).getInstrument();
-                if (!instrument.general.holdType.canRenderOffhand())
-                {
-                    event.setCanceled(true);
-                    return;
-                }
+                event.setCanceled(true);
+                return;
             }
         }
 

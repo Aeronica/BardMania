@@ -8,11 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayAction extends ActionBase
 {
-    private int note;
     public PlayAction(EntityPlayer playerIn, ModelDummy modelDummy, int noteIn)
     {
-        super(playerIn, modelDummy);
-        note = noteIn;
+        super(playerIn, modelDummy, noteIn);
     }
 
     @Override

@@ -25,6 +25,10 @@ public class ActionDispatcher
         instActions.put("flute_play", FluteTimelines::play);
         instActions.put("flute_equip", FluteTimelines::equip);
         instActions.put("flute_remove", FluteTimelines::remove);
+
+        instActions.put("xylophone_play", XylophoneTimelines::play);
+        instActions.put("xylophone_equip", XylophoneTimelines::equip);
+        instActions.put("xylophone_remove", XylophoneTimelines::remove);
     }
 
     public static Timeline select(final String id, final String action, EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int noteIn)

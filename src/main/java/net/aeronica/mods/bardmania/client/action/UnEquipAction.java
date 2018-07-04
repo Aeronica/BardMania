@@ -10,7 +10,7 @@ public class UnEquipAction extends ActionBase
 {
     public UnEquipAction(EntityPlayer playerIn, ModelDummy modelDummy)
     {
-        super(playerIn, modelDummy);
+        super(playerIn, modelDummy, 0);
     }
 
     @Override

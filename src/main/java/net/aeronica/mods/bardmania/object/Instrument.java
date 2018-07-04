@@ -13,7 +13,6 @@ public class Instrument {
     public static class General
     {
         @Optional public boolean wearable = false;
-        public HoldType holdType;
     }
 
     public static class Sounds

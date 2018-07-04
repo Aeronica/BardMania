@@ -16,28 +16,28 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
     public static final int EQUIP = 0;
     public static final int REMOVE = 1;
     private int posingPlayerId;
-    private int actionId;
+    private int actionid;
 
     public PoseActionMessage() {/* Default */}
 
-    public PoseActionMessage(EntityPlayer posingPlayer, int actionIdIn)
+    public PoseActionMessage(EntityPlayer posingPlayer, int actionIn)
     {
         posingPlayerId = posingPlayer.getEntityId();
-        actionId = actionIdIn;
+        actionid = actionIn;
     }
 
     @Override
     protected void read(PacketBuffer buffer) throws IOException
     {
         posingPlayerId = buffer.readInt();
-        actionId = buffer.readInt();
+        actionid = buffer.readInt();
     }
 
     @Override
     protected void write(PacketBuffer buffer) throws IOException
     {
         buffer.writeInt(posingPlayerId);
-        buffer.writeInt(actionId);
+        buffer.writeInt(actionid);
     }
 
     @Override
@@ -54,12 +54,12 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
         EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
         if (posingPlayer != null)
         {
-            if (actionId == EQUIP)
+            if (actionid == EQUIP)
                 PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, EQUIP), player, 64);
-            else if (actionId == REMOVE)
+            else if (actionid == REMOVE)
                 PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, REMOVE), player, 64);
             else
-                ModLogger.debug("Pose Action instId %d does not exist", actionId);
+                ModLogger.debug("Pose Action %d does not exist", actionid);
         }
     }
 
@@ -71,12 +71,12 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
             EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
             if (posingPlayer != null)
             {
-                if (actionId == EQUIP)
+                if (actionid == EQUIP)
                     ActionManager.equipAction(posingPlayer);
-                else if (actionId == REMOVE)
+                else if (actionid == REMOVE)
                     ActionManager.unEquipAction(posingPlayer);
                 else
-                    ModLogger.debug("Pose Action instId %d does not exist", actionId);
+                    ModLogger.debug("Pose Action %d does not exist", actionid);
             }
         }
     }

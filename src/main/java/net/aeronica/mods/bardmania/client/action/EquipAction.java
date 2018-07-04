@@ -11,7 +11,7 @@ public class EquipAction extends ActionBase
 
     public EquipAction(EntityPlayer playerIn, ModelDummy modelDummy)
     {
-        super(playerIn, modelDummy);
+        super(playerIn, modelDummy, 0);
     }
 
     @Override

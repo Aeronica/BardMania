@@ -2,7 +2,6 @@ package net.aeronica.mods.bardmania.proxy;
 
 import com.google.common.collect.ImmutableMap;
 import net.aeronica.mods.bardmania.client.action.ActionManager;
-import net.aeronica.mods.bardmania.common.KeyHelper;
 import net.aeronica.mods.bardmania.init.ModSoundEvents;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
@@ -24,6 +23,9 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
+
+import static net.aeronica.mods.bardmania.common.KeyHelper.calculatePitch;
+import static net.aeronica.mods.bardmania.common.KeyHelper.normalizeNote;
 
 public class ClientProxy extends CommonProxy
 {
@@ -51,21 +53,6 @@ public class ClientProxy extends CommonProxy
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playingPlayer.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D , playingPlayer.posY + 2.5D, playingPlayer.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
             ActionManager.playAction(playingPlayer, noteIn);
         }
-    }
-
-    /**
-     * Returns a zero based note from a midi note. In vanilla note block context 0-24
-     * @param noteIn
-     * @return
-     */
-    private byte normalizeNote(byte noteIn)
-    {
-        return (byte) (noteIn - KeyHelper.MIDI_NOTE_LOW);
-    }
-
-    private float calculatePitch(byte noteIn)
-    {
-        return (float) Math.pow(2.0D, (double) (normalizeNote(noteIn) - 12) / 12.0D);
     }
 
     @Override
