@@ -6,5 +6,5 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public interface IFunctionTimeLine
 {
-    Timeline invoke(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int noteIn);
+    Timeline invoke(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote);
 }

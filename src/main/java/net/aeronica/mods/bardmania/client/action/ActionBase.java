@@ -13,8 +13,9 @@ public abstract class ActionBase
     protected EntityPlayer player;
     protected ModelDummy modelDummy;
     protected boolean isDone = false;
-    protected String instId;
-    protected int note;
+    protected Instrument instrument;
+    protected String instrumentId;
+    protected int normalizedNote;
 
     protected TweenEngine tweenEngine = TweenEngine.create()
             .unsafe()
@@ -25,21 +26,23 @@ public abstract class ActionBase
 
     public ActionBase(EntityPlayer playerIn, ModelDummy modelDummy, int noteIn)
     {
-        Instrument instrument;
+
         this.player = playerIn;
         this.modelDummy = modelDummy;
-        this.note = normalizeNote(noteIn);
+        this.normalizedNote = normalizeNote(noteIn);
         if (!player.getHeldItemMainhand().isEmpty() && (player.getHeldItemMainhand().getItem() instanceof ItemHandHeld))
         {
-            instId = ((ItemHandHeld) player.getHeldItemMainhand().getItem()).getInstrument().id;
+            instrument = ((ItemHandHeld) player.getHeldItemMainhand().getItem()).getInstrument();
+            instrumentId = instrument.id;
+            ModLogger.info("Triggered      %s", player.getDisplayName().getUnformattedText());
             start();
         }
         else
         {
-            instId = "dead_beef";
+            instrumentId = "dead_beef";
             isDone = true;
+            ModLogger.info("Aborted trigger %s", player.getDisplayName().getUnformattedText());
         }
-        ModLogger.info("Triggered      %s", player.getDisplayName().getUnformattedText());
     }
 
     protected abstract void start();

@@ -17,7 +17,7 @@ public class PlayAction extends ActionBase
     protected void start()
     {
         Timeline timeline = tweenEngine.createSequential();
-        Timeline newTimeline = ActionDispatcher.select(instId, "play", player, tweenEngine, timeline, modelDummy, note);
+        Timeline newTimeline = ActionDispatcher.select(instrumentId, "play", player, tweenEngine, timeline, modelDummy, normalizedNote);
 
         newTimeline.addCallback(new TweenCallback(TweenCallback.Events.COMPLETE)
         {

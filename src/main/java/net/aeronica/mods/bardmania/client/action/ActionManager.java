@@ -109,10 +109,9 @@ public class ActionManager
             return modelDummy;
     }
 
-    private static void update(float deltaTime)
+    private static void update(float deltaTimeIn)
     {
-        if (actions.size() > 0)
-            actions.forEach(triggerAction -> triggerAction.update(deltaTime));
+        actions.forEach(triggerAction -> triggerAction.update(deltaTimeIn));
     }
 
     private static void cleanup()
@@ -173,7 +172,7 @@ public class ActionManager
     public static void onPlayerContainerEvent(PlayerContainerEvent event)
     {
         if (MidiHelper.isInUse())
-            MidiHelper.INSTANCE.notifyRemoved("Player Inventory Opened");
+            MidiHelper.INSTANCE.notifyRemoved("Player Inventory Closed");
     }
 
     @SubscribeEvent

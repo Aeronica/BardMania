@@ -58,11 +58,11 @@ public class KeyHelper
     public static boolean isMidiNoteInRange(byte midiNote) {return (midiNote >= MIDI_NOTE_LOW) && (midiNote <= MIDI_NOTE_HIGH);}
 
     /**
-     * Returns a zero based note from a midi note. In vanilla note block context 0-24
+     * Returns a zero based normalized note from a midi note. In vanilla note block context 0-24
      * @param noteIn
      * @return
      */
-    public static int normalizeNote(int noteIn) {return noteIn - KeyHelper.MIDI_NOTE_LOW;}
+    public static int normalizeNote(int noteIn) {return Math.max(noteIn - KeyHelper.MIDI_NOTE_LOW, 0);}
 
     public static float calculatePitch(byte noteIn) {return (float) Math.pow(2.0D, (double) (normalizeNote(noteIn) - 12) / 12.0D);}
 }

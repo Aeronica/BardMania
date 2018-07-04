@@ -17,7 +17,7 @@ public class UnEquipAction extends ActionBase
     protected void start()
     {
         Timeline timeline = tweenEngine.createSequential();
-        Timeline newTimeline = ActionDispatcher.select(instId, "remove", player, tweenEngine, timeline, modelDummy, 0);
+        Timeline newTimeline = ActionDispatcher.select(instrumentId, "remove", player, tweenEngine, timeline, modelDummy, normalizedNote);
 
         newTimeline.addCallback(new TweenCallback(TweenCallback.Events.COMPLETE)
         {

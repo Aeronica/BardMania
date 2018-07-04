@@ -18,7 +18,7 @@ public class EquipAction extends ActionBase
     protected void start()
     {
         Timeline timeline = tweenEngine.createSequential();
-        Timeline newTimeline = ActionDispatcher.select(instId, "equip", player, tweenEngine, timeline, modelDummy, 0);
+        Timeline newTimeline = ActionDispatcher.select(instrumentId, "equip", player, tweenEngine, timeline, modelDummy, normalizedNote);
 
         newTimeline.addCallback(new TweenCallback(TweenCallback.Events.COMPLETE)
         {
