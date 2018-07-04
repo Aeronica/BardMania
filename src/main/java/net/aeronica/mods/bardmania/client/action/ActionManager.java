@@ -56,48 +56,48 @@ public class ActionManager
 
     private ActionManager() {/* NOP */}
 
-    public static void triggerAction(EntityPlayer playerIn)
+    public static void playAction(EntityPlayer playerIn, int noteIn)
     {
         Integer playerId = playerIn.getEntityId();
         if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
-            actions.add(new PlayAction(playerIn, modelDummy));
+            actions.add(new PlayAction(playerIn, modelDummy, noteIn));
         }
         else
         {
-            actions.add(new PlayAction(playerIn, playerModels.get(playerId)));
+            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
         }
     }
 
-    public static void triggerEquipActionPose(EntityPlayer playerIn)
+    public static void equipAction(EntityPlayer playerIn)
     {
         Integer playerId = playerIn.getEntityId();
         if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
-            actions.add(new EquipActionPose(playerIn, modelDummy));
+            actions.add(new EquipAction(playerIn, modelDummy));
         }
         else
         {
-            actions.add(new EquipActionPose(playerIn, playerModels.get(playerId)));
+            actions.add(new EquipAction(playerIn, playerModels.get(playerId)));
         }
     }
 
-    public static void triggerRemoveActionPose(EntityPlayer playerIn)
+    public static void unEquipAction(EntityPlayer playerIn)
     {
         Integer playerId = playerIn.getEntityId();
         if (!playerModels.containsKey(playerId))
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
-            actions.add(new RemoveActionPose(playerIn, modelDummy));
+            actions.add(new UnEquipAction(playerIn, modelDummy));
         }
         else
         {
-            actions.add(new RemoveActionPose(playerIn, playerModels.get(playerId)));
+            actions.add(new UnEquipAction(playerIn, playerModels.get(playerId)));
         }
     }
 

@@ -6,20 +6,19 @@ import net.aeronica.dorkbox.tweenEngine.TweenCallback;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class PlayAction extends ActionBase
+public class EquipAction extends ActionBase
 {
-    private int note;
-    public PlayAction(EntityPlayer playerIn, ModelDummy modelDummy, int noteIn)
+
+    public EquipAction(EntityPlayer playerIn, ModelDummy modelDummy)
     {
         super(playerIn, modelDummy);
-        note = noteIn;
     }
 
     @Override
     protected void start()
     {
         Timeline timeline = tweenEngine.createSequential();
-        Timeline newTimeline = ActionDispatcher.select(instId, "play", player, tweenEngine, timeline, modelDummy, note);
+        Timeline newTimeline = ActionDispatcher.select(instId, "equip", player, tweenEngine, timeline, modelDummy, 0);
 
         newTimeline.addCallback(new TweenCallback(TweenCallback.Events.COMPLETE)
         {

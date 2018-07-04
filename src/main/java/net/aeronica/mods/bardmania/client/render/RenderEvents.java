@@ -139,9 +139,12 @@ public class RenderEvents
     @SubscribeEvent
     public static void onTick(TickEvent.ClientTickEvent event)
     {
-        motionSimple += motionIncDec;
-        if (motionSimple > 1F) motionIncDec = -0.0125F;
-        if (motionSimple < -1F) motionIncDec = 0.0125F;
+        if (event.phase.equals(TickEvent.Phase.START))
+        {
+            motionSimple += motionIncDec;
+            if (motionSimple > 1F) motionIncDec = -0.0250F;
+            if (motionSimple < -1F) motionIncDec = 0.0250F;
+        }
     }
 
     @SubscribeEvent
@@ -182,7 +185,7 @@ public class RenderEvents
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
+            applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
@@ -193,7 +196,7 @@ public class RenderEvents
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
-            instrument.general.holdType.getHeldAnimation().applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
+            applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
             // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
@@ -207,8 +210,7 @@ public class RenderEvents
         if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemHandHeld))
         {
             ModelPlayer model = event.getModelPlayer();
-            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerModelRotation(model, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
+            applyPlayerModelRotation(model, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
             copyModelAngles(model.bipedRightArm, model.bipedRightArmwear);
             copyModelAngles(model.bipedLeftArm, model.bipedLeftArmwear);
             copyModelAngles(model.bipedRightLeg, model.bipedRightLegwear);
@@ -223,8 +225,7 @@ public class RenderEvents
         ItemStack heldItem = player.getHeldItemMainhand();
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
         {
-            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            instrument.general.holdType.getHeldAnimation().applyPlayerPreRender(player, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
+            applyPlayerPreRender(player, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
         }
 
     }

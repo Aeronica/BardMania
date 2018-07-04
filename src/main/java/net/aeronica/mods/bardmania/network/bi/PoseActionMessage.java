@@ -59,7 +59,7 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
             else if (actionId == REMOVE)
                 PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, REMOVE), player, 64);
             else
-                ModLogger.debug("Pose Action id %d does not exist", actionId);
+                ModLogger.debug("Pose Action instId %d does not exist", actionId);
         }
     }
 
@@ -72,11 +72,11 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
             if (posingPlayer != null)
             {
                 if (actionId == EQUIP)
-                    ActionManager.triggerEquipActionPose(posingPlayer);
+                    ActionManager.equipAction(posingPlayer);
                 else if (actionId == REMOVE)
-                    ActionManager.triggerRemoveActionPose(posingPlayer);
+                    ActionManager.unEquipAction(posingPlayer);
                 else
-                    ModLogger.debug("Pose Action id %d does not exist", actionId);
+                    ModLogger.debug("Pose Action instId %d does not exist", actionId);
             }
         }
     }

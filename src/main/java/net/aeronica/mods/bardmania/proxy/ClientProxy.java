@@ -36,7 +36,7 @@ public class ClientProxy extends CommonProxy
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.5f, calculatePitch(noteIn));
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playerIn.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, playerIn.posY + 2.5D, playerIn.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
-            ActionManager.triggerAction(playerIn);
+            ActionManager.playAction(playerIn, noteIn);
         }
     }
 
@@ -49,7 +49,7 @@ public class ClientProxy extends CommonProxy
         {
             worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 3.0F, calculatePitch(noteIn), false);
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playingPlayer.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D , playingPlayer.posY + 2.5D, playingPlayer.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
-            ActionManager.triggerAction(playingPlayer);
+            ActionManager.playAction(playingPlayer, noteIn);
         }
     }
 
