@@ -4,7 +4,7 @@
     "general": {
     },
     "sounds": {
-      "timbre": "bardmania:recorder"
+      "timbre": "block.note.flute"
     }
   },
   {
@@ -12,7 +12,7 @@
     "general": {
     },
     "sounds": {
-      "timbre": "bardmania:lute"
+      "timbre": "block.note.guitar"
     }
   },
   {
@@ -21,15 +21,16 @@
       "wearable": true
     },
     "sounds": {
-      "timbre": "bardmania:drum"
+      "timbre": "block.note.snare"
     }
   },
   {
-    "id": "bells",
+    "id": "celtic_harp",
     "general": {
+      "wearable": true
     },
     "sounds": {
-      "timbre": "bardmania:carillon"
+      "timbre": "block.note.harp"
     }
   },
   {
