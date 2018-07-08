@@ -269,7 +269,7 @@ public class RenderEvents
         }
     }
 
-    private static void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float aimProgress, boolean leftHand)
+    private static void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float motion, boolean leftHand)
     {
         model.bipedHead.rotateAngleX += actions.getPartValue(HEAD_POSE_ROT_X) - actions.getPartValue(HEAD_ACTION_ROT_X);
         model.bipedHead.rotateAngleY += actions.getPartValue(HEAD_POSE_ROT_Y) - actions.getPartValue(HEAD_ACTION_ROT_Y);
@@ -279,12 +279,12 @@ public class RenderEvents
         model.bipedBody.rotateAngleX += actions.getPartValue(BODY_POSE_ROT_Y) - actions.getPartValue(BODY_ACTION_ROT_Y);
         model.bipedBody.rotateAngleX += actions.getPartValue(BODY_POSE_ROT_Z) - actions.getPartValue(BODY_ACTION_ROT_Z);
 
-        model.bipedRightArm.rotateAngleX = actions.getPartValue(RIGHT_ARM_POSE_ROT_X) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_X) + aimProgress / 30f;
-        model.bipedRightArm.rotateAngleY = actions.getPartValue(RIGHT_ARM_POSE_ROT_Y) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_Y) - aimProgress / 30f;
+        model.bipedRightArm.rotateAngleX = actions.getPartValue(RIGHT_ARM_POSE_ROT_X) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_X) + motion / 30f;
+        model.bipedRightArm.rotateAngleY = actions.getPartValue(RIGHT_ARM_POSE_ROT_Y) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_Y) - motion / 30f;
         model.bipedRightArm.rotateAngleZ = actions.getPartValue(RIGHT_ARM_POSE_ROT_Z) - actions.getPartValue(RIGHT_ARM_ACTION_ROT_Z);
 
-        model.bipedLeftArm.rotateAngleX = actions.getPartValue(LEFT_ARM_POSE_ROT_X) - actions.getPartValue(LEFT_ARM_ACTION_ROT_X) - aimProgress / 30f;
-        model.bipedLeftArm.rotateAngleY = actions.getPartValue(LEFT_ARM_POSE_ROT_Y) - actions.getPartValue(LEFT_ARM_ACTION_ROT_Y) + aimProgress / 30f;
+        model.bipedLeftArm.rotateAngleX = actions.getPartValue(LEFT_ARM_POSE_ROT_X) - actions.getPartValue(LEFT_ARM_ACTION_ROT_X) - motion / 30f;
+        model.bipedLeftArm.rotateAngleY = actions.getPartValue(LEFT_ARM_POSE_ROT_Y) - actions.getPartValue(LEFT_ARM_ACTION_ROT_Y) + motion / 30f;
         model.bipedLeftArm.rotateAngleZ = actions.getPartValue(LEFT_ARM_POSE_ROT_Z) - actions.getPartValue(LEFT_ARM_ACTION_ROT_Z);
 
         model.bipedRightLeg.rotateAngleX += actions.getPartValue(RIGHT_LEG_POSE_ROT_X) - actions.getPartValue(RIGHT_LEG_ACTION_ROT_X);
@@ -296,13 +296,13 @@ public class RenderEvents
         model.bipedLeftLeg.rotateAngleZ += actions.getPartValue(LEFT_LEG_POSE_ROT_Z) - actions.getPartValue(LEFT_LEG_ACTION_ROT_Z);
     }
 
-    private static void applyPlayerPreRender(EntityPlayer player, ModelDummy actions, float aimProgress, boolean leftHand)
+    private static void applyPlayerPreRender(EntityPlayer player, ModelDummy actions, float motion, boolean leftHand)
     {
         player.prevRenderYawOffset = player.prevRotationYaw + actions.getPartValue(PLAYER_POSE_ROTATION_YAW);
         player.renderYawOffset = player.rotationYaw + actions.getPartValue(PLAYER_POSE_ROTATION_YAW);
     }
 
-    private static void applyHeldItemTransforms(ModelDummy actions, float aimProgress, boolean leftHand)
+    private static void applyHeldItemTransforms(ModelDummy actions, float motion, boolean leftHand)
     {
         GlStateManager.translate(actions.getPartValue(ITEM_TRANS_X), actions.getPartValue(ITEM_TRANS_Y), actions.getPartValue(ITEM_TRANS_Z));
         GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Z), 0, 0, 1);
