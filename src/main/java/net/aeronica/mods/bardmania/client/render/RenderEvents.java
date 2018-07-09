@@ -17,6 +17,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +27,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -59,8 +61,15 @@ public class RenderEvents
     private static float motionIncDec = 0.05F;
     private static float motionSimple = 0F;
 
-    private static ItemStack DRUM_STICK = new ItemStack(ModInstruments.DRUM_STICK);
-    private static ItemStack MALLET = new ItemStack(ModInstruments.MALLET);
+    public static final ItemStack DRUM_STICK = new ItemStack(ModInstruments.DRUM_STICK);
+    public static final ItemStack MALLET = new ItemStack(ModInstruments.MALLET);
+
+    private static RenderLivingBase<?> renderLivingBase;
+
+    public static RenderLivingBase<?> getRenderLivingBase()
+    {
+        return renderLivingBase;
+    }
 
     private static ItemStack getHeldSelector()
     {
@@ -152,13 +161,19 @@ public class RenderEvents
     }
 
     @SubscribeEvent
+    public static void onRenderLivingEvent(RenderLivingEvent.Pre event)
+    {
+        renderLivingBase = event.getRenderer();
+    }
+
+    @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
         // Offhand ONLY instruments render normally. TODO: Simplify
         if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemHandHeld))
         {
-            event.setCanceled(false);
-            return;
+//            event.setCanceled(false);
+//            return;
         }
 
         ItemStack heldItem;
@@ -174,7 +189,7 @@ public class RenderEvents
             if (isMainHandHeld)
             {
                 event.setCanceled(true);
-                return;
+//                return;
             }
         }
 
@@ -182,11 +197,10 @@ public class RenderEvents
         if (heldItem.getItem() instanceof ItemHandHeld && event.getHandSide().equals(event.getEntity().getPrimaryHand()))
         {
             event.setCanceled(true);
-
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            if (instrument.general.wearable) heldItem = MALLET;
+            if (instrument.general.wearable) return;
+
             applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
-//            RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
 
@@ -194,9 +208,9 @@ public class RenderEvents
         {
             event.setCanceled(true);
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            if (instrument.general.wearable) heldItem = MALLET;
+            if (instrument.general.wearable) return;
+
             applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
-//            RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
     }
