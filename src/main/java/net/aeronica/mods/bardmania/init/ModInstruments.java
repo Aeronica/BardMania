@@ -21,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import net.aeronica.mods.bardmania.item.ItemAccessory;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.item.Item;
@@ -35,6 +36,9 @@ import java.util.List;
 public class ModInstruments
 {
     static final List<ItemHandHeld> INSTRUMENTS = new ArrayList<>();
+
+    public static final Item DRUM_STICK;
+    public static final Item MALLET;
 
     static
     {
@@ -66,6 +70,9 @@ public class ModInstruments
         {
             e.printStackTrace();
         }
+
+        DRUM_STICK = new ItemAccessory("drum_stick");
+        MALLET = new ItemAccessory("mallet");
     }
 
     public static void register()
@@ -74,6 +81,8 @@ public class ModInstruments
         {
             register(item);
         }
+        register(DRUM_STICK);
+        register(MALLET);
     }
 
     private static void register(Item item)

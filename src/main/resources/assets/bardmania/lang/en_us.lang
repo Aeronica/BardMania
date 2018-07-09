@@ -1,4 +1,3 @@
-< en_US.lang - English localization file >
 config.bardmania.title=Bard Mania
 config.bardmania.client_options.title=Client Options
 config.bardmania.input_mode=Input Mode
@@ -39,7 +38,6 @@ item.bardmania:lute.name=Lute
 item.bardmania:melodic_toms.name=Melodic Toms
 item.bardmania:lyre.name=Lyre
 item.bardmania:xylophone.name=Xylophone
-tooltip.bardmania.opened_midi_devices=Open MIDI devices:
 tooltip.bardmania.opened_midi_devices=Open MIDI devices:
 tooltip.bardmania.input_mode=Input Mode:
 tooltip.bardmania.right_click_to_activate_pc_keyboard=Right Click to Activate PC Keyboard

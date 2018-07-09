@@ -7,6 +7,7 @@ import net.aeronica.mods.bardmania.client.action.ActionManager;
 import net.aeronica.mods.bardmania.client.action.ModelDummy;
 import net.aeronica.mods.bardmania.common.IPlaceableBounding;
 import net.aeronica.mods.bardmania.common.LocationArea;
+import net.aeronica.mods.bardmania.init.ModInstruments;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
 import net.minecraft.client.Minecraft;
@@ -57,6 +58,9 @@ public class RenderEvents
     private static Minecraft mc = Minecraft.getMinecraft();
     private static float motionIncDec = 0.05F;
     private static float motionSimple = 0F;
+
+    private static ItemStack DRUM_STICK = new ItemStack(ModInstruments.DRUM_STICK);
+    private static ItemStack MALLET = new ItemStack(ModInstruments.MALLET);
 
     private static ItemStack getHeldSelector()
     {
@@ -180,20 +184,19 @@ public class RenderEvents
             event.setCanceled(true);
 
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            if (instrument.general.wearable) return;
+            if (instrument.general.wearable) heldItem = MALLET;
             applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
-            // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+//            RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
 
-        if (heldItem.getItem() instanceof ItemHandHeld && !event.getHandSide().equals(event.getEntity().getPrimaryHand()))
+        if (heldItem.getItem() instanceof ItemHandHeld  && !event.getHandSide().equals(event.getEntity().getPrimaryHand()))
         {
             event.setCanceled(true);
-
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
-            if (instrument.general.wearable) return;
+            if (instrument.general.wearable) heldItem = MALLET;
             applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
-            // RenderUtil.applyTransformType(heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
+//            RenderUtil.applyTransformType(heldItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
     }
