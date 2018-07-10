@@ -39,7 +39,7 @@ public class LuteTimelines
 
                 .push(tweenEngine.to(modelDummy, PLAYER_POSE_ROTATION_YAW, 0.25F).target(40f).ease(TweenEquations.Sine_InOut))
 
-                .push(tweenEngine.to(modelDummy, ITEM_ROT_Y, 0.25F).target(40f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.25F).target(40f).ease(TweenEquations.Sine_InOut))
                 .end();
         return timeline;
     }
@@ -55,7 +55,7 @@ public class LuteTimelines
 
                 .push(tweenEngine.to(modelDummy, PLAYER_POSE_ROTATION_YAW, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
 
-                .push(tweenEngine.to(modelDummy, ITEM_ROT_Y, 0.25F).target(0F).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.25F).target(0F).ease(TweenEquations.Sine_InOut))
                 .end();
         return timeline;
     }

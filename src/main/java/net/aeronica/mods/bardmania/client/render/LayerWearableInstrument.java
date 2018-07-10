@@ -18,7 +18,6 @@ package net.aeronica.mods.bardmania.client.render;
 
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.client.action.ActionManager;
-import net.aeronica.mods.bardmania.client.action.ModelDummy;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
@@ -31,8 +30,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
-
-import static net.aeronica.mods.bardmania.client.action.ModelAccessor.*;
 
 public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
 {
@@ -86,24 +83,20 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
             // Forge: moved this call down, fixes incorrect offset while sneaking.
-            boolean flag = handSide == EnumHandSide.LEFT;
+            boolean isLeftHand = handSide == EnumHandSide.LEFT;
             this.translateToHand(handSide);
 
-            if (flag)
-            {
-                ModelDummy actions = ActionManager.getModelDummy((EntityPlayer) entityLivingBase);
-                GlStateManager.translate(actions.getPartValue(ITEM_TRANS_X), actions.getPartValue(ITEM_TRANS_Y), actions.getPartValue(ITEM_TRANS_Z));
-                GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Z), 0, 0, 1);
-                GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Y), 0, 1, 0);
-                GlStateManager.rotate(actions.getPartValue(ITEM_ROT_X), 1, 0, 0);
-            }
+            if (isLeftHand)
+                RenderEvents.applyLeftHandHeldItemTransforms(ActionManager.getModelDummy((EntityPlayer) entityLivingBase), 0f);
+            else
+                RenderEvents.applyRightHandHeldItemTransforms(ActionManager.getModelDummy((EntityPlayer) entityLivingBase), 0f);
 
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 
 
-            GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(entityLivingBase, itemStack, transformType, flag);
+            GlStateManager.translate((float)(isLeftHand ? -1 : 1) / 16.0F, 0.125F, -0.625F);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(entityLivingBase, itemStack, transformType, isLeftHand);
             GlStateManager.popMatrix();
         }
     }

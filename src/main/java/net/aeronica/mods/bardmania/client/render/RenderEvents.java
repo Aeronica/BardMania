@@ -200,7 +200,7 @@ public class RenderEvents
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
 
-            applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
+            applyRightHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
 
@@ -210,7 +210,7 @@ public class RenderEvents
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
 
-            applyHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple, renderLeft);
+            applyRightHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
     }
@@ -319,12 +319,20 @@ public class RenderEvents
         player.renderYawOffset = player.rotationYaw + actions.getPartValue(PLAYER_POSE_ROTATION_YAW);
     }
 
-    private static void applyHeldItemTransforms(ModelDummy actions, float motion, boolean leftHand)
+    public static void applyRightHandHeldItemTransforms(ModelDummy actions, float motion)
     {
-        GlStateManager.translate(actions.getPartValue(ITEM_TRANS_X), actions.getPartValue(ITEM_TRANS_Y), actions.getPartValue(ITEM_TRANS_Z));
-        GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Z), 0, 0, 1);
-        GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Y), 0, 1, 0);
-        GlStateManager.rotate(actions.getPartValue(ITEM_ROT_X), 1, 0, 0);
+        GlStateManager.translate(actions.getPartValue(RIGHT_HAND_ITEM_TRANS_X), actions.getPartValue(RIGHT_HAND_ITEM_TRANS_Y), actions.getPartValue(RIGHT_HAND_ITEM_TRANS_Z));
+        GlStateManager.rotate(actions.getPartValue(RIGHT_HAND_ITEM_ROT_Z), 0, 0, 1);
+        GlStateManager.rotate(actions.getPartValue(RIGHT_HAND_ITEM_ROT_Y), 0, 1, 0);
+        GlStateManager.rotate(actions.getPartValue(RIGHT_HAND_ITEM_ROT_X), 1, 0, 0);
+    }
+
+    public static void applyLeftHandHeldItemTransforms(ModelDummy actions, float motion)
+    {
+        GlStateManager.translate(actions.getPartValue(LEFT_HAND_ITEM_TRANS_X), actions.getPartValue(LEFT_HAND_ITEM_TRANS_Y), actions.getPartValue(LEFT_HAND_ITEM_TRANS_Z));
+        GlStateManager.rotate(actions.getPartValue(LEFT_HAND_ITEM_ROT_Z), 0, 0, 1);
+        GlStateManager.rotate(actions.getPartValue(LEFT_HAND_ITEM_ROT_Y), 0, 1, 0);
+        GlStateManager.rotate(actions.getPartValue(LEFT_HAND_ITEM_ROT_X), 1, 0, 0);
     }
 }
 
