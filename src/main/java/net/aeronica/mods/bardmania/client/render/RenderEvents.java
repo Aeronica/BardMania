@@ -210,7 +210,7 @@ public class RenderEvents
             Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
 
-            applyRightHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
+            applyLeftHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
     }
