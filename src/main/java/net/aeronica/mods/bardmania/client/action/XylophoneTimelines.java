@@ -14,16 +14,20 @@ public class XylophoneTimelines
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
         timeline.beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.09f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.09f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(RightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+
+                .push(tweenEngine.to(modelDummy, ITEM_ROT_Y, 0.15f).target(10F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
                 .end()
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.09f).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.09f).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+
+                .push(tweenEngine.to(modelDummy, ITEM_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
         return timeline;
     }
@@ -56,7 +60,7 @@ public class XylophoneTimelines
 
     private static float leftHandNotePosition(int normalizedNote)
     {
-        return (normalizedNote >= 0 && normalizedNote <=12) ? -(normalizedNote * 1.2f) / 12f + 0.6f : 0f;
+        return (normalizedNote >= 0 && normalizedNote <=12) ? -(normalizedNote * 1.2f) / 12f + 1.0f : 0f;
     }
 
     private static float leftHandNote(int normalizedNote)
@@ -66,7 +70,7 @@ public class XylophoneTimelines
 
     private static float RightHandNotePosition(int normalizedNote)
     {
-        return (normalizedNote >= 13 && normalizedNote <= 24) ? -((normalizedNote-13) * 1.2f) / 12f + 0.6f : 0f;
+        return (normalizedNote >= 13 && normalizedNote <= 24) ? -((normalizedNote-13) * 1.2f) / 12f + 0.1f : 0f;
     }
 
     private static float rightHandNote(int normalizedNote)

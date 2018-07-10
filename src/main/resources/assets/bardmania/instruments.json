@@ -18,7 +18,9 @@
   {
     "id": "melodic_toms",
     "general": {
-      "wearable": true
+      "wearable": true,
+      "leftHand": "drum_stick",
+      "rightHand": "drum_stick"
     },
     "sounds": {
       "timbre": "block.note.snare"
@@ -36,7 +38,9 @@
   {
     "id": "xylophone",
     "general": {
-      "wearable": true
+      "wearable": true,
+      "leftHand": "mallet",
+      "rightHand": "mallet"
     },
     "sounds": {
       "timbre": "block.note.xylophone"

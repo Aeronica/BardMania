@@ -17,6 +17,8 @@
 package net.aeronica.mods.bardmania.client.render;
 
 import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.client.action.ActionManager;
+import net.aeronica.mods.bardmania.client.action.ModelDummy;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.aeronica.mods.bardmania.object.Instrument;
@@ -26,8 +28,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
+
+import static net.aeronica.mods.bardmania.client.action.ModelAccessor.*;
 
 public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
 {
@@ -39,9 +44,9 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
     {
         if (!entitylivingbaseIn.isInvisible() && (entitylivingbaseIn.getHeldItemMainhand().getItem() instanceof ItemHandHeld))
         {
-            Instrument instrument = ((ItemHandHeld) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
+            Instrument inst = ((ItemHandHeld) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
             ItemStack itemStack = entitylivingbaseIn.getHeldItemMainhand();
-            if (instrument.general.wearable)
+            if (inst.general.wearable)
             {
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(0, 0.0625 * 9, -0.0625 * 9);
@@ -59,42 +64,55 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                     GlStateManager.scale(0.5F, 0.5F, 0.5F);
                 }
 
-                this.renderHeldItem(entitylivingbaseIn, RenderEvents.MALLET, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
-                this.renderHeldItem(entitylivingbaseIn, RenderEvents.MALLET, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, EnumHandSide.LEFT);
+                ItemStack rightHandItem = inst.general.rightHand.getHeldAccessory().getItem();
+                ItemStack leftHandItem = inst.general.rightHand.getHeldAccessory().getItem();
+                this.renderHeldItem(entitylivingbaseIn, rightHandItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
+                this.renderHeldItem(entitylivingbaseIn, leftHandItem, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, EnumHandSide.LEFT);
                 GlStateManager.popMatrix();
-
             }
         }
     }
 
     // copied from net.minecraft.client.renderer.entity.layers.LayerHeldItem
     // TODO: cleanup
-    private void renderHeldItem(EntityLivingBase p_188358_1_, ItemStack p_188358_2_, ItemCameraTransforms.TransformType p_188358_3_, EnumHandSide handSide)
+    private void renderHeldItem(EntityLivingBase entityLivingBase, ItemStack itemStack, ItemCameraTransforms.TransformType transformType, EnumHandSide handSide)
     {
-        if (!p_188358_2_.isEmpty())
+        if (!itemStack.isEmpty())
         {
             GlStateManager.pushMatrix();
 
-            if (p_188358_1_.isSneaking())
+            if (entityLivingBase.isSneaking())
             {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
             // Forge: moved this call down, fixes incorrect offset while sneaking.
+            boolean flag = handSide == EnumHandSide.LEFT;
             this.translateToHand(handSide);
+
+            if (flag)
+            {
+                ModelDummy actions = ActionManager.getModelDummy((EntityPlayer) entityLivingBase);
+                GlStateManager.translate(actions.getPartValue(ITEM_TRANS_X), actions.getPartValue(ITEM_TRANS_Y), actions.getPartValue(ITEM_TRANS_Z));
+                GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Z), 0, 0, 1);
+                GlStateManager.rotate(actions.getPartValue(ITEM_ROT_Y), 0, 1, 0);
+                GlStateManager.rotate(actions.getPartValue(ITEM_ROT_X), 1, 0, 0);
+            }
+
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-            boolean flag = handSide == EnumHandSide.LEFT;
+
+
             GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(p_188358_1_, p_188358_2_, p_188358_3_, flag);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(entityLivingBase, itemStack, transformType, flag);
             GlStateManager.popMatrix();
         }
     }
 
     // copied from net.minecraft.client.renderer.entity.layers.LayerHeldItem
     // TODO: cleanup
-    protected void translateToHand(EnumHandSide p_191361_1_)
+    protected void translateToHand(EnumHandSide enumHandSide)
     {
-        ((ModelBiped)RenderEvents.getRenderLivingBase().getMainModel()).postRenderArm(0.0625F, p_191361_1_);
+        ((ModelBiped)RenderEvents.getRenderLivingBase().getMainModel()).postRenderArm(0.0625F, enumHandSide);
     }
 
     @Override

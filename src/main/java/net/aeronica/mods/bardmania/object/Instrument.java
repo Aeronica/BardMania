@@ -13,6 +13,12 @@ public class Instrument {
     public static class General
     {
         @Optional public boolean wearable = false;
+        /*
+         * Only useful when wearable = true
+         * For held items like mallets, drum sticks, etc.
+         */
+        @Optional public AccessoryType leftHand = AccessoryType.EMPTY;
+        @Optional public AccessoryType rightHand = AccessoryType.EMPTY;
     }
 
     public static class Sounds
@@ -22,8 +28,5 @@ public class Instrument {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
-    public @interface Optional
-    {
-
-    }
+    public @interface Optional {}
 }
