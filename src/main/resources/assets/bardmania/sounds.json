@@ -1,6 +1,10 @@
 {
-   "carillon": { "category": "player", "sounds": [{ "name": "bardmania:carillon", "stream": false }]},
-   "drum": { "category": "player", "sounds": [{ "name": "bardmania:drum", "stream": false }]},
-   "lute": { "category": "player", "sounds": [{ "name": "bardmania:lute", "stream": false }]},
-   "recorder": { "category": "player", "sounds": [{ "name": "bardmania:recorder", "stream": false }]}
+  "carillon": { "category": "player", "sounds": [{ "name": "bardmania:carillon", "stream": false }]},
+  "melodic_toms": { "category": "player", "sounds": [{ "name": "bardmania:melodic_toms", "stream": false }]},
+  "harp": { "category": "player", "sounds": [{ "name": "bardmania:harp", "stream": false }]},
+  "flute": { "category": "player", "sounds": [{ "name": "bardmania:flute", "stream": false }]},
+  "lute": { "category": "player", "sounds": [{ "name": "bardmania:lute", "stream": false }]},
+  "mandolin": { "category": "player", "sounds": [{ "name": "bardmania:mandolin", "stream": false }]},
+  "recorder": { "category": "player", "sounds": [{ "name": "bardmania:recorder", "stream": false }]},
+  "xylophone": { "category": "player", "sounds": [{ "name": "bardmania:xylophone", "stream": false }]}
 }

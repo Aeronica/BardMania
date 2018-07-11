@@ -1,10 +1,18 @@
 [
   {
+    "id": "banjo",
+    "general": {
+    },
+    "sounds": {
+      "timbre": "bardmania:banjo"
+    }
+  },
+  {
     "id": "flute",
     "general": {
     },
     "sounds": {
-      "timbre": "block.note.flute"
+      "timbre": "bardmania:flute"
     }
   },
   {
@@ -12,18 +20,26 @@
     "general": {
     },
     "sounds": {
-      "timbre": "block.note.guitar"
+      "timbre": "bardmania:mandolin_ex"
     }
   },
   {
-    "id": "melodic_toms",
+    "id": "mandolin",
+    "general": {
+    },
+    "sounds": {
+      "timbre": "bardmania:mandolin"
+    }
+  },
+  {
+    "id": "marching_drums",
     "general": {
       "wearable": true,
       "leftHand": "drum_stick",
       "rightHand": "drum_stick"
     },
     "sounds": {
-      "timbre": "block.note.snare"
+      "timbre": "bardmania:melodic_toms"
     }
   },
   {
@@ -32,7 +48,15 @@
       "wearable": true
     },
     "sounds": {
-      "timbre": "block.note.harp"
+      "timbre": "bardmania:harp"
+    }
+  },
+  {
+    "id": "recorder",
+    "general": {
+    },
+    "sounds": {
+      "timbre": "bardmania:recorder"
     }
   },
   {
@@ -43,7 +67,7 @@
       "rightHand": "mallet"
     },
     "sounds": {
-      "timbre": "block.note.xylophone"
+      "timbre": "bardmania:xylophone"
     }
   }
 ]
