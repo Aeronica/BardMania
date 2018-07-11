@@ -173,7 +173,6 @@ public enum MidiHelper implements Receiver
                     {
                         ModLogger.error(e);
                     }
-
             openDevices.clear();
         }
     }

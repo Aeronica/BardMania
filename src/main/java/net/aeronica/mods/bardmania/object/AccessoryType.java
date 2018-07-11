@@ -11,7 +11,6 @@ public enum AccessoryType
     }),
     @SerializedName("drum_stick")
     DRUM_STICK(new HeldAccessory() {
-
         @Override
         public ItemStack getItem()
         {
@@ -20,7 +19,6 @@ public enum AccessoryType
     }),
     @SerializedName("mallet")
     MALLET(new HeldAccessory() {
-
         @Override
         public ItemStack getItem()
         {

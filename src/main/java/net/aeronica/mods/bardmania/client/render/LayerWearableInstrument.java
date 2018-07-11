@@ -62,7 +62,7 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                 }
 
                 ItemStack rightHandItem = inst.general.rightHand.getHeldAccessory().getItem();
-                ItemStack leftHandItem = inst.general.rightHand.getHeldAccessory().getItem();
+                ItemStack leftHandItem = inst.general.leftHand.getHeldAccessory().getItem();
                 this.renderHeldItem(entitylivingbaseIn, rightHandItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
                 this.renderHeldItem(entitylivingbaseIn, leftHandItem, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, EnumHandSide.LEFT);
                 GlStateManager.popMatrix();

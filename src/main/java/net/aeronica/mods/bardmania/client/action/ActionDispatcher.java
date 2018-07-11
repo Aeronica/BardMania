@@ -32,9 +32,9 @@ public class ActionDispatcher
         instActions.put("xylophone_equip", XylophoneTimelines::equip);
         instActions.put("xylophone_remove", XylophoneTimelines::remove);
 
-        instActions.put("melodic_toms_play", MelodicTomsTimelines::play);
-        instActions.put("melodic_toms_equip", MelodicTomsTimelines::equip);
-        instActions.put("melodic_toms_remove", MelodicTomsTimelines::remove);
+        instActions.put("marching_drums_play", MarchingDrumsTimelines::play);
+        instActions.put("marching_drums_equip", MarchingDrumsTimelines::equip);
+        instActions.put("marching_drums_remove", MarchingDrumsTimelines::remove);
     }
 
     public static Timeline select(final String id, final String action, EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)

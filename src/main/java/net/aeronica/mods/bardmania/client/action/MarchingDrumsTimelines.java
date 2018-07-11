@@ -7,9 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import static net.aeronica.mods.bardmania.client.action.ModelAccessor.*;
 
-public class MelodicTomsTimelines
+public class MarchingDrumsTimelines
 {
-    private MelodicTomsTimelines() {/* NOP */}
+    private MarchingDrumsTimelines() {/* NOP */}
 
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {

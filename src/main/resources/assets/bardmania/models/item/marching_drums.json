@@ -1,14 +1,14 @@
 {
   "credit": "Made with Blockbench",
   "textures": {
-    "0": "bardmania:items/melodic_toms_shells_01",
-    "1": "bardmania:items/melodic_toms_heads_01",
-    "2": "bardmania:items/melodic_toms_frame",
-    "3": "bardmania:items/melodic_toms_shells_02",
-    "4": "bardmania:items/melodic_toms_heads_02",
-    "5": "bardmania:items/melodic_toms_shells_03",
-    "6": "bardmania:items/melodic_toms_waist",
-    "particle": "bardmania:items/melodic_toms_shells_01"
+    "0": "bardmania:items/marching_drums_shells_01",
+    "1": "bardmania:items/marching_drums_heads_01",
+    "2": "bardmania:items/marching_drums_frame",
+    "3": "bardmania:items/marching_drums_shells_02",
+    "4": "bardmania:items/marching_drums_heads_02",
+    "5": "bardmania:items/marching_drums_shells_03",
+    "6": "bardmania:items/marching_drums_waist",
+    "particle": "bardmania:items/marching_drums_shells_01"
   },
   "elements": [
     {
