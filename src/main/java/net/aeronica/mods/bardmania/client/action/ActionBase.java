@@ -20,7 +20,7 @@ public abstract class ActionBase
     protected TweenEngine tweenEngine = TweenEngine.create()
             .unsafe()
             .setWaypointsLimit(10)
-            .setCombinedAttributesLimit(3)
+            .setCombinedAttributesLimit(1)
             .registerAccessor(ModelDummy.class, new ModelAccessor())
             .build();
 
