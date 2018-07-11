@@ -172,8 +172,8 @@ public class RenderEvents
         // Offhand ONLY instruments render normally. TODO: Simplify
         if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemHandHeld))
         {
-//            event.setCanceled(false);
-//            return;
+            event.setCanceled(false);
+            return;
         }
 
         ItemStack heldItem;
@@ -189,7 +189,7 @@ public class RenderEvents
             if (isMainHandHeld)
             {
                 event.setCanceled(true);
-//                return;
+                return;
             }
         }
 
