@@ -14,22 +14,22 @@ public class XylophoneTimelines
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
         timeline.beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.09f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.10f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.09f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.10f).target(RightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.12f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.12f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.12f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.12f).target(RightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
 
-                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.15f).target(-10F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.15f).target(10F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.05f).target(-10F * rightHandNote(normalizedNote)).ease(TweenEquations.Cubic_In))
+                .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.05f).target(10F * leftHandNote(normalizedNote)).ease(TweenEquations.Cubic_In))
                 .end()
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.09f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.19f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.09f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.19f).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
 
-                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.01f).target(0f).ease(TweenEquations.Cubic_Out))
+                .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.01f).target(0f).ease(TweenEquations.Cubic_Out))
                 .end();
         return timeline;
     }
