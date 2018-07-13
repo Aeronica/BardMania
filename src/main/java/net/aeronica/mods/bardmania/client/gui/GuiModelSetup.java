@@ -45,15 +45,15 @@ public class GuiModelSetup extends GuiScreen
     public void initGui()
     {
         super.initGui();
-        playerYaw = mc.player.rotationYaw;
+        playerYaw = 1f;
         inst = ((ItemHandHeld) mc.player.getHeldItemMainhand().getItem()).getInstrument();
         int y = 20;
         int x = 10;
         int w = 120;
         sliderPlayerRotYaw = new GuiSliderMX(0, x, y, w, 20,"Player Yaw", playerYaw, -180f, 180f, 1f);
-        translateX = new GuiSliderMX(1, x, y+=22, w, 20,"Trans X", inst.general.translationXYZ[0], -1f, 1f, 0.01f);
-        translateY = new GuiSliderMX(2, x, y+=22, w, 20,"Trans Y", inst.general.translationXYZ[1], -1f, 1f, 0.01f);
-        translateZ = new GuiSliderMX(3, x, y+=22, w, 20,"Trans Z", inst.general.translationXYZ[2], -1f, 1f, 0.01f);
+        translateX = new GuiSliderMX(1, x, y+=22, w, 20,"Trans X", inst.general.translationXYZ[0], -0.5f, 0.5f, 0.01f);
+        translateY = new GuiSliderMX(2, x, y+=22, w, 20,"Trans Y", inst.general.translationXYZ[1], -0.5f, 0.5f, 0.01f);
+        translateZ = new GuiSliderMX(3, x, y+=22, w, 20,"Trans Z", inst.general.translationXYZ[2], -0.5f, 0.5f, 0.01f);
         rotateX = new GuiSliderMX(4, x, y+=22, w, 20,"Rotate X", inst.general.rotationXYZ[0], -180f, 180f, 1f);
         rotateY = new GuiSliderMX(5, x, y+=22, w, 20,"Rotate Y", inst.general.rotationXYZ[1], -180f, 180f, 1f);
         rotateZ = new GuiSliderMX(6, x, y+=22, w, 20,"Rotate Z", inst.general.rotationXYZ[2], -180f, 180f, 1f);
