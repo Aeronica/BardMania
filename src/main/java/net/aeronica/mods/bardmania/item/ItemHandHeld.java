@@ -83,8 +83,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         {
             if (playerIn.isSneaking() && GuiScreen.isCtrlKeyDown())
                 playerIn.openGui(BardMania.instance(), GuiGuid.MODEL_SETUP, worldIn, 0, 0, 0);
-            else
-            if (playerIn.isSneaking())
+            else if (playerIn.isSneaking() && !GuiScreen.isCtrlKeyDown())
             {
                 MidiHelper.INSTANCE.notifyRemoved(heldItem);
                 ModConfig.toggleInputMode();
