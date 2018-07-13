@@ -20,21 +20,21 @@ public class ActionDispatcher
 
     static
     {
-        instActions.put("lute_play", LuteTimelines::play);
-        instActions.put("lute_equip", LuteTimelines::equip);
-        instActions.put("lute_remove", LuteTimelines::remove);
+        instActions.put("lute_play", LuteTimeLines::play);
+        instActions.put("lute_equip", LuteTimeLines::equip);
+        instActions.put("lute_remove", LuteTimeLines::remove);
 
-        instActions.put("flute_play", FluteTimelines::play);
-        instActions.put("flute_equip", FluteTimelines::equip);
-        instActions.put("flute_remove", FluteTimelines::remove);
+        instActions.put("flute_play", FluteTimeLines::play);
+        instActions.put("flute_equip", FluteTimeLines::equip);
+        instActions.put("flute_remove", FluteTimeLines::remove);
 
-        instActions.put("xylophone_play", XylophoneTimelines::play);
-        instActions.put("xylophone_equip", XylophoneTimelines::equip);
-        instActions.put("xylophone_remove", XylophoneTimelines::remove);
+        instActions.put("xylophone_play", XylophoneTimeLines::play);
+        instActions.put("xylophone_equip", XylophoneTimeLines::equip);
+        instActions.put("xylophone_remove", XylophoneTimeLines::remove);
 
-        instActions.put("marching_drums_play", MarchingDrumsTimelines::play);
-        instActions.put("marching_drums_equip", MarchingDrumsTimelines::equip);
-        instActions.put("marching_drums_remove", MarchingDrumsTimelines::remove);
+        instActions.put("marching_drums_play", MarchingDrumsTimeLines::play);
+        instActions.put("marching_drums_equip", MarchingDrumsTimeLines::equip);
+        instActions.put("marching_drums_remove", MarchingDrumsTimeLines::remove);
     }
 
     public static Timeline select(final String id, final String action, EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
