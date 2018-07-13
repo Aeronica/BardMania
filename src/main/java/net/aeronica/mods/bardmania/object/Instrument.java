@@ -19,6 +19,12 @@ public class Instrument {
          */
         @Optional public AccessoryType leftHand = AccessoryType.EMPTY;
         @Optional public AccessoryType rightHand = AccessoryType.EMPTY;
+        /*
+         * Wearable item transforms
+         */
+        @Optional public float[] translationXYZ = {0f, 0f, 0f};
+        @Optional public float[] rotationXYZ = {0f ,0f ,0f};
+        @Optional public float[] scaleXYZ = {1f, 1f, 1f};
     }
 
     public static class Sounds

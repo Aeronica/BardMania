@@ -49,6 +49,13 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                 GlStateManager.translate(0, 0.0625 * 9, -0.0625 * 9);
                 GlStateManager.rotate(180, 0, 1, 0);
                 GlStateManager.rotate(180, 1, 0, 0);
+
+                // TODO: testing
+                GlStateManager.translate(inst.general.translationXYZ[0], inst.general.translationXYZ[1], inst.general.translationXYZ[2]);
+                GlStateManager.rotate(inst.general.rotationXYZ[0], 0, 0, 1);
+                GlStateManager.rotate(inst.general.rotationXYZ[1], 0, 1, 0);
+                GlStateManager.rotate(inst.general.rotationXYZ[2], 1, 0, 0);
+                GlStateManager.scale(inst.general.scaleXYZ[0], inst.general.scaleXYZ[1], inst.general.scaleXYZ[2]);
                 BardMania.proxy.getMinecraft().getRenderItem().renderItem(itemStack, entitylivingbaseIn, ItemCameraTransforms.TransformType.NONE, false);
                 GlStateManager.popMatrix();
 
