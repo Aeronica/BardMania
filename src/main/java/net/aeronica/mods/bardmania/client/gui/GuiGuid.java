@@ -19,4 +19,5 @@ package net.aeronica.mods.bardmania.client.gui;
 public class GuiGuid
 {
     public static final int KEYBOARD = 0;
+    public static final int MODEL_SETUP = 1;
 }

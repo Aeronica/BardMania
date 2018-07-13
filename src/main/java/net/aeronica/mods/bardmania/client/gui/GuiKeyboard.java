@@ -35,7 +35,7 @@ import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen
 
 public class GuiKeyboard extends GuiScreen
 {
-    public static final ResourceLocation GUI_BACKGROUD = new ResourceLocation(Reference.MOD_ID,"textures/gui/gui_player_background.png");
+    public static final ResourceLocation GUI_BACKGROUND = new ResourceLocation(Reference.MOD_ID, "textures/gui/gui_player_background.png");
     private static final String KEY_TOPS = "ZSXDCVGBHNJM,Q2W3ER5T6Y7UI";
     private static int[] SHARPES = {1, 3, -1, 6, 8, 10};
     private static int[] NATURAL = {0, 2, 4, 5, 7, 9, 11, 12};
@@ -61,7 +61,7 @@ public class GuiKeyboard extends GuiScreen
     @Override
     public void onGuiClosed()
     {
-        MidiHelper.INSTANCE.notifyRemoved("Gui  Keyboard Closed"); // TODO: for testing
+        MidiHelper.INSTANCE.notifyRemoved("Gui  Keyboard Closed");
         super.onGuiClosed();
     }
 
@@ -85,7 +85,7 @@ public class GuiKeyboard extends GuiScreen
     protected void drawGuiPlayerBackgroundLayer(float partialTicks, int mouseX, int mouseY, int xIn, int yIn)
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(GUI_BACKGROUD);
+        mc.getTextureManager().bindTexture(GUI_BACKGROUND);
         int i = xIn + 100/2;
         int j = 120+8;
         //drawBox(xIn, yIn, 100, 120);

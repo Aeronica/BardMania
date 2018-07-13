@@ -26,6 +26,7 @@ import net.aeronica.mods.bardmania.common.ModConfig;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
 import net.aeronica.mods.bardmania.network.client.PlaySoundMessage;
 import net.aeronica.mods.bardmania.object.Instrument;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -80,6 +81,9 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         playerIn.setActiveHand(handIn);
         if (worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND))
         {
+            if (playerIn.isSneaking() && GuiScreen.isCtrlKeyDown())
+                playerIn.openGui(BardMania.instance(), GuiGuid.MODEL_SETUP, worldIn, 0, 0, 0);
+            else
             if (playerIn.isSneaking())
             {
                 MidiHelper.INSTANCE.notifyRemoved(heldItem);

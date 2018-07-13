@@ -7,6 +7,7 @@ config.bardmania.midi_options.title=MIDI Options
 config.bardmania.midi_options.all_channels=Listen on all channels
 config.bardmania.midi_options.channel=MIDI Channel [1-16]
 gui.bardmania.gui_keyboard.title=PC Piano Keyboard
+gui.bardmania.gui_model_setup.title=Model Setup
 gui.bardmania.gui_key_Z=Z
 gui.bardmania.gui_key_S=S
 gui.bardmania.gui_key_X=X
