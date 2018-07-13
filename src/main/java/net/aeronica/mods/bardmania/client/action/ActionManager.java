@@ -58,53 +58,54 @@ public class ActionManager
 
     public static void playAction(EntityPlayer playerIn, int noteIn)
     {
-        Integer playerId = playerIn.getEntityId();
-        if (!playerModels.containsKey(playerId))
+        int playerId = playerIn.getEntityId();
+        if (playerModels.containsKey(playerId))
+        {
+            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
+        }
+        else
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
             actions.add(new PlayAction(playerIn, modelDummy, noteIn));
         }
-        else
-        {
-            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
-        }
     }
 
     public static void equipAction(EntityPlayer playerIn)
     {
-        Integer playerId = playerIn.getEntityId();
-        if (!playerModels.containsKey(playerId))
+        int playerId = playerIn.getEntityId();
+        if (playerModels.containsKey(playerId))
+        {
+            actions.add(new EquipAction(playerIn, playerModels.get(playerId)));
+        }
+        else
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
             actions.add(new EquipAction(playerIn, modelDummy));
         }
-        else
-        {
-            actions.add(new EquipAction(playerIn, playerModels.get(playerId)));
-        }
     }
 
     public static void unEquipAction(EntityPlayer playerIn)
     {
-        Integer playerId = playerIn.getEntityId();
-        if (!playerModels.containsKey(playerId))
+        int playerId = playerIn.getEntityId();
+        if (playerModels.containsKey(playerId))
+        {
+            actions.add(new UnEquipAction(playerIn, playerModels.get(playerId)));
+        }
+        else
         {
             ModelDummy modelDummy = new ModelDummy();
             playerModels.put(playerId, modelDummy);
             actions.add(new UnEquipAction(playerIn, modelDummy));
         }
-        else
-        {
-            actions.add(new UnEquipAction(playerIn, playerModels.get(playerId)));
-        }
     }
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)
     {
-        if (!playerModels.isEmpty() && playerModels.get(playerIn.getEntityId()) != null)
-            return playerModels.get(playerIn.getEntityId());
+        int playerId = playerIn.getEntityId();
+        if (!playerModels.isEmpty() && playerModels.get(playerId) != null)
+            return playerModels.get(playerId);
         else
             return modelDummy;
     }
