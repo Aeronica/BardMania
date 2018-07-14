@@ -19,7 +19,6 @@ package net.aeronica.mods.bardmania.client.action;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.Reference;
 import net.aeronica.mods.bardmania.client.MidiHelper;
-import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -117,19 +116,12 @@ public class ActionManager
 
     private static void cleanup()
     {
-        for (ActionBase action : actions)
-            if (action.isDone())
-                actions.remove(action);
+        actions.stream().filter(ActionBase::isDone).forEach(action -> actions.remove(action));
 
         if (cleanupTicks++ % 60 == 0)
-        {
-            for (Integer playerId : playerModels.keySet())
-                if (getPlayerById(playerId) == null)
-                {
-                    playerModels.remove(playerId);
-                    ModLogger.info("cleanup of playerModels: size %d", playerModels.size());
-                }
-        }
+            playerModels.keySet().stream()
+                    .filter(playerId -> getPlayerById(playerId) == null)
+                    .forEach(playerId -> playerModels.remove(playerId));
     }
 
     @SubscribeEvent
