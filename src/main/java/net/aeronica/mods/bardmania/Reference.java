@@ -16,6 +16,12 @@
 
 package net.aeronica.mods.bardmania;
 
+import net.aeronica.mods.bardmania.caps.IBardAction;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+
+import javax.annotation.Nullable;
+
 public class Reference {
     public static final String MOD_ID = "bardmania";
     public static final String MOD_DOMAIN = MOD_ID + ":";
@@ -27,4 +33,8 @@ public class Reference {
     public static final String DEPENDENCIES = "required-after:obfuscate@[0.2.3,)";
     public static final String PROXY_CLIENT = "net.aeronica.mods.bardmania.proxy.ClientProxy";
     public static final String PROXY_SERVER = "net.aeronica.mods.bardmania.proxy.CommonProxy";
+
+    @Nullable
+    @CapabilityInject(IBardAction.class)
+    public static final Capability<IBardAction> BARD_ACTION_CAP = null;
 }

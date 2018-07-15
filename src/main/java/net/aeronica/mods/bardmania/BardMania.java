@@ -16,6 +16,7 @@
 
 package net.aeronica.mods.bardmania;
 
+import net.aeronica.mods.bardmania.caps.BardActionCapability;
 import net.aeronica.mods.bardmania.client.gui.GuiHandler;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.common.ModTab;
@@ -67,6 +68,7 @@ public class BardMania
     public void preInit(FMLPreInitializationEvent event)
     {
         ModLogger.setLogger(event.getModLog());
+        BardActionCapability.register();
         ModInstruments.register();
         PacketDispatcher.registerPackets();
         proxy.preInit();

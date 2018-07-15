@@ -31,7 +31,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     @Override
     protected void read(PacketBuffer buffer) throws IOException
     {
-        blockPos = BlockPos.fromLong(buffer.readLong());
+        blockPos = buffer.readBlockPos();
         entityId = buffer.readInt();
         note = buffer.readByte();
         volume = buffer.readByte();
@@ -40,7 +40,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     @Override
     protected void write(PacketBuffer buffer) throws IOException
     {
-        buffer.writeLong(blockPos.toLong());
+        buffer.writeBlockPos(blockPos);
         buffer.writeInt(entityId);
         buffer.writeByte(note);
         buffer.writeByte(volume);

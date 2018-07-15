@@ -18,6 +18,9 @@
 package net.aeronica.mods.bardmania.common;
 
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
+import net.aeronica.mods.bardmania.item.ItemHandHeld;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -29,5 +32,16 @@ public class CommonEvents
     {
 //        if (!(event.getEntity() instanceof EntityPlayer))
 //            ModLogger.info("EntityLivingInitEvent %s", event.getEntity().getName());
+    }
+
+    @SubscribeEvent
+    public static void onItemTossEvent(ItemTossEvent event)
+    {
+        ModLogger.info("Item dropped, %s", event.getEntity().getDisplayName().getUnformattedText());
+        ItemStack itemStack = event.getEntityItem().getItem();
+        if((itemStack.getItem() instanceof ItemHandHeld))
+        {
+            if (event.isCancelable()) event.setCanceled(false);
+        }
     }
 }

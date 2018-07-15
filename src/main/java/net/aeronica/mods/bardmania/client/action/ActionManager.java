@@ -19,15 +19,12 @@ package net.aeronica.mods.bardmania.client.action;
 import net.aeronica.mods.bardmania.BardMania;
 import net.aeronica.mods.bardmania.Reference;
 import net.aeronica.mods.bardmania.client.MidiHelper;
-import net.aeronica.mods.bardmania.item.ItemHandHeld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -185,16 +182,6 @@ public class ActionManager
                 ActionManager.getModelDummy((EntityPlayer) event.getEntity()).reset();
                 MidiHelper.INSTANCE.notifyRemoved("Join World");
             }
-    }
-
-    @SubscribeEvent
-    public static void onItemTossEvent(ItemTossEvent event)
-    {
-        ItemStack itemStack = event.getEntityItem().getItem();
-        if((itemStack.getItem() instanceof ItemHandHeld))
-        {
-            MidiHelper.INSTANCE.notifyRemoved(event.getPlayer().getDisplayName().getUnformattedText() + " dropped a " + itemStack.getDisplayName());
-        }
     }
 
     private static EntityPlayerSP getThePlayer() {return (EntityPlayerSP) BardMania.proxy.getClientPlayer();}

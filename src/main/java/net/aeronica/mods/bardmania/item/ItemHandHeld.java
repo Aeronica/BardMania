@@ -18,11 +18,13 @@
 package net.aeronica.mods.bardmania.item;
 
 import net.aeronica.mods.bardmania.BardMania;
+import net.aeronica.mods.bardmania.caps.BardActionHelper;
 import net.aeronica.mods.bardmania.client.MidiHelper;
 import net.aeronica.mods.bardmania.client.action.ActionManager;
 import net.aeronica.mods.bardmania.client.gui.GuiGuid;
 import net.aeronica.mods.bardmania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bardmania.common.ModConfig;
+import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
 import net.aeronica.mods.bardmania.network.client.PlaySoundMessage;
 import net.aeronica.mods.bardmania.object.Instrument;
@@ -98,6 +100,15 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
                     playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, worldIn, 0, 0, 0);
             }
         }
+        if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND))
+        {
+            if (playerIn.isSneaking())
+                BardActionHelper.setInstrumentRemoved(playerIn);
+            else
+                BardActionHelper.setInstrumentEquipped(playerIn);
+            ModLogger.info("cap boolean: %s", BardActionHelper.isInstrumentEquipped(playerIn));
+        }
+
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
     }
 
@@ -175,5 +186,11 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         }
         tooltip.add(String.format("%s%s %s%s", TextFormatting.GRAY, I18n.format("tooltip.bardmania.input_mode"), TextFormatting.BLUE, I18n.format((ModConfig.client.input_mode).toString())));
         tooltip.add(String.format("%s%s", TextFormatting.GRAY, I18n.format("tooltip.bardmania.sneak_right_click_to_toggle_mode")));
+    }
+
+    @Override
+    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+    {
+        return super.onDroppedByPlayer(item, player);
     }
 }
