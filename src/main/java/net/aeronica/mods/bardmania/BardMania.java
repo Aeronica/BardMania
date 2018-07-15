@@ -18,6 +18,7 @@ package net.aeronica.mods.bardmania;
 
 import net.aeronica.mods.bardmania.caps.BardActionCapability;
 import net.aeronica.mods.bardmania.client.gui.GuiHandler;
+import net.aeronica.mods.bardmania.common.CommandModelSetup;
 import net.aeronica.mods.bardmania.common.ModLogger;
 import net.aeronica.mods.bardmania.common.ModTab;
 import net.aeronica.mods.bardmania.init.ModBlocks;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -82,9 +84,15 @@ public class BardMania
         proxy.init();
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void onFingerprintViolation(FMLFingerprintViolationEvent event)
     {
         LOGGER.warn("Problem with Signed Jar: %s", event.description());
+    }
+
+    @EventHandler
+    public void onEvent(FMLServerStartingEvent event)
+    {
+        event.registerServerCommand(new CommandModelSetup());
     }
 }

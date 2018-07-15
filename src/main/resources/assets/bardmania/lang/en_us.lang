@@ -1,3 +1,6 @@
+commands.bardmania.modelsetup.usage=modelsetup
+commands.bardmania.modelsetup.success=Opened Model Setup Gui
+commands.bardmania.modelsetup.failure=Must be holding an instrument in your main hand
 config.bardmania.title=Bard Mania
 config.bardmania.client_options.title=Client Options
 config.bardmania.input_mode=Input Mode
