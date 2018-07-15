@@ -23,12 +23,13 @@ import java.util.concurrent.Callable;
 @Mod.EventBusSubscriber
 public class BardActionCapability
 {
+    @Nullable
     @CapabilityInject(IBardAction.class)
     private static final Capability<IBardAction> BARD_ACTION_CAP = null;
 
     public static void register()
     {
-        CapabilityManager.INSTANCE.register(IBardAction.class, new storage(), new Factory());
+        CapabilityManager.INSTANCE.register(IBardAction.class, new Storage(), new Factory());
     }
 
     @SubscribeEvent
@@ -75,7 +76,7 @@ public class BardActionCapability
         }
     }
 
-    private static class storage implements Capability.IStorage<IBardAction>
+    private static class Storage implements Capability.IStorage<IBardAction>
     {
         @Nullable
         @Override
