@@ -19,6 +19,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -35,6 +36,8 @@ public class CommonProxy
     public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn) {/* NOP */}
 
     public void playSound(EntityPlayer playerIn, int entityId, String soundName, byte noteIn, byte volumeIn) {/* NOP */}
+
+    public void postInputModeToast(ItemStack itemStacm) {/* NOP */}
 
     public void preInit() {/* NOP */}
 
