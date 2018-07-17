@@ -1,11 +1,12 @@
-package net.aeronica.mods.bard_mania.proxy;
+package net.aeronica.mods.bard_mania.client;
 
 import com.google.common.collect.ImmutableMap;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
 import net.aeronica.mods.bard_mania.client.gui.InputModeToast;
-import net.aeronica.mods.bard_mania.init.ModSoundEvents;
-import net.aeronica.mods.bard_mania.object.Instrument;
+import net.aeronica.mods.bard_mania.server.ServerProxy;
+import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
 import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;

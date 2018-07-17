@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.object;
+package net.aeronica.mods.bard_mania.server.object;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

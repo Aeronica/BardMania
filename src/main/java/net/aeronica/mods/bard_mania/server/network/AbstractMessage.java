@@ -2,7 +2,7 @@
  * This network code is from coolAlias's github repository
  * https://github.com/coolAlias/Tutorial-Demo
  */
-package net.aeronica.mods.bard_mania.network;
+package net.aeronica.mods.bard_mania.server.network;
 
 import com.google.common.base.Throwables;
 import io.netty.buffer.ByteBuf;

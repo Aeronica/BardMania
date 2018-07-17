@@ -17,14 +17,14 @@
 package net.aeronica.mods.bard_mania;
 
 import net.aeronica.mods.bard_mania.client.gui.GuiHandler;
-import net.aeronica.mods.bard_mania.init.ModBlocks;
-import net.aeronica.mods.bard_mania.init.ModInstruments;
-import net.aeronica.mods.bard_mania.network.PacketDispatcher;
-import net.aeronica.mods.bard_mania.proxy.ServerProxy;
 import net.aeronica.mods.bard_mania.server.CommandModelSetup;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.ModTab;
+import net.aeronica.mods.bard_mania.server.ServerProxy;
 import net.aeronica.mods.bard_mania.server.caps.BardActionCapability;
+import net.aeronica.mods.bard_mania.server.init.ModBlocks;
+import net.aeronica.mods.bard_mania.server.init.ModInstruments;
+import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;

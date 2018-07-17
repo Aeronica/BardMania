@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.init;
+package net.aeronica.mods.bard_mania.server.init;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;

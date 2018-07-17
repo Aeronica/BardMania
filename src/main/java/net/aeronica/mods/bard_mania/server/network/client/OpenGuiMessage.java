@@ -1,7 +1,7 @@
-package net.aeronica.mods.bard_mania.network.client;
+package net.aeronica.mods.bard_mania.server.network.client;
 
 import net.aeronica.mods.bard_mania.BardMania;
-import net.aeronica.mods.bard_mania.network.AbstractMessage;
+import net.aeronica.mods.bard_mania.server.network.AbstractMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;

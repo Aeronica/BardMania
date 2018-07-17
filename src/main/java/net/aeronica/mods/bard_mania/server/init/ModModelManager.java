@@ -15,7 +15,7 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.init;
+package net.aeronica.mods.bard_mania.server.init;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

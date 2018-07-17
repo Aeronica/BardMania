@@ -1,9 +1,9 @@
 package net.aeronica.mods.bard_mania.server;
 
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
-import net.aeronica.mods.bard_mania.network.PacketDispatcher;
-import net.aeronica.mods.bard_mania.network.client.OpenGuiMessage;
 import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
+import net.aeronica.mods.bard_mania.server.network.client.OpenGuiMessage;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

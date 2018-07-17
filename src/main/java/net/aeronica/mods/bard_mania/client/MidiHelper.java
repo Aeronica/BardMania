@@ -18,13 +18,13 @@ package net.aeronica.mods.bard_mania.client;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
-import net.aeronica.mods.bard_mania.network.PacketDispatcher;
-import net.aeronica.mods.bard_mania.network.bi.PoseActionMessage;
-import net.aeronica.mods.bard_mania.network.server.ActiveReceiverMessage;
 import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.KeyHelper;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
+import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
+import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
+import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

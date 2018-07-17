@@ -30,8 +30,8 @@ public class Reference {
     public static final String UPDATES = "https://gist.githubusercontent.com/Aeronica/XXX/raw/update.json";
     public static final String FINGERPRINT = "999640c365a8443393a1a21df2c0ede9488400e9";
     public static final String DEPENDENCIES = "required-after:obfuscate@[0.2.3,)";
-    public static final String PROXY_CLIENT = "net.aeronica.mods.bard_mania.proxy.ClientProxy";
-    public static final String PROXY_SERVER = "net.aeronica.mods.bard_mania.proxy.ServerProxy";
+    public static final String PROXY_CLIENT = "net.aeronica.mods.bard_mania.client.ClientProxy";
+    public static final String PROXY_SERVER = "net.aeronica.mods.bard_mania.server.ServerProxy";
 
     @CapabilityInject(IBardAction.class)
     public static final Capability<IBardAction> BARD_ACTION_CAP = Util.nonNullInjected();

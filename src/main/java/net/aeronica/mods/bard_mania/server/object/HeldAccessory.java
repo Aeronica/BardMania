@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.object;
+package net.aeronica.mods.bard_mania.server.object;
 
 import net.minecraft.item.ItemStack;
 

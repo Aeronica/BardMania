@@ -2,13 +2,13 @@
  * This network code is from coolAlias's github repository
  * https://github.com/coolAlias/Tutorial-Demo
  */
-package net.aeronica.mods.bard_mania.network;
+package net.aeronica.mods.bard_mania.server.network;
 
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.network.bi.PoseActionMessage;
-import net.aeronica.mods.bard_mania.network.client.OpenGuiMessage;
-import net.aeronica.mods.bard_mania.network.client.PlaySoundMessage;
-import net.aeronica.mods.bard_mania.network.server.ActiveReceiverMessage;
+import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
+import net.aeronica.mods.bard_mania.server.network.client.OpenGuiMessage;
+import net.aeronica.mods.bard_mania.server.network.client.PlaySoundMessage;
+import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

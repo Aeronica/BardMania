@@ -1,9 +1,9 @@
 package net.aeronica.mods.bard_mania.client.action;
 
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
-import net.aeronica.mods.bard_mania.object.Instrument;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.entity.player.EntityPlayer;
 
 import static net.aeronica.mods.bard_mania.server.KeyHelper.normalizeNote;

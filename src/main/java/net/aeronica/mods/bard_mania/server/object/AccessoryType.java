@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.object;
+package net.aeronica.mods.bard_mania.server.object;
 
 import com.google.gson.annotations.SerializedName;
 import net.aeronica.mods.bard_mania.client.render.RenderEvents;

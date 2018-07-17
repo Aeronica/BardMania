@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.aeronica.mods.bard_mania.proxy;
+package net.aeronica.mods.bard_mania.server;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;

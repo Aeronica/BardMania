@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.aeronica.mods.bard_mania.network;
+package net.aeronica.mods.bard_mania.server.network;
 
 public class NetworkMessageRuntimeException extends RuntimeException
 {
