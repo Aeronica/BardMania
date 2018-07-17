@@ -23,6 +23,11 @@ public class BardActionHelper
         getImpl(player).setInstrumentRemoved();
     }
 
+    public static void toggleEquippedState(EntityPlayer player)
+    {
+        getImpl(player).toggleEquippedState();
+    }
+
     public static boolean isInstrumentEquipped(EntityPlayer player)
     {
         return getImpl(player).isInstrumentEquipped();

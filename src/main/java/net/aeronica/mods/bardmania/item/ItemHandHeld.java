@@ -101,9 +101,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
         if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND))
         {
             if (playerIn.isSneaking())
-                BardActionHelper.setInstrumentRemoved(playerIn);
-            else
-                BardActionHelper.setInstrumentEquipped(playerIn);
+                BardActionHelper.toggleEquippedState(playerIn);
             ModLogger.info("cap boolean: %s", BardActionHelper.isInstrumentEquipped(playerIn));
         }
 

@@ -3,6 +3,7 @@ package net.aeronica.mods.bardmania.caps;
 public class BardActionImpl implements IBardAction
 {
     private boolean isInstEquipped = false;
+
     @Override
     public void setInstrumentEquipped()
     {
@@ -14,6 +15,9 @@ public class BardActionImpl implements IBardAction
     {
         isInstEquipped = false;
     }
+
+    @Override
+    public void toggleEquippedState() { isInstEquipped = !isInstEquipped; }
 
     @Override
     public boolean isInstrumentEquipped()

@@ -6,5 +6,7 @@ public interface IBardAction
 
     void setInstrumentRemoved();
 
+    void toggleEquippedState();
+
     boolean isInstrumentEquipped();
 }
