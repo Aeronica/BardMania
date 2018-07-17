@@ -26,8 +26,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-import static net.aeronica.mods.bard_mania.server.KeyHelper.calculatePitch;
-import static net.aeronica.mods.bard_mania.server.KeyHelper.normalizeNote;
+import static net.aeronica.mods.bard_mania.client.KeyHelper.calculatePitch;
+import static net.aeronica.mods.bard_mania.client.KeyHelper.normalizeNote;
 
 public class ClientProxy extends ServerProxy
 {

@@ -6,7 +6,7 @@ import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.entity.player.EntityPlayer;
 
-import static net.aeronica.mods.bard_mania.server.KeyHelper.normalizeNote;
+import static net.aeronica.mods.bard_mania.client.KeyHelper.normalizeNote;
 
 public abstract class ActionBase
 {
