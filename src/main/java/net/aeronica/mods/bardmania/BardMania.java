@@ -24,7 +24,7 @@ import net.aeronica.mods.bardmania.common.ModTab;
 import net.aeronica.mods.bardmania.init.ModBlocks;
 import net.aeronica.mods.bardmania.init.ModInstruments;
 import net.aeronica.mods.bardmania.network.PacketDispatcher;
-import net.aeronica.mods.bardmania.proxy.CommonProxy;
+import net.aeronica.mods.bardmania.proxy.ServerProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -61,7 +61,7 @@ public class BardMania
     public static BardMania instance() {return Holder.INSTANCE;}
 
     @SidedProxy(clientSide = Reference.PROXY_CLIENT, serverSide = Reference.PROXY_SERVER)
-    public static CommonProxy proxy;
+    public static ServerProxy proxy;
 
     public static final CreativeTabs MOD_TAB = new ModTab();
     private static final Logger LOGGER = LogManager.getFormatterLogger(Reference.MOD_ID);

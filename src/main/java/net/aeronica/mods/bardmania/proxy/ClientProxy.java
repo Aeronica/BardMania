@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import static net.aeronica.mods.bardmania.common.KeyHelper.calculatePitch;
 import static net.aeronica.mods.bardmania.common.KeyHelper.normalizeNote;
 
-public class ClientProxy extends CommonProxy
+public class ClientProxy extends ServerProxy
 {
     public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn)
     {

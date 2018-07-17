@@ -31,7 +31,7 @@ import net.minecraftforge.fml.server.FMLServerHandler;
 
 import javax.annotation.Nullable;
 
-public class CommonProxy
+public class ServerProxy
 {
     public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn) {/* NOP */}
 
