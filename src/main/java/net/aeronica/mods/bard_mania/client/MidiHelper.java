@@ -18,13 +18,13 @@ package net.aeronica.mods.bard_mania.client;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
-import net.aeronica.mods.bard_mania.common.IActiveNoteReceiver;
-import net.aeronica.mods.bard_mania.common.KeyHelper;
-import net.aeronica.mods.bard_mania.common.ModConfig;
-import net.aeronica.mods.bard_mania.common.ModLogger;
 import net.aeronica.mods.bard_mania.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.network.bi.PoseActionMessage;
 import net.aeronica.mods.bard_mania.network.server.ActiveReceiverMessage;
+import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
+import net.aeronica.mods.bard_mania.server.KeyHelper;
+import net.aeronica.mods.bard_mania.server.ModConfig;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-import static net.aeronica.mods.bard_mania.common.ModConfig.Client.INPUT_MODE.MIDI;
+import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)

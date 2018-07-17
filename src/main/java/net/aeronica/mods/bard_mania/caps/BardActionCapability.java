@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.caps;
 
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.common.Util;
+import net.aeronica.mods.bard_mania.server.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;

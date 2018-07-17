@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.common;
+package net.aeronica.mods.bard_mania.server;
 
 import org.lwjgl.input.Keyboard;
 

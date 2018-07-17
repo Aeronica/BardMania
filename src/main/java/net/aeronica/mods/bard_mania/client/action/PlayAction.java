@@ -3,7 +3,7 @@ package net.aeronica.mods.bard_mania.client.action;
 import net.aeronica.dorkbox.tweenEngine.BaseTween;
 import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenCallback;
-import net.aeronica.mods.bard_mania.common.ModLogger;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayAction extends ActionBase

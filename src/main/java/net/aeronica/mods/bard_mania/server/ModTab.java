@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.common;
+package net.aeronica.mods.bard_mania.server;
 
 import net.aeronica.mods.bard_mania.Reference;
 import net.minecraft.creativetab.CreativeTabs;

@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.client.gui;
 
 import net.aeronica.mods.bard_mania.client.render.RenderEvents;
-import net.aeronica.mods.bard_mania.common.ModConfig;
+import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.minecraft.client.gui.toasts.GuiToast;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.renderer.GlStateManager;

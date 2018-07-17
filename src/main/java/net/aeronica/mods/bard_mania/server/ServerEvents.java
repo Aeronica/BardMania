@@ -15,7 +15,7 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.common;
+package net.aeronica.mods.bard_mania.server;
 
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
 import net.aeronica.mods.bard_mania.item.ItemHandHeld;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber
-public class CommonEvents
+public class ServerEvents
 {
     @SubscribeEvent
     public static void EntityLivingInitEvent(EntityLivingInitEvent event)

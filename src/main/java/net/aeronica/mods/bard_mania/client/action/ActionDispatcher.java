@@ -3,7 +3,7 @@ package net.aeronica.mods.bard_mania.client.action;
 import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
 import net.aeronica.dorkbox.tweenEngine.TweenEquations;
-import net.aeronica.mods.bard_mania.common.ModLogger;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.HashMap;

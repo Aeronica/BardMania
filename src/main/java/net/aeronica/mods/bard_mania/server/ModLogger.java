@@ -26,7 +26,7 @@
  *  to support exception stack traces.
  */
 
-package net.aeronica.mods.bard_mania.common;
+package net.aeronica.mods.bard_mania.server;
 
 import net.aeronica.mods.bard_mania.Reference;
 import org.apache.logging.log4j.Level;

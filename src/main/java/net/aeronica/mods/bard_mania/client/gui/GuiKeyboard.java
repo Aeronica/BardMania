@@ -18,7 +18,7 @@ package net.aeronica.mods.bard_mania.client.gui;
 
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
-import net.aeronica.mods.bard_mania.common.KeyHelper;
+import net.aeronica.mods.bard_mania.server.KeyHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -30,7 +30,7 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 
-import static net.aeronica.mods.bard_mania.common.KeyHelper.KEYNOTE_VALUES;
+import static net.aeronica.mods.bard_mania.server.KeyHelper.KEYNOTE_VALUES;
 import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen;
 
 public class GuiKeyboard extends GuiScreen

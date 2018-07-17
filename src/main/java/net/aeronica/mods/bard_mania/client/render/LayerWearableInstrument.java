@@ -18,9 +18,9 @@ package net.aeronica.mods.bard_mania.client.render;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
-import net.aeronica.mods.bard_mania.common.ModLogger;
 import net.aeronica.mods.bard_mania.item.ItemHandHeld;
 import net.aeronica.mods.bard_mania.object.Instrument;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;

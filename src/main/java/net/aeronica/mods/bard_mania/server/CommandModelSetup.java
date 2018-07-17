@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.common;
+package net.aeronica.mods.bard_mania.server;
 
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
 import net.aeronica.mods.bard_mania.item.ItemHandHeld;

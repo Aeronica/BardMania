@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.common;
+package net.aeronica.mods.bard_mania.server;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

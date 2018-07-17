@@ -1,12 +1,12 @@
 package net.aeronica.mods.bard_mania.client.action;
 
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
-import net.aeronica.mods.bard_mania.common.ModLogger;
 import net.aeronica.mods.bard_mania.item.ItemHandHeld;
 import net.aeronica.mods.bard_mania.object.Instrument;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
-import static net.aeronica.mods.bard_mania.common.KeyHelper.normalizeNote;
+import static net.aeronica.mods.bard_mania.server.KeyHelper.normalizeNote;
 
 public abstract class ActionBase
 {

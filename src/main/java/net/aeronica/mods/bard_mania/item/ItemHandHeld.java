@@ -22,12 +22,12 @@ import net.aeronica.mods.bard_mania.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
-import net.aeronica.mods.bard_mania.common.IActiveNoteReceiver;
-import net.aeronica.mods.bard_mania.common.ModConfig;
-import net.aeronica.mods.bard_mania.common.ModLogger;
 import net.aeronica.mods.bard_mania.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.network.client.PlaySoundMessage;
 import net.aeronica.mods.bard_mania.object.Instrument;
+import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
+import net.aeronica.mods.bard_mania.server.ModConfig;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -50,8 +50,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static net.aeronica.mods.bard_mania.client.MidiHelper.getOpenDeviceNames;
-import static net.aeronica.mods.bard_mania.common.ModConfig.Client.INPUT_MODE.KEYBOARD;
-import static net.aeronica.mods.bard_mania.common.ModConfig.Client.INPUT_MODE.MIDI;
+import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.KEYBOARD;
+import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 
 public class ItemHandHeld extends Item implements IActiveNoteReceiver
 {

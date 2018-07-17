@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.common;
+package net.aeronica.mods.bard_mania.server;
 
 /*
  * This class was copied from https://github.com/JamiesWhiteShirt/clothesline

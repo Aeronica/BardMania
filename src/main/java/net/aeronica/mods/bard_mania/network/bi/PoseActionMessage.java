@@ -1,9 +1,9 @@
 package net.aeronica.mods.bard_mania.network.bi;
 
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
-import net.aeronica.mods.bard_mania.common.ModLogger;
 import net.aeronica.mods.bard_mania.network.AbstractMessage;
 import net.aeronica.mods.bard_mania.network.PacketDispatcher;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;

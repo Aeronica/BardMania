@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.network.server;
 
-import net.aeronica.mods.bard_mania.common.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.network.AbstractMessage.AbstractServerMessage;
+import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;

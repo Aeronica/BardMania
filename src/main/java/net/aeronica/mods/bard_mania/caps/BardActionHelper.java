@@ -1,6 +1,6 @@
 package net.aeronica.mods.bard_mania.caps;
 
-import net.aeronica.mods.bard_mania.common.Util;
+import net.aeronica.mods.bard_mania.server.Util;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
