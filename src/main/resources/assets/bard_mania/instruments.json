@@ -1,0 +1,77 @@
+[
+  {
+    "id": "banjo",
+    "general": {
+      "wearable": true,
+      "translationXYZ": [0.05, -0.11, 0.25],
+      "rotationXYZ": [77, -29, 0],
+      "scaleXYZ": [0.7, 0.7, 0.7]
+    },
+    "sounds": {
+      "timbre": "bard_mania:banjo"
+    }
+  },
+  {
+    "id": "flute",
+    "general": {
+    },
+    "sounds": {
+      "timbre": "bard_mania:flute"
+    }
+  },
+  {
+    "id": "lute",
+    "general": {
+    },
+    "sounds": {
+      "timbre": "bard_mania:mandolin_ex"
+    }
+  },
+  {
+    "id": "mandolin",
+    "general": {
+    },
+    "sounds": {
+      "timbre": "bard_mania:mandolin"
+    }
+  },
+  {
+    "id": "marching_drums",
+    "general": {
+      "wearable": true,
+      "leftHand": "drum_stick",
+      "rightHand": "drum_stick"
+    },
+    "sounds": {
+      "timbre": "bard_mania:marching_drums"
+    }
+  },
+  {
+    "id": "lyre",
+    "general": {
+      "wearable": true
+    },
+    "sounds": {
+      "timbre": "bard_mania:harp"
+    }
+  },
+  {
+    "id": "recorder",
+    "general": {
+    },
+    "sounds": {
+      "timbre": "bard_mania:recorder"
+    }
+  },
+  {
+    "id": "xylophone",
+    "general": {
+      "wearable": true,
+      "leftHand": "mallet",
+      "rightHand": "mallet"
+    },
+    "sounds": {
+      "timbre": "bard_mania:xylophone"
+    }
+  }
+]

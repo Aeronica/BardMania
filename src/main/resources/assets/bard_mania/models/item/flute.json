@@ -1,0 +1,47 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "bard_mania:items/flute",
+		"particle": "bard_mania:items/flute"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 16, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [4, 0, 6, 16], "texture": "#0"},
+				"east": {"uv": [1.5, 0, 3.5, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#0"},
+				"west": {"uv": [3.5, 0, 5.5, 16], "texture": "#0", "rotation": 180},
+				"up": {"uv": [6, 0, 8, 2], "texture": "#0", "rotation": 270},
+				"down": {"uv": [6, 14, 8, 16], "texture": "#0", "rotation": 270}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 0, 90],
+			"translation": [-5.5, 0, 2]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-90, 0, 90],
+			"translation": [-5.5, 0, 2]
+		},
+		"ground": {
+			"translation": [0, 4, 0],
+			"rotation": [-45, 0, 45]
+		},
+		"fixed": {
+			"rotation": [0, 135, 0],
+			"translation": [0, 0, -1]
+		},
+		"gui": {
+			"rotation": [130, -140, 120]
+		},
+		"head": {
+			"scale": [1.6, 1.6, 1.6],
+			"rotation": [-90, 0, 90]
+		}
+	}
+}

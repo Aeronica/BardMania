@@ -28,15 +28,15 @@ buildProperties.withReader {
 }
 
 version = "${config.modVersionMajor}.${config.modVersionMinor}.${config.modVersionRev}"
-group = "net.aeronica.mods.bardmania"
-archivesBaseName = "bardmania-${config.minecraftVersion}"
+group = "net.aeronica.mods.bard_mania"
+archivesBaseName = "bard_mania-${config.minecraftVersion}"
 
 minecraft {
     version = "${config.minecraftVersion}-${config.forgeVersion}"
     runDir = "${config.runDir}"
 	mappings = "${config.forgeMappings}"
     
-	replaceIn "net/aeronica/mods/bardmania/Reference.java"
+	replaceIn "net/aeronica/mods/bard_mania/Reference.java"
     replace "{@MOD_VERSION}", project.version
 }
 
