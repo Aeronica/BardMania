@@ -27,7 +27,7 @@ public class Reference {
     public static final String MOD_NAME = "Bard Mania";
     public static final String MOD_VERSION = "{@MOD_VERSION}";
     public static final String MC_VERSION = "[1.12.2,1.13]";
-    public static final String UPDATES = "https://gist.githubusercontent.com/Aeronica/XXX/raw/update.json";
+    public static final String UPDATES = "https://gist.github.com/Aeronica/3949a80897f4565f759b9a8a0927bb76/raw/bard-mania_update.json";
     public static final String FINGERPRINT = "999640c365a8443393a1a21df2c0ede9488400e9";
     public static final String DEPENDENCIES = "required-after:obfuscate@[0.2.3,)";
     public static final String PROXY_CLIENT = "net.aeronica.mods.bard_mania.client.ClientProxy";
