@@ -18,7 +18,7 @@ package net.aeronica.mods.bard_mania.common;
 
 import net.aeronica.mods.bard_mania.Reference;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,6 +42,6 @@ public class ModTab extends CreativeTabs
     @SideOnly(Side.CLIENT)
     public ItemStack getTabIconItem()
     {
-        return new ItemStack(Items.APPLE);
+        return new ItemStack(Item.getByNameOrId("bard_mania:lyre"));
     }
 }
