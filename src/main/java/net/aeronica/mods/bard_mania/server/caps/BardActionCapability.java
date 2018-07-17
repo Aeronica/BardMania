@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.caps;
+package net.aeronica.mods.bard_mania.server.caps;
 
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.server.Util;

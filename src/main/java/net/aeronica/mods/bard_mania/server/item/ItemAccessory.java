@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.item;
+package net.aeronica.mods.bard_mania.server.item;
 
 import net.minecraft.item.Item;
 

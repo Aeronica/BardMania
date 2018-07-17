@@ -18,7 +18,7 @@
 package net.aeronica.mods.bard_mania.server;
 
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
-import net.aeronica.mods.bard_mania.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.fml.common.Mod;

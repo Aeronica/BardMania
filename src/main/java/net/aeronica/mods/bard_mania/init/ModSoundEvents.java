@@ -17,8 +17,8 @@
 package net.aeronica.mods.bard_mania.init;
 
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.item.ItemHandHeld;
 import net.aeronica.mods.bard_mania.object.Instrument;
+import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;

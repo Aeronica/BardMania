@@ -16,8 +16,8 @@
 
 package net.aeronica.mods.bard_mania;
 
-import net.aeronica.mods.bard_mania.caps.IBardAction;
 import net.aeronica.mods.bard_mania.server.Util;
+import net.aeronica.mods.bard_mania.server.caps.IBardAction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 

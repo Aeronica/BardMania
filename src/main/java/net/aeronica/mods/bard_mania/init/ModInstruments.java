@@ -21,9 +21,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import net.aeronica.mods.bard_mania.item.ItemAccessory;
-import net.aeronica.mods.bard_mania.item.ItemHandHeld;
 import net.aeronica.mods.bard_mania.object.Instrument;
+import net.aeronica.mods.bard_mania.server.item.ItemAccessory;
+import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
 import net.minecraft.item.Item;
 
 import javax.annotation.Nonnull;

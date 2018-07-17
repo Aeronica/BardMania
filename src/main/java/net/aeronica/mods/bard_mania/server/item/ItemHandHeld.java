@@ -15,10 +15,9 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.item;
+package net.aeronica.mods.bard_mania.server.item;
 
 import net.aeronica.mods.bard_mania.BardMania;
-import net.aeronica.mods.bard_mania.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
@@ -28,6 +27,7 @@ import net.aeronica.mods.bard_mania.object.Instrument;
 import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
+import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
