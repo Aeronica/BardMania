@@ -1,32 +1,36 @@
 package net.aeronica.mods.bardmania.caps;
 
-import net.aeronica.mods.bardmania.Reference;
+import net.aeronica.mods.bardmania.common.Util;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("ConstantConditions")
 public class BardActionHelper
 {
-    @Nullable
     @CapabilityInject(IBardAction.class)
-    private static final Capability<IBardAction> BARD_ACTION_CAP = null;
+    private static final Capability<IBardAction> BARD_ACTION_CAP = Util.nonNullInjected();
 
     public static void setInstrumentEquipped(EntityPlayer player)
     {
-        if (player.hasCapability(BARD_ACTION_CAP, null))
-            player.getCapability(BARD_ACTION_CAP, null).setInstrumentEquipped();
+        getImpl(player).setInstrumentEquipped();
     }
 
     public static void setInstrumentRemoved(EntityPlayer player)
     {
-        if (player.hasCapability(BARD_ACTION_CAP, null))
-            player.getCapability(BARD_ACTION_CAP, null).setInstrumentRemoved();
+        getImpl(player).setInstrumentRemoved();
     }
 
     public static boolean isInstrumentEquipped(EntityPlayer player)
     {
-        return player.hasCapability(Reference.BARD_ACTION_CAP, null) ? player.getCapability(Reference.BARD_ACTION_CAP, null).isInstrumentEquipped() : false;
+        return getImpl(player).isInstrumentEquipped();
+    }
+
+    @Nullable
+    private static IBardAction getImpl(EntityPlayer player)
+    {
+        return player.hasCapability(BARD_ACTION_CAP, null) ? player.getCapability(BARD_ACTION_CAP, null) : null;
     }
 }

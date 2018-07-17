@@ -1,6 +1,7 @@
 package net.aeronica.mods.bardmania.caps;
 
 import net.aeronica.mods.bardmania.Reference;
+import net.aeronica.mods.bardmania.common.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
@@ -23,9 +24,8 @@ import java.util.concurrent.Callable;
 @Mod.EventBusSubscriber
 public class BardActionCapability
 {
-    @Nullable
     @CapabilityInject(IBardAction.class)
-    private static final Capability<IBardAction> BARD_ACTION_CAP = null;
+    private static final Capability<IBardAction> BARD_ACTION_CAP = Util.nonNullInjected();
 
     public static void register()
     {
