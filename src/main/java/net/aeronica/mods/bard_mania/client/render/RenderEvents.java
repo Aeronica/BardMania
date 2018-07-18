@@ -170,7 +170,7 @@ public class RenderEvents
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
         // Offhand ONLY instruments render normally. TODO: Simplify
-        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument))
+        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument) && RenderHelper.canRenderEqippedInstument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(false);
             return;
@@ -194,7 +194,7 @@ public class RenderEvents
         }
 
         heldItem = event.getItem();
-        if (heldItem.getItem() instanceof ItemInstrument && event.getHandSide().equals(event.getEntity().getPrimaryHand()))
+        if (heldItem.getItem() instanceof ItemInstrument && event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEqippedInstument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(true);
             Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
@@ -204,7 +204,7 @@ public class RenderEvents
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
 
-        if (heldItem.getItem() instanceof ItemInstrument && !event.getHandSide().equals(event.getEntity().getPrimaryHand()))
+        if (heldItem.getItem() instanceof ItemInstrument && !event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEqippedInstument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(true);
             Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
@@ -220,7 +220,7 @@ public class RenderEvents
     {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack heldItem = player.getHeldItemMainhand();
-        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemInstrument))
+        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemInstrument) && RenderHelper.canRenderEqippedInstument(player))
         {
             ModelPlayer model = event.getModelPlayer();
             applyPlayerModelRotation(model, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));

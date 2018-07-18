@@ -1,14 +1,14 @@
 package net.aeronica.mods.bard_mania.server.network.client;
 
 import net.aeronica.mods.bard_mania.BardMania;
-import net.aeronica.mods.bard_mania.server.network.AbstractMessage;
+import net.aeronica.mods.bard_mania.server.network.AbstractMessage.AbstractClientMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 
-public class OpenGuiMessage extends AbstractMessage.AbstractClientMessage<OpenGuiMessage>
+public class OpenGuiMessage extends AbstractClientMessage<OpenGuiMessage>
 {
     int guiGuid;
 

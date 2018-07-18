@@ -16,6 +16,7 @@ public class PlayAction extends ActionBase
     @Override
     protected void start()
     {
+        modelDummy.tweenStart();
         Timeline timeline = tweenEngine.createSequential();
         Timeline newTimeline = ActionDispatcher.select(instrumentId, "play", player, tweenEngine, timeline, modelDummy, normalizedNote);
 
@@ -25,6 +26,7 @@ public class PlayAction extends ActionBase
             public void onEvent(int type, BaseTween<?> source)
             {
                 ModLogger.info("Tween Complete %s", player.getDisplayName().getUnformattedText());
+                modelDummy.tweenStop();
                 isDone = true;
             }
         }).start();

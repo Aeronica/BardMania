@@ -37,6 +37,7 @@ public class MarchingDrumsTimeLines
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_X, 0.25F).target(-1.05f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_Y, 0.25F).target(-0.09f).ease(TweenEquations.Sine_InOut))
 
+                .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.35f).target(1f).ease(TweenEquations.Bounce_InOut))
                 .end();
         return timeline;
     }
@@ -50,6 +51,7 @@ public class MarchingDrumsTimeLines
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_Y, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
 
+                .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
         return timeline;
     }

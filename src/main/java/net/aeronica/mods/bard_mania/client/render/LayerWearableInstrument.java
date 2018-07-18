@@ -18,6 +18,7 @@ package net.aeronica.mods.bard_mania.client.render;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
+import net.aeronica.mods.bard_mania.client.action.ModelAccessor;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
@@ -42,8 +43,8 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
         if (!entitylivingbaseIn.isInvisible() && (entitylivingbaseIn.getHeldItemMainhand().getItem() instanceof ItemInstrument))
         {
             Instrument inst = ((ItemInstrument) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
-            ItemStack itemStack = entitylivingbaseIn.getHeldItemMainhand();
-            if (inst.general.wearable)
+            ItemStack itemStack = ActionManager.getModelDummy((EntityPlayer) entitylivingbaseIn).getInstrumentStack();
+            if (inst.general.wearable && RenderHelper.canRenderEqippedInstument((EntityPlayer) entitylivingbaseIn))
             {
                 GlStateManager.pushMatrix();
                 // apply body translation - i.e. Sneaking
@@ -59,6 +60,11 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                 GlStateManager.rotate(inst.general.rotationXYZ[1], 0, 1, 0);
                 GlStateManager.rotate(inst.general.rotationXYZ[2], 1, 0, 0);
                 GlStateManager.scale(inst.general.scaleXYZ[0], inst.general.scaleXYZ[1], inst.general.scaleXYZ[2]);
+
+                // apply animated scaling. allows the worn item to bounce in.
+                float actionScale = ActionManager.getModelDummy((EntityPlayer) entitylivingbaseIn).getPartValue(ModelAccessor.WORN_ITEM_SCALE);
+                GlStateManager.scale(actionScale,actionScale,actionScale);
+
                 BardMania.proxy.getMinecraft().getRenderItem().renderItem(itemStack, entitylivingbaseIn, ItemCameraTransforms.TransformType.NONE, false);
                 GlStateManager.popMatrix();
 
@@ -111,7 +117,6 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
     }
 
     // copied from net.minecraft.client.renderer.entity.layers.LayerHeldItem
-    // TODO: cleanup
     protected void translateToHand(EnumHandSide enumHandSide)
     {
         ((ModelBiped)RenderEvents.getRenderLivingBase().getMainModel()).postRenderArm(0.0625F, enumHandSide);

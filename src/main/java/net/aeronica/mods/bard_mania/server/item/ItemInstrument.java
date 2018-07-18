@@ -19,11 +19,8 @@ package net.aeronica.mods.bard_mania.server.item;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
-import net.aeronica.mods.bard_mania.client.action.ActionManager;
-import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
 import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ModConfig;
-import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.client.PlaySoundMessage;
@@ -40,17 +37,14 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 
 import static net.aeronica.mods.bard_mania.client.MidiHelper.getOpenDeviceNames;
-import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.KEYBOARD;
 import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 
 public class ItemInstrument extends Item implements IActiveNoteReceiver
@@ -87,22 +81,17 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
                 MidiHelper.INSTANCE.notifyRemoved(heldItem);
                 ModConfig.toggleInputMode();
                 BardMania.proxy.postInputModeToast(heldItem);
-                playerIn.sendStatusMessage(new TextComponentTranslation(String.format("%s%s %s%s", TextFormatting.WHITE,
-                        I18n.format("tooltip.bard_mania.input_mode"),
-                        TextFormatting.WHITE, I18n.format((ModConfig.client.input_mode).toString())),
-                        new Object[0]), true);
             } else
             {
                 MidiHelper.INSTANCE.setNoteReceiver(this, playerIn, heldItem);
-                if (ModConfig.client.input_mode == KEYBOARD)
-                    playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, worldIn, 0, 0, 0);
             }
         }
-        if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND))
+        if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND) && !playerIn.isSneaking())
         {
-            if (playerIn.isSneaking())
-                BardActionHelper.toggleEquippedState(playerIn);
-            ModLogger.info("cap boolean: %s", BardActionHelper.isInstrumentEquipped(playerIn));
+            if (BardActionHelper.isInstrumentEquipped(playerIn))
+                BardActionHelper.setInstrumentRemoved(playerIn);
+            else
+                BardActionHelper.setInstrumentEquipped(playerIn);
         }
 
         return new ActionResult<>(EnumActionResult.SUCCESS, heldItem);
@@ -130,14 +119,14 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
     @Override
     public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
     {
-        if(worldIn.isRemote && isSelected && (stack.getRepairCost() != itemSlot) && (entityIn instanceof EntityPlayer))
+        if(!worldIn.isRemote && isSelected && (stack.getRepairCost() != itemSlot) && (entityIn instanceof EntityPlayer))
         {
             stack.setRepairCost(itemSlot);
-            ActionManager.getModelDummy((EntityPlayer) entityIn).reset(); //TODO: for testing
-        } else if(worldIn.isRemote && !isSelected)
+        } else if(!worldIn.isRemote && !isSelected && stack.getRepairCost() > -1)
         {
             stack.setRepairCost(-1);
-            MidiHelper.INSTANCE.notifyRemoved(stack);
+            if (BardActionHelper.isInstrumentEquipped((EntityPlayer) entityIn))
+                BardActionHelper.setInstrumentRemovedByForce((EntityPlayer) entityIn);
         }
     }
 
@@ -165,7 +154,7 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
     {
-        return (newStack.getItem() instanceof ItemInstrument) ? !Objects.equals(((ItemInstrument) newStack.getItem()).getInstrument().id, ((ItemInstrument) oldStack.getItem()).getInstrument().id) : slotChanged;
+        return slotChanged; //(newStack.getItem() instanceof ItemInstrument) ? !Objects.equals(((ItemInstrument) newStack.getItem()).getInstrument().id, ((ItemInstrument) oldStack.getItem()).getInstrument().id) : slotChanged;
     }
 
     @Override
@@ -187,6 +176,7 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
     @Override
     public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
     {
-        return super.onDroppedByPlayer(item, player);
+       //BardActionHelper.setInstrumentRemovedByForce((EntityPlayer) player);
+        return true;
     }
 }

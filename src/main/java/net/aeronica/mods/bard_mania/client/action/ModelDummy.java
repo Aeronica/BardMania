@@ -1,8 +1,13 @@
 package net.aeronica.mods.bard_mania.client.action;
 
+import net.minecraft.item.ItemStack;
+
 @SuppressWarnings("unused")
 public class ModelDummy
 {
+    private int tweenCount = 0;
+    private ItemStack currentInstrument = ItemStack.EMPTY;
+
     public void ModelDummy() {/* NOP */}
 
     public float[] parts = new float[]{
@@ -24,11 +29,29 @@ public class ModelDummy
             0f, 0f, 0f, // right_hand_item_rot_x, right_hand_item_rot_y, right_hand_item_rot_z
             0f, 0f, 0f, // left_hand_item_trans_x, left_hand_item_trans_y, left_hand_item_trans_z
             0f, 0f, 0f, // left_hand_item_rot_x, left_hand_item_rot_y, left_hand_item_rot_z
+            0f, // worn_item_scale
     };
 
-    public void reset() {for(int i = 0 ;i < parts.length;) parts[i++] = 0f;}
+    public void reset()
+    {
+        for(int i = 0 ;i < parts.length;) parts[i++] = 0f;
+        tweenCount = 0;
+        currentInstrument = ItemStack.EMPTY;
+    }
 
-    public float getPartValue(int part) {return parts[part];}
+    public void tweenStart() { tweenCount++; }
 
-    public void setPartValue(int part, float value) {parts[part] = value;}
+    public void tweenStop() { if (tweenCount > 0) tweenCount--; }
+
+    public int getTweenCount() { return tweenCount; }
+
+    public boolean hasTween() { return tweenCount > 0; }
+
+    public void setInstrumentStack(ItemStack itemStack) { currentInstrument = itemStack; }
+
+    public ItemStack getInstrumentStack() { return currentInstrument; }
+
+    public float getPartValue(int part) { return parts[part]; }
+
+    public void setPartValue(int part, float value) { parts[part] = value; }
 }

@@ -15,4 +15,5 @@ public class BardActionImpl implements IBardAction
 
     @Override
     public boolean isInstrumentEquipped() { return isInstEquipped; }
+
 }

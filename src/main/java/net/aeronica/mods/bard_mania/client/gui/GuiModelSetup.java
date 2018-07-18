@@ -2,6 +2,7 @@ package net.aeronica.mods.bard_mania.client.gui;
 
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
+import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
@@ -50,18 +51,18 @@ public class GuiModelSetup extends GuiScreen
         int y = 20;
         int x = 10;
         int w = 120;
-        sliderPlayerRotYaw = new GuiSliderMX(0, x, y, w, 20,"Player Yaw", playerYaw, -180f, 180f, 1f);
-        translateX = new GuiSliderMX(1, x, y+=22, w, 20,"Trans X", inst.general.translationXYZ[0], -0.5f, 0.5f, 0.01f);
-        translateY = new GuiSliderMX(2, x, y+=22, w, 20,"Trans Y", inst.general.translationXYZ[1], -0.5f, 0.5f, 0.01f);
-        translateZ = new GuiSliderMX(3, x, y+=22, w, 20,"Trans Z", inst.general.translationXYZ[2], -0.5f, 0.5f, 0.01f);
-        rotateX = new GuiSliderMX(4, x, y+=22, w, 20,"Rotate X", inst.general.rotationXYZ[0], -180f, 180f, 1f);
-        rotateY = new GuiSliderMX(5, x, y+=22, w, 20,"Rotate Y", inst.general.rotationXYZ[1], -180f, 180f, 1f);
-        rotateZ = new GuiSliderMX(6, x, y+=22, w, 20,"Rotate Z", inst.general.rotationXYZ[2], -180f, 180f, 1f);
-        scale = new GuiSliderMX(7, x, y+=22, w, 20,"Scale", inst.general.scaleXYZ[0], 0f, 1.5f, 0.01f);
+        sliderPlayerRotYaw = new GuiSliderMX(0, x, y, w, 20, "Player Yaw", playerYaw, -180f, 180f, 1f);
+        translateX = new GuiSliderMX(1, x, y += 22, w, 20, "Trans X", inst.general.translationXYZ[0], -0.5f, 0.5f, 0.01f);
+        translateY = new GuiSliderMX(2, x, y += 22, w, 20, "Trans Y", inst.general.translationXYZ[1], -0.5f, 0.5f, 0.01f);
+        translateZ = new GuiSliderMX(3, x, y += 22, w, 20, "Trans Z", inst.general.translationXYZ[2], -0.5f, 0.5f, 0.01f);
+        rotateX = new GuiSliderMX(4, x, y += 22, w, 20, "Rotate X", inst.general.rotationXYZ[0], -180f, 180f, 1f);
+        rotateY = new GuiSliderMX(5, x, y += 22, w, 20, "Rotate Y", inst.general.rotationXYZ[1], -180f, 180f, 1f);
+        rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, "Rotate Z", inst.general.rotationXYZ[2], -180f, 180f, 1f);
+        scale = new GuiSliderMX(7, x, y += 22, w, 20, "Scale", inst.general.scaleXYZ[0], 0f, 1.5f, 0.01f);
 
-        equip = new GuiButton(8, x, y+=22, w, 20, "Equip");
-        remove = new GuiButton(9, x+=102, y, w, 20, "Remove");
-        print = new GuiButton(10, x+=102, y, w, 20, "Print");
+        equip = new GuiButton(8, x, y += 22, w, 20, "Equip");
+        remove = new GuiButton(9, x += 102, y, w, 20, "Remove");
+        print = new GuiButton(10, x += 102, y, w, 20, "Print");
 
         buttonList.add(sliderPlayerRotYaw);
         buttonList.add(translateX);
@@ -109,11 +110,11 @@ public class GuiModelSetup extends GuiScreen
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(GUI_BACKGROUND);
-        int i = xIn + 100/2;
-        int j = 120+8;
+        int i = xIn + 100 / 2;
+        int j = 120 + 8;
         //drawBox(xIn, yIn, 100, 120);
-        drawTexturedModalRect(xIn, yIn, 0,0, 100, 120);
-        drawEntityOnScreen(i, j , 50, (float) xIn - xIn + 10, (float) yIn - yIn - 10, this.mc.player, sliderPlayerRotYaw.getValue());
+        drawTexturedModalRect(xIn, yIn, 0, 0, 100, 120);
+        drawEntityOnScreen(i, j, 50, (float) xIn - xIn + 10, (float) yIn - yIn - 10, this.mc.player, sliderPlayerRotYaw.getValue());
     }
 
     @Override
@@ -122,10 +123,12 @@ public class GuiModelSetup extends GuiScreen
         switch (button.id)
         {
             case 8:
-                    ActionManager.equipAction(mc.player);
+                BardActionHelper.setInstrumentEquipped(mc.player);
+                ActionManager.equipAction(mc.player);
                 break;
             case 9:
-                    ActionManager.unEquipAction(mc.player);
+                BardActionHelper.setInstrumentRemoved(mc.player);
+                ActionManager.unEquipAction(mc.player);
                 break;
             case 10:
                 System.out.printf("\"translationXYZ\": [%1.2f, %1.2f, %1.2f],\n", inst.general.translationXYZ[0], inst.general.translationXYZ[1], inst.general.translationXYZ[2]);
@@ -158,8 +161,8 @@ public class GuiModelSetup extends GuiScreen
     {
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float)posX, (float)posY, 50.0F);
-        GlStateManager.scale((float)(-scale), (float)scale, (float)scale);
+        GlStateManager.translate((float) posX, (float) posY, 50.0F);
+        GlStateManager.scale((float) (-scale), (float) scale, (float) scale);
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         float f = ent.renderYawOffset;
         float f1 = ent.rotationYaw;
@@ -169,10 +172,10 @@ public class GuiModelSetup extends GuiScreen
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-((float)Math.atan((double)(mouseY / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-((float) Math.atan((double) (mouseY / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
         ent.renderYawOffset = playerYaw;
         ent.rotationYaw = playerYaw;
-        ent.rotationPitch = -((float)Math.atan((double)(mouseY / 40.0F))) * 20.0F;
+        ent.rotationPitch = -((float) Math.atan((double) (mouseY / 40.0F))) * 20.0F;
         ent.rotationYawHead = ent.rotationYaw;
         ent.prevRotationYawHead = ent.rotationYaw;
         GlStateManager.translate(0.0F, 0.0F, 0.0F);

@@ -18,6 +18,7 @@
 package net.aeronica.mods.bard_mania.server;
 
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
+import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -41,6 +42,7 @@ public class ServerEvents
         ItemStack itemStack = event.getEntityItem().getItem();
         if((itemStack.getItem() instanceof ItemInstrument))
         {
+            BardActionHelper.setInstrumentRemoved(event.getPlayer());
             if (event.isCancelable()) event.setCanceled(false);
         }
     }

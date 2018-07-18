@@ -17,6 +17,8 @@ public class EquipAction extends ActionBase
     @Override
     protected void start()
     {
+        modelDummy.tweenStart();
+        modelDummy.setInstrumentStack(player.getHeldItemMainhand());
         Timeline timeline = tweenEngine.createSequential();
         Timeline newTimeline = ActionDispatcher.select(instrumentId, "equip", player, tweenEngine, timeline, modelDummy, normalizedNote);
 
@@ -26,6 +28,7 @@ public class EquipAction extends ActionBase
             public void onEvent(int type, BaseTween<?> source)
             {
                 ModLogger.info("Tween Complete %s", player.getDisplayName().getUnformattedText());
+                modelDummy.tweenStop();
                 isDone = true;
             }
         }).start();

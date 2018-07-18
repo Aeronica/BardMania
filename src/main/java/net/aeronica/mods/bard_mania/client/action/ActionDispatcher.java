@@ -9,8 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.aeronica.mods.bard_mania.client.action.ModelAccessor.HEAD_ACTION_ROT_X;
-import static net.aeronica.mods.bard_mania.client.action.ModelAccessor.HEAD_ACTION_ROT_Y;
+import static net.aeronica.mods.bard_mania.client.action.ModelAccessor.*;
 
 public class ActionDispatcher
 {
@@ -44,19 +43,36 @@ public class ActionDispatcher
         {
             return instActions.get(key.toString()).invoke(playerIn, tweenEngine, timeline, modelDummy, normalizedNote);
         }
-        return fallback(timeline, tweenEngine, modelDummy, normalizedNote);
+        return fallback(action, timeline, tweenEngine, modelDummy, normalizedNote);
     }
 
-    private static Timeline fallback(Timeline timeline, TweenEngine tweenEngine, ModelDummy modelDummy, int normalizedNote)
+    private static Timeline fallback(String action, Timeline timeline, TweenEngine tweenEngine, ModelDummy modelDummy, int normalizedNote)
     {
-        timeline.beginParallel()
-                .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_X, 0.15F).target(-0.1f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_Y, 0.15F).target(lookNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .end()
-                .beginParallel()
-                .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_X, 0.15F).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_Y, 0.15F).target(0f).ease(TweenEquations.Sine_InOut))
-                .end();
+        switch (action)
+        {
+            case "play":
+            timeline.beginParallel()
+                    .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_X, 0.15F).target(-0.1f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_Y, 0.15F).target(lookNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .end()
+                    .beginParallel()
+                    .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_X, 0.15F).target(0f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_Y, 0.15F).target(0f).ease(TweenEquations.Sine_InOut))
+                    .end();
+            break;
+            case "equip":
+            timeline.beginParallel()
+                    .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.5f).target(1f).ease(TweenEquations.Bounce_InOut))
+                    .end();
+                break;
+            case "remove":
+            timeline.beginParallel()
+                    .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.25f).target(0f).ease(TweenEquations.Sine_InOut))
+                    .end();
+                break;
+            default:
+        }
+
         ModLogger.info("fallback");
         return timeline;
     }

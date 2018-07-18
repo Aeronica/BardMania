@@ -19,6 +19,8 @@ package net.aeronica.mods.bard_mania.client.gui;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
+import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
+import net.aeronica.mods.bard_mania.server.network.server.GuiClosedMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -61,7 +63,8 @@ public class GuiKeyboard extends GuiScreen
     @Override
     public void onGuiClosed()
     {
-        MidiHelper.INSTANCE.notifyRemoved("Gui  Keyboard Closed");
+        PacketDispatcher.sendToServer(new GuiClosedMessage(GuiGuid.KEYBOARD));
+        MidiHelper.INSTANCE.notifyRemoved("Gui Keyboard Closed");
         super.onGuiClosed();
     }
 

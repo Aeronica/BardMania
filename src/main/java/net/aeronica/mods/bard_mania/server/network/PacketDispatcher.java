@@ -5,10 +5,11 @@
 package net.aeronica.mods.bard_mania.server.network;
 
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
 import net.aeronica.mods.bard_mania.server.network.client.OpenGuiMessage;
 import net.aeronica.mods.bard_mania.server.network.client.PlaySoundMessage;
+import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
 import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
+import net.aeronica.mods.bard_mania.server.network.server.GuiClosedMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -62,9 +63,11 @@ public class PacketDispatcher
         /** Packets handled on CLIENT */
         registerMessage(PlaySoundMessage.class);
         registerMessage(OpenGuiMessage.class);
+        registerMessage(PoseActionMessage.class);
 
         /** Packets handled on SERVER */
         registerMessage(ActiveReceiverMessage.class);
+        registerMessage(GuiClosedMessage.class);
         
         /**
          * If you don't want to make a 'registerMessage' method, you can do it
@@ -76,7 +79,6 @@ public class PacketDispatcher
         // OpenGuiMessage.class, packetId++, Side.SERVER);
 
         /** Bidirectional packets: */
-        registerMessage(PoseActionMessage.class);
 
     }
 

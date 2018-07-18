@@ -17,12 +17,11 @@
 package net.aeronica.mods.bard_mania.client;
 
 import net.aeronica.mods.bard_mania.BardMania;
-import net.aeronica.mods.bard_mania.client.action.ActionManager;
+import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
 import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
-import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
 import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.KEYBOARD;
 import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 
 @SuppressWarnings("unused")
@@ -65,9 +65,6 @@ public enum MidiHelper implements Receiver
         } else
         {
             inUse = true;
-            ActionManager.getModelDummy(player).reset();
-            ActionManager.equipAction(player);
-            PacketDispatcher.sendToServer(new PoseActionMessage(player, PoseActionMessage.EQUIP));
         }
 
         close();
@@ -100,7 +97,9 @@ public enum MidiHelper implements Receiver
                     ModLogger.error(e);
                 }
             }
-        }
+        } else
+        if (ModConfig.client.input_mode == KEYBOARD)
+            playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, playerIn.getEntityWorld(), 0, 0, 0);
     }
 
     public static List<String> getOpenDeviceNames()
@@ -190,8 +189,6 @@ public enum MidiHelper implements Receiver
     private void invalidate(String message)
     {
         ModLogger.info("ActiveNoteReceiver Removed: %s", message);
-        ActionManager.unEquipAction(player); // TODO: For testing
-        PacketDispatcher.sendToServer(new PoseActionMessage(player, PoseActionMessage.REMOVE));
         stack = ItemStack.EMPTY;
         close();
         inUse = false;
