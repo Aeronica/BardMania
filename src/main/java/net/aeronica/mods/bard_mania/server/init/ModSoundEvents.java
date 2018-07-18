@@ -17,7 +17,7 @@
 package net.aeronica.mods.bard_mania.server.init;
 
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
@@ -38,7 +38,7 @@ public class ModSoundEvents
 
     static
     {
-        for (ItemHandHeld handHeld : ModInstruments.INSTRUMENTS)
+        for (ItemInstrument handHeld : ModInstruments.INSTRUMENTS)
         {
             Instrument instrument = handHeld.getInstrument();
             if (!SOUNDS.containsKey(instrument.sounds.timbre))

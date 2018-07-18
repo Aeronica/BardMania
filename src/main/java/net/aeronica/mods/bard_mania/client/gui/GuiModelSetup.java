@@ -2,7 +2,7 @@ package net.aeronica.mods.bard_mania.client.gui;
 
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -46,7 +46,7 @@ public class GuiModelSetup extends GuiScreen
     {
         super.initGui();
         playerYaw = 1f;
-        inst = ((ItemHandHeld) mc.player.getHeldItemMainhand().getItem()).getInstrument();
+        inst = ((ItemInstrument) mc.player.getHeldItemMainhand().getItem()).getInstrument();
         int y = 20;
         int x = 10;
         int w = 120;

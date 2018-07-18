@@ -8,7 +8,7 @@ import net.aeronica.mods.bard_mania.client.action.ModelDummy;
 import net.aeronica.mods.bard_mania.server.IPlaceableBounding;
 import net.aeronica.mods.bard_mania.server.LocationArea;
 import net.aeronica.mods.bard_mania.server.init.ModInstruments;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -144,7 +144,7 @@ public class RenderEvents
     {
         ItemStack heldItem = event.getItemStack();
 
-        if (!(heldItem.getItem() instanceof ItemHandHeld)) return;
+        if (!(heldItem.getItem() instanceof ItemInstrument)) return;
 
         if (event.getHand().equals(EnumHand.OFF_HAND)) event.setCanceled(true);
     }
@@ -170,7 +170,7 @@ public class RenderEvents
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
         // Offhand ONLY instruments render normally. TODO: Simplify
-        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemHandHeld))
+        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument))
         {
             event.setCanceled(false);
             return;
@@ -179,8 +179,8 @@ public class RenderEvents
         ItemStack heldItem;
         ItemStack itemMain = event.getEntity().getHeldItemMainhand();
         ItemStack itemOff = event.getEntity().getHeldItemOffhand();
-        boolean isMainHandHeld = !itemMain.isEmpty() && itemMain.getItem() instanceof ItemHandHeld;
-        boolean isOffHandHeld = !itemOff.isEmpty() && itemOff.getItem() instanceof ItemHandHeld;
+        boolean isMainHandHeld = !itemMain.isEmpty() && itemMain.getItem() instanceof ItemInstrument;
+        boolean isOffHandHeld = !itemOff.isEmpty() && itemOff.getItem() instanceof ItemInstrument;
         boolean renderLeft = event.getHandSide().equals(EnumHandSide.LEFT);
         EntityPlayer player = (EntityPlayer) event.getEntity();
 
@@ -194,20 +194,20 @@ public class RenderEvents
         }
 
         heldItem = event.getItem();
-        if (heldItem.getItem() instanceof ItemHandHeld && event.getHandSide().equals(event.getEntity().getPrimaryHand()))
+        if (heldItem.getItem() instanceof ItemInstrument && event.getHandSide().equals(event.getEntity().getPrimaryHand()))
         {
             event.setCanceled(true);
-            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
 
             applyRightHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
 
-        if (heldItem.getItem() instanceof ItemHandHeld  && !event.getHandSide().equals(event.getEntity().getPrimaryHand()))
+        if (heldItem.getItem() instanceof ItemInstrument && !event.getHandSide().equals(event.getEntity().getPrimaryHand()))
         {
             event.setCanceled(true);
-            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
 
             applyLeftHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
@@ -220,7 +220,7 @@ public class RenderEvents
     {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack heldItem = player.getHeldItemMainhand();
-        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemHandHeld))
+        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemInstrument))
         {
             ModelPlayer model = event.getModelPlayer();
             applyPlayerModelRotation(model, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
@@ -236,7 +236,7 @@ public class RenderEvents
     {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack heldItem = player.getHeldItemMainhand();
-        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemInstrument)
         {
             applyPlayerPreRender(player, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));
         }
@@ -259,7 +259,7 @@ public class RenderEvents
 
     private static boolean renderInstrument(ItemStack stack, ItemCameraTransforms.TransformType transformType)
     {
-        if (stack.getItem() instanceof ItemHandHeld)
+        if (stack.getItem() instanceof ItemInstrument)
         {
             GlStateManager.pushMatrix();
             RenderUtil.applyTransformType(stack, transformType);

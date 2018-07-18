@@ -2,7 +2,7 @@ package net.aeronica.mods.bard_mania.client.action;
 
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
 import net.aeronica.mods.bard_mania.server.ModLogger;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -30,9 +30,9 @@ public abstract class ActionBase
         this.player = playerIn;
         this.modelDummy = modelDummy;
         this.normalizedNote = normalizeNote(noteIn);
-        if (!player.getHeldItemMainhand().isEmpty() && (player.getHeldItemMainhand().getItem() instanceof ItemHandHeld))
+        if (!player.getHeldItemMainhand().isEmpty() && (player.getHeldItemMainhand().getItem() instanceof ItemInstrument))
         {
-            instrument = ((ItemHandHeld) player.getHeldItemMainhand().getItem()).getInstrument();
+            instrument = ((ItemInstrument) player.getHeldItemMainhand().getItem()).getInstrument();
             instrumentId = instrument.id;
             ModLogger.info("Triggered      %s", player.getDisplayName().getUnformattedText());
             start();

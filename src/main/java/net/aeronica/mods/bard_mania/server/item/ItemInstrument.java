@@ -53,11 +53,11 @@ import static net.aeronica.mods.bard_mania.client.MidiHelper.getOpenDeviceNames;
 import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.KEYBOARD;
 import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 
-public class ItemHandHeld extends Item implements IActiveNoteReceiver
+public class ItemInstrument extends Item implements IActiveNoteReceiver
 {
     private final Instrument instrument;
 
-    public ItemHandHeld(Instrument instrument)
+    public ItemInstrument(Instrument instrument)
     {
         this.instrument = instrument;
         this.setRegistryName(instrument.id.toLowerCase());
@@ -165,7 +165,7 @@ public class ItemHandHeld extends Item implements IActiveNoteReceiver
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
     {
-        return (newStack.getItem() instanceof ItemHandHeld) ? !Objects.equals(((ItemHandHeld) newStack.getItem()).getInstrument().id, ((ItemHandHeld) oldStack.getItem()).getInstrument().id) : slotChanged;
+        return (newStack.getItem() instanceof ItemInstrument) ? !Objects.equals(((ItemInstrument) newStack.getItem()).getInstrument().id, ((ItemInstrument) oldStack.getItem()).getInstrument().id) : slotChanged;
     }
 
     @Override

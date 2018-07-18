@@ -22,7 +22,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import net.aeronica.mods.bard_mania.server.item.ItemAccessory;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.item.Item;
 
@@ -35,7 +35,7 @@ import java.util.List;
 
 public class ModInstruments
 {
-    static final List<ItemHandHeld> INSTRUMENTS = new ArrayList<>();
+    static final List<ItemInstrument> INSTRUMENTS = new ArrayList<>();
 
     public static final Item DRUM_STICK;
     public static final Item MALLET;
@@ -64,7 +64,7 @@ public class ModInstruments
                         throw new NullPointerException("Invalid instrument entry");
                     }
                 }
-                INSTRUMENTS.add(new ItemHandHeld(instrument));
+                INSTRUMENTS.add(new ItemInstrument(instrument));
             }
         } catch (IllegalAccessException e)
         {

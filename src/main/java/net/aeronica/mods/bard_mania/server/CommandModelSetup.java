@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.server;
 
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.client.OpenGuiMessage;
 import net.minecraft.command.CommandBase;
@@ -32,7 +32,7 @@ public class CommandModelSetup extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        if (sender instanceof EntityPlayer && ((EntityPlayer)sender).getHeldItemMainhand().getItem() instanceof ItemHandHeld)
+        if (sender instanceof EntityPlayer && ((EntityPlayer)sender).getHeldItemMainhand().getItem() instanceof ItemInstrument)
         {
             PacketDispatcher.sendTo(new OpenGuiMessage(GuiGuid.MODEL_SETUP), (EntityPlayerMP) sender);
             sender.sendMessage(new TextComponentTranslation("commands.bard_mania.modelsetup.success", ""));

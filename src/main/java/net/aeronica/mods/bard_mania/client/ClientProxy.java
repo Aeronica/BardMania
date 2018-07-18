@@ -5,7 +5,7 @@ import net.aeronica.mods.bard_mania.client.action.ActionManager;
 import net.aeronica.mods.bard_mania.client.gui.InputModeToast;
 import net.aeronica.mods.bard_mania.server.ServerProxy;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -35,9 +35,9 @@ public class ClientProxy extends ServerProxy
     {
         WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();
         ItemStack heldItem = playerIn.getHeldItemMainhand();
-        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemHandHeld)
+        if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemInstrument)
         {
-            Instrument instrument = ((ItemHandHeld) heldItem.getItem()).getInstrument();
+            Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
             playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1.5f, calculatePitch(noteIn));
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playerIn.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, playerIn.posY + 2.5D, playerIn.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
             ActionManager.playAction(playerIn, noteIn);

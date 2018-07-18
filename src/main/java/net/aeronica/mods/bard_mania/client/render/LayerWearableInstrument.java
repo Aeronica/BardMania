@@ -19,7 +19,7 @@ package net.aeronica.mods.bard_mania.client.render;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
 import net.aeronica.mods.bard_mania.server.ModLogger;
-import net.aeronica.mods.bard_mania.server.item.ItemHandHeld;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -39,9 +39,9 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
     @Override
     public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        if (!entitylivingbaseIn.isInvisible() && (entitylivingbaseIn.getHeldItemMainhand().getItem() instanceof ItemHandHeld))
+        if (!entitylivingbaseIn.isInvisible() && (entitylivingbaseIn.getHeldItemMainhand().getItem() instanceof ItemInstrument))
         {
-            Instrument inst = ((ItemHandHeld) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
+            Instrument inst = ((ItemInstrument) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
             ItemStack itemStack = entitylivingbaseIn.getHeldItemMainhand();
             if (inst.general.wearable)
             {
