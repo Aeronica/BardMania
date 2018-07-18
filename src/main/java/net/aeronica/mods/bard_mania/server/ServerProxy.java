@@ -37,7 +37,7 @@ public class ServerProxy
 
     public void playSound(EntityPlayer playerIn, int entityId, String soundName, byte noteIn, byte volumeIn) {/* NOP */}
 
-    public void postInputModeToast(ItemStack itemStacm) {/* NOP */}
+    public void postInputModeToast(ItemStack itemStack) {/* NOP */}
 
     public void preInit() {/* NOP */}
 
@@ -93,5 +93,4 @@ public class ServerProxy
     {
         return null;
     }
-
 }

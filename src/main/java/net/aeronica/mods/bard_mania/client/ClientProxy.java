@@ -57,6 +57,7 @@ public class ClientProxy extends ServerProxy
         }
     }
 
+    @Override
     public void postInputModeToast(ItemStack itemStack)
     {
         getMinecraft().getToastGui().add(new InputModeToast(itemStack));
