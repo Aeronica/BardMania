@@ -51,7 +51,8 @@ public class ServerEvents
         if (!event.player.getEntityWorld().isRemote)
         {
             ModLogger.info("Logged On: %s", event.player.getDisplayName().getUnformattedText());
-            event.player.getEntityWorld().playerEntities
+            event.player.getEntityWorld().playerEntities.stream()
+                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
             BardActionHelper.setInstrumentRemovedByForce(event.player);
@@ -64,7 +65,8 @@ public class ServerEvents
         if (!event.player.getEntityWorld().isRemote)
         {
             ModLogger.info("Logged On: %s", event.player.getDisplayName().getUnformattedText());
-            event.player.getEntityWorld().playerEntities
+            event.player.getEntityWorld().playerEntities.stream()
+                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
             BardActionHelper.setInstrumentRemovedByForce(event.player);
@@ -77,7 +79,10 @@ public class ServerEvents
         if (!event.player.getEntityWorld().isRemote)
         {
             ModLogger.info("Changed Dimension: %s", event.player.getDisplayName().getUnformattedText());
-            event.player.getEntityWorld().playerEntities
+            event.player.getEntityWorld().playerEntities.stream()
+                    .filter(player -> BardActionHelper.isInstrumentEquipped(player)
+                            && (player.getEntityId() != event.player.getEntityId())
+                           && (player.dimension == event.toDim))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
             BardActionHelper.setInstrumentRemovedByForce(event.player);
@@ -90,7 +95,8 @@ public class ServerEvents
         if (!event.player.getEntityWorld().isRemote)
         {
             ModLogger.info("Re-spawned after death: %s", event.player.getDisplayName().getUnformattedText());
-            event.player.getEntityWorld().playerEntities
+            event.player.getEntityWorld().playerEntities.stream()
+                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
             BardActionHelper.setInstrumentRemovedByForce(event.player);
