@@ -97,8 +97,8 @@ public enum MidiHelper implements Receiver
                     ModLogger.error(e);
                 }
             }
-        } else
-        if (ModConfig.client.input_mode == KEYBOARD)
+        }
+        else if (ModConfig.client.input_mode == KEYBOARD)
             playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, playerIn.getEntityWorld(), 0, 0, 0);
     }
 
