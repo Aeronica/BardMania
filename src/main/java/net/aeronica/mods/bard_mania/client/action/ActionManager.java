@@ -18,15 +18,10 @@ package net.aeronica.mods.bard_mania.client.action;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.client.event.GuiContainerEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -149,39 +144,6 @@ public class ActionManager
         WorldClient world = getMinecraft().world;
         long time = world != null ? world.getTotalWorldTime() : 0L;
         return (time + partialTicks) / 20;
-    }
-
-    @SubscribeEvent
-    public static void onContainerOpen(GuiContainerEvent event)
-    {
-//        if (MidiHelper.isInUse())
-//            MidiHelper.INSTANCE.notifyRemoved("Inventory Opened");
-    }
-
-    @SubscribeEvent
-    public static void onPlayerContainerEvent(PlayerContainerEvent event)
-    {
-        if (MidiHelper.isInUse())
-            MidiHelper.INSTANCE.notifyRemoved("Player Inventory Closed");
-    }
-
-    @SubscribeEvent
-    public static void onPlayerSleepInBedEvent(PlayerSleepInBedEvent event)
-    {
-        if (event.getEntityPlayer() instanceof EntityPlayerSP)
-            if (MidiHelper.isInUse())
-                MidiHelper.INSTANCE.notifyRemoved("Sleep in bed");
-    }
-
-    @SubscribeEvent
-    public static void onEntityJoinWorldEvent(EntityJoinWorldEvent event)
-    {
-        if (event.getEntity() instanceof EntityPlayerSP)
-            if (MidiHelper.isInUse())
-            {
-                ActionManager.getModelDummy((EntityPlayer) event.getEntity()).reset();
-                MidiHelper.INSTANCE.notifyRemoved("Join World");
-            }
     }
 
     private static EntityPlayerSP getThePlayer() {return (EntityPlayerSP) BardMania.proxy.getClientPlayer();}

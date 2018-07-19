@@ -46,15 +46,13 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
     }
 
     @Override
-    public void process(EntityPlayer player, Side side)
-    {
-        processClient(player);
-    }
+    public void process(EntityPlayer player, Side side) { processClient(player); }
 
     @SideOnly(Side.CLIENT)
     private void processClient(EntityPlayer player)
     {
         EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
+        ModLogger.info("  process PoseActionMessage for %s", posingPlayer.getDisplayName().getUnformattedText());
         if (posingPlayer != null)
         {
             if (actionId == EQUIP)

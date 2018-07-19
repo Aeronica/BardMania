@@ -1,10 +1,13 @@
 package net.aeronica.mods.bard_mania.server.caps;
 
 import net.aeronica.mods.bard_mania.BardMania;
+import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.Util;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,6 +39,13 @@ public class BardActionHelper
     {
         getImpl(player).setInstrumentRemoved();
         sendMessage(player, REMOVE,true);
+    }
+
+    public static void updateOnJoin(EntityPlayer existingPlayer, EntityLivingBase joiningPlayer)
+    {
+        ModLogger.info("  updateOnJoin send %s state to %s", existingPlayer.getDisplayName().getUnformattedText(), joiningPlayer.getDisplayName().getUnformattedText());
+        if (existingPlayer.getEntityId() != joiningPlayer.getEntityId())
+            PacketDispatcher.sendTo(new PoseActionMessage(existingPlayer, isInstrumentEquipped(existingPlayer) ? EQUIP : REMOVE, false), (EntityPlayerMP) joiningPlayer);
     }
 
     public static boolean isInstrumentEquipped(EntityPlayer player) { return getImpl(player).isInstrumentEquipped(); }

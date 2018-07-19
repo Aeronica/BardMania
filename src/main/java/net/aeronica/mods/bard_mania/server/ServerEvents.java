@@ -17,26 +17,47 @@
 
 package net.aeronica.mods.bard_mania.server;
 
-import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 @Mod.EventBusSubscriber
 public class ServerEvents
 {
     @SubscribeEvent
-    public static void EntityLivingInitEvent(EntityLivingInitEvent event)
+    public static void onEvent(PlayerContainerEvent event)
     {
-//        if (!(event.getEntity() instanceof EntityPlayer))
-//            ModLogger.info("EntityLivingInitEvent %s", event.getEntity().getName());
+        if (event.getEntity() instanceof EntityPlayer && BardActionHelper.isInstrumentEquipped(event.getEntityPlayer()))
+            BardActionHelper.setInstrumentRemoved(event.getEntityPlayer());
     }
 
     @SubscribeEvent
-    public static void onItemTossEvent(ItemTossEvent event)
+    public static void onEvent(PlayerSleepInBedEvent event)
+    {
+        if (event.getEntity() instanceof EntityPlayer && BardActionHelper.isInstrumentEquipped(event.getEntityPlayer()))
+            BardActionHelper.setInstrumentRemoved(event.getEntityPlayer());
+    }
+
+    @SubscribeEvent
+    public static void onEvent(PlayerEvent.PlayerLoggedInEvent event)
+    {
+        if (!event.player.getEntityWorld().isRemote)
+        {
+            ModLogger.info("%s joined", event.player.getDisplayName().getUnformattedText());
+            event.player.getEntityWorld().playerEntities
+                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEvent(ItemTossEvent event)
     {
         ModLogger.info("Item dropped, %s", event.getEntity().getDisplayName().getUnformattedText());
         ItemStack itemStack = event.getEntityItem().getItem();
