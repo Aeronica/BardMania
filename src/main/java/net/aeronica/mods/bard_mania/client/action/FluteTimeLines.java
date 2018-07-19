@@ -9,7 +9,25 @@ import static net.aeronica.mods.bard_mania.client.action.ModelAccessor.*;
 
 public class FluteTimeLines
 {
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_X = -1.570796327f;
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = 0.436332313f;
+    private static final float TARGET_LEFT_ARM_POSE_ROT_X = -1.570796327f;
+    private static final float TARGET_LEFT_ARM_POSE_ROT_Y = 0.959931089f;
+    private static final float TARGET_PLAYER_POSE_ROTATION_YAW = 40f;
+    private static final float TARGET_RIGHT_HAND_ITEM_ROT_Y = 40.f;
+
     private FluteTimeLines() {/* NOP */}
+
+    public static Timeline apply(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
+    {
+        modelDummy.setPartValue(RIGHT_ARM_POSE_ROT_X, TARGET_RIGHT_ARM_POSE_ROT_X);
+        modelDummy.setPartValue(RIGHT_ARM_POSE_ROT_Y, TARGET_RIGHT_ARM_POSE_ROT_Y);
+        modelDummy.setPartValue(LEFT_ARM_POSE_ROT_X, TARGET_LEFT_ARM_POSE_ROT_X);
+        modelDummy.setPartValue(LEFT_ARM_POSE_ROT_Y, TARGET_LEFT_ARM_POSE_ROT_Y);
+        modelDummy.setPartValue(PLAYER_POSE_ROTATION_YAW, TARGET_PLAYER_POSE_ROTATION_YAW);
+        modelDummy.setPartValue(RIGHT_HAND_ITEM_ROT_Y, TARGET_RIGHT_HAND_ITEM_ROT_Y);
+        return timeline;
+    }
 
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {

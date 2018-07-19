@@ -1,5 +1,7 @@
 package net.aeronica.mods.bard_mania.server.caps;
 
+import net.aeronica.mods.bard_mania.client.action.ModelDummy;
+
 public interface IBardAction
 {
     void setInstrumentEquipped();
@@ -7,4 +9,6 @@ public interface IBardAction
     void setInstrumentRemoved();
 
     boolean isInstrumentEquipped();
+
+    ModelDummy getModelDummy();
 }

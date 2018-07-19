@@ -14,8 +14,9 @@ import java.io.IOException;
 
 public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
 {
-    public static final int EQUIP = 0;
-    public static final int REMOVE = 1;
+    public static final int APPLY = 0;
+    public static final int EQUIP = 1;
+    public static final int REMOVE = 2;
     private int posingPlayerId;
     private int actionId;
     private boolean forced = false;
@@ -55,7 +56,13 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
         ModLogger.info("  process PoseActionMessage for %s", posingPlayer.getDisplayName().getUnformattedText());
         if (posingPlayer != null)
         {
-            if (actionId == EQUIP)
+            if (actionId == APPLY)
+            {
+                BardActionHelper.setInstrumentEquipped(posingPlayer);
+                ActionManager.getModelDummy(posingPlayer).reset();
+                ActionManager.applyPose(posingPlayer);
+            }
+            else if (actionId == EQUIP)
             {
                 BardActionHelper.setInstrumentEquipped(posingPlayer);
                 ActionManager.getModelDummy(posingPlayer).reset();

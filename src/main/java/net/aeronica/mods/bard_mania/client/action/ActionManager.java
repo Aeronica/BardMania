@@ -18,6 +18,7 @@ package net.aeronica.mods.bard_mania.client.action;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
+import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -28,8 +29,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("unused")
@@ -38,7 +37,7 @@ public class ActionManager
 {
     private ActionManager instance = new ActionManager();
     private static final ModelDummy modelDummy = new ModelDummy();
-    private static Map<Integer, ModelDummy> playerModels = new ConcurrentHashMap<>();
+    //private static Map<Integer, ModelDummy> playerModels = new ConcurrentHashMap<>();
     private static List<ActionBase> actions =  new CopyOnWriteArrayList<>();
     private static float deltaTime = 0F;
     private static double total = 0F;
@@ -47,58 +46,74 @@ public class ActionManager
 
     private ActionManager() {/* NOP */}
 
+    public static void applyPose(EntityPlayer playerIn)
+    {
+//        int playerId = playerIn.getEntityId();
+//        if (playerModels.containsKey(playerId))
+//        {
+//            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
+//        }
+//        else
+//        {
+        ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
+//            playerModels.put(playerId, modelDummy);
+        actions.add(new ApplyPose(playerIn, modelDummy));
+//        }
+    }
+
     public static void playAction(EntityPlayer playerIn, int noteIn)
     {
-        int playerId = playerIn.getEntityId();
-        if (playerModels.containsKey(playerId))
-        {
-            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
-        }
-        else
-        {
-            ModelDummy modelDummy = new ModelDummy();
-            playerModels.put(playerId, modelDummy);
+//        int playerId = playerIn.getEntityId();
+//        if (playerModels.containsKey(playerId))
+//        {
+//            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
+//        }
+//        else
+//        {
+            ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
+//            playerModels.put(playerId, modelDummy);
             actions.add(new PlayAction(playerIn, modelDummy, noteIn));
-        }
+//        }
     }
 
     public static void equipAction(EntityPlayer playerIn)
     {
-        int playerId = playerIn.getEntityId();
-        if (playerModels.containsKey(playerId))
-        {
-            actions.add(new EquipAction(playerIn, playerModels.get(playerId)));
-        }
-        else
-        {
-            ModelDummy modelDummy = new ModelDummy();
-            playerModels.put(playerId, modelDummy);
+//        int playerId = playerIn.getEntityId();
+//        if (playerModels.containsKey(playerId))
+//        {
+//            actions.add(new EquipAction(playerIn, playerModels.get(playerId)));
+//        }
+//        else
+//        {
+            ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
+//            playerModels.put(playerId, modelDummy);
             actions.add(new EquipAction(playerIn, modelDummy));
-        }
+//        }
     }
 
     public static void unEquipAction(EntityPlayer playerIn)
     {
-        int playerId = playerIn.getEntityId();
-        if (playerModels.containsKey(playerId))
-        {
-            actions.add(new UnEquipAction(playerIn, playerModels.get(playerId)));
-        }
-        else
-        {
-            ModelDummy modelDummy = new ModelDummy();
-            playerModels.put(playerId, modelDummy);
+//        int playerId = playerIn.getEntityId();
+//        if (playerModels.containsKey(playerId))
+//        {
+//            actions.add(new UnEquipAction(playerIn, playerModels.get(playerId)));
+//        }
+//        else
+//        {
+            ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
+//            playerModels.put(playerId, modelDummy);
             actions.add(new UnEquipAction(playerIn, modelDummy));
-        }
+//        }
     }
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)
     {
-        int playerId = playerIn.getEntityId();
-        if (!playerModels.isEmpty() && playerModels.get(playerId) != null)
-            return playerModels.get(playerId);
-        else
-            return modelDummy;
+//        int playerId = playerIn.getEntityId();
+//        if (!playerModels.isEmpty() && playerModels.get(playerId) != null)
+//            return playerModels.get(playerId);
+//        else
+//            return modelDummy;
+        return playerIn.hasCapability(Reference.BARD_ACTION_CAP, null) ? BardActionHelper.getModelDummy(playerIn) : modelDummy;
     }
 
     private static void update(float deltaTimeIn)
@@ -110,18 +125,18 @@ public class ActionManager
     {
         actions.stream().filter(ActionBase::isDone).forEach(action -> actions.remove(action));
 
-        if (cleanupTicks++ % 60 == 0)
-            playerModels.keySet().stream()
-                    .filter(playerId -> getPlayerById(playerId) == null)
-                    .forEach(playerId -> playerModels.remove(playerId));
+//        if (cleanupTicks++ % 60 == 0)
+//            playerModels.keySet().stream()
+//                    .filter(playerId -> getPlayerById(playerId) == null)
+//                    .forEach(playerId -> playerModels.remove(playerId));
     }
 
     @SubscribeEvent
-    public static void onTick(TickEvent.RenderTickEvent event)
+    public static void onTick(TickEvent.ClientTickEvent/*TickEvent.RenderTickEvent*/ event)
     {
         if (event.phase.equals(TickEvent.Phase.START))
         {
-            partialTicks = event.renderTickTime;
+            partialTicks = getMinecraft().getRenderPartialTicks();//event.renderTickTime;
             cleanup();
             return;
         }

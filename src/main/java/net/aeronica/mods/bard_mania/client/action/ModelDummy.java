@@ -29,7 +29,7 @@ public class ModelDummy
             0f, 0f, 0f, // right_hand_item_rot_x, right_hand_item_rot_y, right_hand_item_rot_z
             0f, 0f, 0f, // left_hand_item_trans_x, left_hand_item_trans_y, left_hand_item_trans_z
             0f, 0f, 0f, // left_hand_item_rot_x, left_hand_item_rot_y, left_hand_item_rot_z
-            0f, // worn_item_scale
+            0f, 0f, // worn_item_scale, apply
     };
 
     public void reset()

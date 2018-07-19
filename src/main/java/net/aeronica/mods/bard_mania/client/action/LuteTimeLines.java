@@ -9,7 +9,31 @@ import static net.aeronica.mods.bard_mania.client.action.ModelAccessor.*;
 
 public class LuteTimeLines
 {
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_X = -0.87f;
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = 0.87f;
+    private static final float TARGET_LEFT_ARM_POSE_ROT_X = -0.65f;
+    private static final float TARGET_LEFT_ARM_POSE_ROT_Y = -0.087f;
+    private static final float TARGET_RIGHT_HAND_ITEM_TRANS_Y = -0.4f;
+    private static final float TARGET_RIGHT_HAND_ITEM_TRANS_Z = -0.15f;
+    private static final float TARGET_RIGHT_HAND_ITEM_ROT_X = 11f;
+    private static final float TARGET_RIGHT_HAND_ITEM_ROT_Y = -10.f;
+    private static final float TARGET_WORN_ITEM_SCALE = 1f;
+
     private LuteTimeLines() {/* NOP */}
+
+    public static Timeline apply(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
+    {
+        modelDummy.setPartValue(RIGHT_ARM_POSE_ROT_X, TARGET_RIGHT_ARM_POSE_ROT_X);
+        modelDummy.setPartValue(RIGHT_ARM_POSE_ROT_Y, TARGET_RIGHT_ARM_POSE_ROT_Y);
+        modelDummy.setPartValue(LEFT_ARM_POSE_ROT_X, TARGET_LEFT_ARM_POSE_ROT_X);
+        modelDummy.setPartValue(LEFT_ARM_POSE_ROT_Y, TARGET_LEFT_ARM_POSE_ROT_Y);
+        modelDummy.setPartValue(RIGHT_HAND_ITEM_TRANS_Y, TARGET_RIGHT_HAND_ITEM_TRANS_Y);
+        modelDummy.setPartValue(RIGHT_HAND_ITEM_TRANS_Z, TARGET_RIGHT_HAND_ITEM_TRANS_Z);
+        modelDummy.setPartValue(RIGHT_HAND_ITEM_ROT_X, TARGET_RIGHT_HAND_ITEM_ROT_X);
+        modelDummy.setPartValue(RIGHT_HAND_ITEM_ROT_Y, TARGET_RIGHT_HAND_ITEM_ROT_Y);
+        modelDummy.setPartValue(WORN_ITEM_SCALE, TARGET_WORN_ITEM_SCALE);
+        return timeline;
+    }
 
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {

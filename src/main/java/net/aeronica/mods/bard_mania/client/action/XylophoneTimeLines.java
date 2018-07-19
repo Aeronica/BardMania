@@ -9,7 +9,23 @@ import static net.aeronica.mods.bard_mania.client.action.ModelAccessor.*;
 
 public class XylophoneTimeLines
 {
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_X = -1.05f;
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = 0.09f;
+    private static final float TARGET_LEFT_ARM_POSE_ROT_X = -1.05f;
+    private static final float TARGET_LEFT_ARM_POSE_ROT_Y = -0.09f;
+    private static final float TARGET_WORN_ITEM_SCALE = 1f;
+
     private XylophoneTimeLines() {/* NOP */}
+
+    public static Timeline apply(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
+    {
+        modelDummy.setPartValue(RIGHT_ARM_POSE_ROT_X, TARGET_RIGHT_ARM_POSE_ROT_X);
+        modelDummy.setPartValue(RIGHT_ARM_POSE_ROT_Y, TARGET_RIGHT_ARM_POSE_ROT_Y);
+        modelDummy.setPartValue(LEFT_ARM_POSE_ROT_X, TARGET_LEFT_ARM_POSE_ROT_X);
+        modelDummy.setPartValue(LEFT_ARM_POSE_ROT_Y, TARGET_LEFT_ARM_POSE_ROT_Y);
+        modelDummy.setPartValue(WORN_ITEM_SCALE, TARGET_WORN_ITEM_SCALE);
+        return timeline;
+    }
 
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {

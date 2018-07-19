@@ -76,6 +76,7 @@ public class ModelAccessor implements TweenAccessor<ModelDummy> {
     public static final int LEFT_HAND_ITEM_ROT_Z = 48;
 
     public static final int WORN_ITEM_SCALE = 49;
+    public static final int APPLY = 50;
 
     public void ModelAccesor() {/* NOP */}
 

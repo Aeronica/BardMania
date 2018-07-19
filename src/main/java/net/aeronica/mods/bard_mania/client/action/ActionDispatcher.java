@@ -22,18 +22,22 @@ public class ActionDispatcher
         instActions.put("lute_play", LuteTimeLines::play);
         instActions.put("lute_equip", LuteTimeLines::equip);
         instActions.put("lute_remove", LuteTimeLines::remove);
+        instActions.put("lute_apply", LuteTimeLines::apply);
 
         instActions.put("flute_play", FluteTimeLines::play);
         instActions.put("flute_equip", FluteTimeLines::equip);
         instActions.put("flute_remove", FluteTimeLines::remove);
+        instActions.put("flute_apply", FluteTimeLines::apply);
 
         instActions.put("xylophone_play", XylophoneTimeLines::play);
         instActions.put("xylophone_equip", XylophoneTimeLines::equip);
         instActions.put("xylophone_remove", XylophoneTimeLines::remove);
+        instActions.put("xylophone_apply", XylophoneTimeLines::apply);
 
         instActions.put("marching_drums_play", MarchingDrumsTimeLines::play);
         instActions.put("marching_drums_equip", MarchingDrumsTimeLines::equip);
         instActions.put("marching_drums_remove", MarchingDrumsTimeLines::remove);
+        instActions.put("marching_drums_apply", MarchingDrumsTimeLines::apply);
     }
 
     public static Timeline select(final String id, final String action, EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
@@ -50,6 +54,9 @@ public class ActionDispatcher
     {
         switch (action)
         {
+            case "apply":
+                modelDummy.setPartValue(WORN_ITEM_SCALE, 1f);
+                break;
             case "play":
             timeline.beginParallel()
                     .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_X, 0.15F).target(-0.1f).ease(TweenEquations.Sine_InOut))
