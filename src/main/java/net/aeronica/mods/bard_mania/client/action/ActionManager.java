@@ -37,7 +37,6 @@ public class ActionManager
 {
     private ActionManager instance = new ActionManager();
     private static final ModelDummy modelDummy = new ModelDummy();
-    //private static Map<Integer, ModelDummy> playerModels = new ConcurrentHashMap<>();
     private static List<ActionBase> actions =  new CopyOnWriteArrayList<>();
     private static float deltaTime = 0F;
     private static double total = 0F;
@@ -48,71 +47,30 @@ public class ActionManager
 
     public static void applyPose(EntityPlayer playerIn)
     {
-//        int playerId = playerIn.getEntityId();
-//        if (playerModels.containsKey(playerId))
-//        {
-//            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
-//        }
-//        else
-//        {
         ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
-//            playerModels.put(playerId, modelDummy);
         actions.add(new ApplyPose(playerIn, modelDummy));
-//        }
     }
 
     public static void playAction(EntityPlayer playerIn, int noteIn)
     {
-//        int playerId = playerIn.getEntityId();
-//        if (playerModels.containsKey(playerId))
-//        {
-//            actions.add(new PlayAction(playerIn, playerModels.get(playerId), noteIn));
-//        }
-//        else
-//        {
-            ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
-//            playerModels.put(playerId, modelDummy);
-            actions.add(new PlayAction(playerIn, modelDummy, noteIn));
-//        }
+        ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
+        actions.add(new PlayAction(playerIn, modelDummy, noteIn));
     }
 
     public static void equipAction(EntityPlayer playerIn)
     {
-//        int playerId = playerIn.getEntityId();
-//        if (playerModels.containsKey(playerId))
-//        {
-//            actions.add(new EquipAction(playerIn, playerModels.get(playerId)));
-//        }
-//        else
-//        {
-            ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
-//            playerModels.put(playerId, modelDummy);
-            actions.add(new EquipAction(playerIn, modelDummy));
-//        }
+        ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
+        actions.add(new EquipAction(playerIn, modelDummy));
     }
 
     public static void unEquipAction(EntityPlayer playerIn)
     {
-//        int playerId = playerIn.getEntityId();
-//        if (playerModels.containsKey(playerId))
-//        {
-//            actions.add(new UnEquipAction(playerIn, playerModels.get(playerId)));
-//        }
-//        else
-//        {
-            ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
-//            playerModels.put(playerId, modelDummy);
-            actions.add(new UnEquipAction(playerIn, modelDummy));
-//        }
+        ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
+        actions.add(new UnEquipAction(playerIn, modelDummy));
     }
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)
     {
-//        int playerId = playerIn.getEntityId();
-//        if (!playerModels.isEmpty() && playerModels.get(playerId) != null)
-//            return playerModels.get(playerId);
-//        else
-//            return modelDummy;
         return playerIn.hasCapability(Reference.BARD_ACTION_CAP, null) ? BardActionHelper.getModelDummy(playerIn) : modelDummy;
     }
 
