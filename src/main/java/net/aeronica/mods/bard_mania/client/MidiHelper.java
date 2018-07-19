@@ -48,7 +48,6 @@ public enum MidiHelper implements Receiver
     static EntityPlayer player;
     static BlockPos pos;
     static ItemStack stack = ItemStack.EMPTY;
-    static boolean inUse = false; // TODO: for testing
 
     public void setNoteReceiver(IActiveNoteReceiver noteReceiverIn, EntityPlayer playerIn, ItemStack stackIn)
     {
@@ -56,16 +55,6 @@ public enum MidiHelper implements Receiver
         player = playerIn;
         pos = new BlockPos(player.posX, player.posY, player.posZ);
         stack = stackIn;
-
-        // TODO: For testing
-        if (inUse)
-        {
-            notifyRemoved("Done");
-            return;
-        } else
-        {
-            inUse = true;
-        }
 
         close();
         if (ModConfig.client.input_mode == MIDI)
@@ -191,11 +180,5 @@ public enum MidiHelper implements Receiver
         ModLogger.info("ActiveNoteReceiver Removed: %s", message);
         stack = ItemStack.EMPTY;
         close();
-        inUse = false;
-    }
-
-    public static boolean isInUse()
-    {
-        return inUse;
     }
 }
