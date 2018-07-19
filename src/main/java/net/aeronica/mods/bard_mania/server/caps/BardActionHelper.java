@@ -46,7 +46,8 @@ public class BardActionHelper
     {
         ModLogger.info("  updateOnJoin send %s state to %s", existingPlayer.getDisplayName().getUnformattedText(), joiningPlayer.getDisplayName().getUnformattedText());
         if (existingPlayer.getEntityId() != joiningPlayer.getEntityId())
-            PacketDispatcher.sendToDimension(new PoseActionMessage(existingPlayer, APPLY, false), joiningPlayer.getEntityWorld().provider.getDimension());
+            sendMessage(existingPlayer, APPLY, false);
+            //PacketDispatcher.sendToDimension(new PoseActionMessage(existingPlayer, APPLY, false), joiningPlayer.getEntityWorld().provider.getDimension());
     }
 
     public static boolean isInstrumentEquipped(EntityPlayer player) { return getImpl(player).isInstrumentEquipped(); }
