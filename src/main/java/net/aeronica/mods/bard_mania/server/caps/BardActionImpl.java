@@ -5,6 +5,7 @@ import net.aeronica.mods.bard_mania.client.action.ModelDummy;
 public class BardActionImpl implements IBardAction
 {
     private boolean isInstEquipped = false;
+    private boolean tempBoolean = false;
     private ModelDummy modelDummy = new ModelDummy();
 
     @Override
@@ -18,4 +19,16 @@ public class BardActionImpl implements IBardAction
 
     @Override
     public ModelDummy getModelDummy() { return modelDummy; }
+
+    @Override
+    public void setModelDummy(ModelDummy modelDummyIn) { modelDummy = modelDummyIn; }
+
+    @Override
+    public void setTempOff() { tempBoolean = false; }
+
+    @Override
+    public void setTempOn() { tempBoolean = true; }
+
+    @Override
+    public boolean getTemp() { return tempBoolean; }
 }

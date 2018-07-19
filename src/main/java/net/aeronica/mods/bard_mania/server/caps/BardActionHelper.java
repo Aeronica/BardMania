@@ -8,7 +8,6 @@ import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +46,7 @@ public class BardActionHelper
     {
         ModLogger.info("  updateOnJoin send %s state to %s", existingPlayer.getDisplayName().getUnformattedText(), joiningPlayer.getDisplayName().getUnformattedText());
         if (existingPlayer.getEntityId() != joiningPlayer.getEntityId())
-            PacketDispatcher.sendTo(new PoseActionMessage(existingPlayer, APPLY, false), (EntityPlayerMP) joiningPlayer);
+            PacketDispatcher.sendToDimension(new PoseActionMessage(existingPlayer, APPLY, false), joiningPlayer.getEntityWorld().provider.getDimension());
     }
 
     public static boolean isInstrumentEquipped(EntityPlayer player) { return getImpl(player).isInstrumentEquipped(); }

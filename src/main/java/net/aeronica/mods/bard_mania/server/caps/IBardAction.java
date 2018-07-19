@@ -11,4 +11,12 @@ public interface IBardAction
     boolean isInstrumentEquipped();
 
     ModelDummy getModelDummy();
+
+    void setModelDummy(ModelDummy modelDummyIn);
+
+    void setTempOff();
+
+    void setTempOn();
+
+    boolean getTemp();
 }

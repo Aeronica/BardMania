@@ -35,14 +35,14 @@ public class ServerEvents
     public static void onEvent(PlayerContainerEvent event)
     {
         if (event.getEntity() instanceof EntityPlayer && BardActionHelper.isInstrumentEquipped(event.getEntityPlayer()))
-            BardActionHelper.setInstrumentRemoved(event.getEntityPlayer());
+            BardActionHelper.setInstrumentRemovedByForce(event.getEntityPlayer());
     }
 
     @SubscribeEvent
     public static void onEvent(PlayerSleepInBedEvent event)
     {
         if (event.getEntity() instanceof EntityPlayer && BardActionHelper.isInstrumentEquipped(event.getEntityPlayer()))
-            BardActionHelper.setInstrumentRemoved(event.getEntityPlayer());
+            BardActionHelper.setInstrumentRemovedByForce(event.getEntityPlayer());
     }
 
     @SubscribeEvent
@@ -50,9 +50,50 @@ public class ServerEvents
     {
         if (!event.player.getEntityWorld().isRemote)
         {
-            ModLogger.info("%s joined", event.player.getDisplayName().getUnformattedText());
+            ModLogger.info("Logged On: %s", event.player.getDisplayName().getUnformattedText());
             event.player.getEntityWorld().playerEntities
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+
+            BardActionHelper.setInstrumentRemovedByForce(event.player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEvent(PlayerEvent.PlayerLoggedOutEvent event)
+    {
+        if (!event.player.getEntityWorld().isRemote)
+        {
+            ModLogger.info("Logged On: %s", event.player.getDisplayName().getUnformattedText());
+            event.player.getEntityWorld().playerEntities
+                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+
+            BardActionHelper.setInstrumentRemovedByForce(event.player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEvent(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        if (!event.player.getEntityWorld().isRemote)
+        {
+            ModLogger.info("Changed Dimension: %s", event.player.getDisplayName().getUnformattedText());
+            event.player.getEntityWorld().playerEntities
+                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+
+            BardActionHelper.setInstrumentRemovedByForce(event.player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEvent(PlayerEvent.PlayerRespawnEvent event)
+    {
+        if (!event.player.getEntityWorld().isRemote)
+        {
+            ModLogger.info("Re-spawned after death: %s", event.player.getDisplayName().getUnformattedText());
+            event.player.getEntityWorld().playerEntities
+                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+
+            BardActionHelper.setInstrumentRemovedByForce(event.player);
         }
     }
 
@@ -63,7 +104,7 @@ public class ServerEvents
         ItemStack itemStack = event.getEntityItem().getItem();
         if((itemStack.getItem() instanceof ItemInstrument))
         {
-            BardActionHelper.setInstrumentRemoved(event.getPlayer());
+            BardActionHelper.setInstrumentRemovedByForce(event.getPlayer());
             if (event.isCancelable()) event.setCanceled(false);
         }
     }

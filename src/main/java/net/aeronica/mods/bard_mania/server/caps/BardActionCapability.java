@@ -67,6 +67,18 @@ public class BardActionCapability
         }
     }
 
+    @SubscribeEvent
+    public static void onEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
+    {
+        IBardAction dead = event.getOriginal().getCapability(BARD_ACTION_CAP, null);
+        IBardAction live = event.getEntityPlayer().getCapability(BARD_ACTION_CAP, null);
+        live.setModelDummy(dead.getModelDummy());
+        if(dead.isInstrumentEquipped())
+            live.setInstrumentEquipped();
+        else
+            live.setInstrumentRemoved();
+    }
+
     private static class Factory implements Callable<IBardAction>
     {
         @Override
@@ -82,16 +94,16 @@ public class BardActionCapability
         @Override
         public NBTBase writeNBT(Capability<IBardAction> capability, IBardAction instance, EnumFacing side)
         {
-            return new NBTTagByte((byte)(instance.isInstrumentEquipped() ? 1 : 0));
+            return new NBTTagByte((byte)(instance.getTemp() ? 1 : 0));
         }
 
         @Override
         public void readNBT(Capability<IBardAction> capability, IBardAction instance, EnumFacing side, NBTBase nbt)
         {
             if (((NBTPrimitive) nbt).getByte() == 1)
-                instance.setInstrumentEquipped();
+                instance.setTempOn();
             else
-                instance.setInstrumentRemoved();
+                instance.setTempOff();
         }
     }
 }
