@@ -72,11 +72,23 @@ public class BardActionCapability
     {
         IBardAction dead = event.getOriginal().getCapability(BARD_ACTION_CAP, null);
         IBardAction live = event.getEntityPlayer().getCapability(BARD_ACTION_CAP, null);
-        live.setModelDummy(dead.getModelDummy());
-        if(dead.isInstrumentEquipped())
-            live.setInstrumentEquipped();
+
+        if (event.isWasDeath())
+        {
+            // Spawning from death
+            live.setModelDummy(dead.getModelDummy());
+            if (dead.getTemp())
+                live.setTempOn();
+            else
+                live.setTempOff();
+        }
         else
-            live.setInstrumentRemoved();
+        {
+            // Coming from the End
+        }
+        // Both
+        live.setInstrumentRemoved();
+        live.getModelDummy().reset();
     }
 
     private static class Factory implements Callable<IBardAction>
