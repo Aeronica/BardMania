@@ -11,9 +11,6 @@ public class BardActionImpl implements IBardAction
     public void setInstrumentRemoved() { isInstEquipped = false; }
 
     @Override
-    public void toggleEquippedState() { isInstEquipped = !isInstEquipped; }
-
-    @Override
     public boolean isInstrumentEquipped() { return isInstEquipped; }
 
 }

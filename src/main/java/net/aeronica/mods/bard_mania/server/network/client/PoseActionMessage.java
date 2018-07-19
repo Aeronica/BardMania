@@ -22,17 +22,11 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
 
     public PoseActionMessage() {/* Default */}
 
-    public PoseActionMessage(EntityPlayer posingPlayer, int actionIn)
+    public PoseActionMessage(EntityPlayer posingPlayer, int actionIn, boolean byForce)
     {
         posingPlayerId = posingPlayer.getEntityId();
         actionId = actionIn;
-    }
-
-    public PoseActionMessage(EntityPlayer posingPlayer, boolean byForce)
-    {
-        posingPlayerId = posingPlayer.getEntityId();
-        actionId = REMOVE;
-        forced = true;
+        forced = byForce;
     }
 
     @Override
@@ -56,20 +50,6 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
     {
         processClient(player);
     }
-
-//    private void processServer(EntityPlayer player)
-//    {
-//        EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
-//        if (posingPlayer != null)
-//        {
-//            if (actionid == EQUIP)
-//                PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, EQUIP), player, 64);
-//            else if (actionid == REMOVE)
-//                PacketDispatcher.sendToAllAround(new PoseActionMessage(posingPlayer, REMOVE), player, 64);
-//            else
-//                ModLogger.debug("Pose Action %d does not exist", actionid);
-//        }
-//    }
 
     @SideOnly(Side.CLIENT)
     private void processClient(EntityPlayer player)

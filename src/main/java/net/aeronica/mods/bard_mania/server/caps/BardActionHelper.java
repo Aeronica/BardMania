@@ -23,23 +23,20 @@ public class BardActionHelper
     public static void setInstrumentEquipped(EntityPlayer player)
     {
         getImpl(player).setInstrumentEquipped();
-        sendEquipMessage(player);
+        sendMessage(player, EQUIP, false);
     }
 
     public static void setInstrumentRemoved(EntityPlayer player)
     {
         getImpl(player).setInstrumentRemoved();
-        sendRemoveMessage(player);
+        sendMessage(player, REMOVE, false);
     }
 
     public static void setInstrumentRemovedByForce(EntityPlayer player)
     {
         getImpl(player).setInstrumentRemoved();
-        if (BardMania.proxy.getEffectiveSide().equals(Side.SERVER))
-            PacketDispatcher.sendToDimension(new PoseActionMessage(player, true), player.getEntityWorld().provider.getDimension());
+        sendMessage(player, REMOVE,true);
     }
-
-    public static void toggleEquippedState(EntityPlayer player) { getImpl(player).toggleEquippedState(); }
 
     public static boolean isInstrumentEquipped(EntityPlayer player) { return getImpl(player).isInstrumentEquipped(); }
 
@@ -49,15 +46,9 @@ public class BardActionHelper
         return player.hasCapability(BARD_ACTION_CAP, null) ? player.getCapability(BARD_ACTION_CAP, null) : null;
     }
 
-    private static void sendEquipMessage(EntityPlayer player)
+    private static void sendMessage(EntityPlayer player, int action, boolean byForce)
     {
         if (BardMania.proxy.getEffectiveSide().equals(Side.SERVER))
-            PacketDispatcher.sendToDimension(new PoseActionMessage(player, EQUIP), player.getEntityWorld().provider.getDimension());
-    }
-
-    private static void sendRemoveMessage(EntityPlayer player)
-    {
-        if (BardMania.proxy.getEffectiveSide().equals(Side.SERVER))
-            PacketDispatcher.sendToDimension(new PoseActionMessage(player, REMOVE), player.getEntityWorld().provider.getDimension());
+            PacketDispatcher.sendToDimension(new PoseActionMessage(player, action, byForce), player.getEntityWorld().provider.getDimension());
     }
 }
