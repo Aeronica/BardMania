@@ -53,9 +53,10 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
     private void processClient(EntityPlayer player)
     {
         EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
-        ModLogger.info("  process PoseActionMessage for %s", posingPlayer.getDisplayName().getUnformattedText());
+
         if (posingPlayer != null)
         {
+            ModLogger.info("  process PoseActionMessage for %s", posingPlayer.getDisplayName().getUnformattedText());
             if (actionId == APPLY)
             {
                 BardActionHelper.setInstrumentEquipped(posingPlayer);
@@ -76,11 +77,13 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
                 {
                     if (forced)
                         ActionManager.getModelDummy(posingPlayer).reset();
-                    MidiHelper.INSTANCE.notifyRemoved("Removed per server");
+                    MidiHelper.INSTANCE.notifyRemoved("Force Removed by Server Request");
                 }
             }
             else
                 ModLogger.debug("Pose Action %d does not exist", actionId);
         }
+        else
+            MidiHelper.INSTANCE.notifyRemoved("Invalid Player ID - ***Dead***");
     }
 }
