@@ -3,8 +3,8 @@ package net.aeronica.mods.bard_mania.client.render;
 import com.mrcrayfish.obfuscate.client.event.ModelPlayerEvent;
 import com.mrcrayfish.obfuscate.client.event.RenderItemEvent;
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
-import net.aeronica.mods.bard_mania.client.actions.ActionManager;
-import net.aeronica.mods.bard_mania.client.actions.ModelDummy;
+import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
+import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.IPlaceableBounding;
 import net.aeronica.mods.bard_mania.server.LocationArea;
 import net.aeronica.mods.bard_mania.server.init.ModInstruments;
@@ -39,7 +39,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Iterator;
 
-import static net.aeronica.mods.bard_mania.client.actions.ModelAccessor.*;
+import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
 
 /*
  * box Rendering code mechanics by thebrightspark from the mod StructuralRelocation

@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.server.network.client;
 
 import net.aeronica.mods.bard_mania.client.MidiHelper;
-import net.aeronica.mods.bard_mania.client.actions.ActionManager;
+import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.network.AbstractMessage.AbstractClientMessage;

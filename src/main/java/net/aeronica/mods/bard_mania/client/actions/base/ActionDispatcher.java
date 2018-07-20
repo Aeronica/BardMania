@@ -1,15 +1,19 @@
-package net.aeronica.mods.bard_mania.client.actions;
+package net.aeronica.mods.bard_mania.client.actions.base;
 
 import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
 import net.aeronica.dorkbox.tweenEngine.TweenEquations;
+import net.aeronica.mods.bard_mania.client.actions.FluteTimeLines;
+import net.aeronica.mods.bard_mania.client.actions.LuteTimeLines;
+import net.aeronica.mods.bard_mania.client.actions.MarchingDrumsTimeLines;
+import net.aeronica.mods.bard_mania.client.actions.XylophoneTimeLines;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.aeronica.mods.bard_mania.client.actions.ModelAccessor.*;
+import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
 
 public class ActionDispatcher
 {

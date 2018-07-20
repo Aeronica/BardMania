@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.server.caps;
 
 import net.aeronica.mods.bard_mania.BardMania;
-import net.aeronica.mods.bard_mania.client.actions.ModelDummy;
+import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.Util;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;

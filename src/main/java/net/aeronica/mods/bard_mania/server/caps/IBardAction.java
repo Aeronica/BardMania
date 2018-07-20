@@ -1,6 +1,6 @@
 package net.aeronica.mods.bard_mania.server.caps;
 
-import net.aeronica.mods.bard_mania.client.actions.ModelDummy;
+import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 
 public interface IBardAction
 {
