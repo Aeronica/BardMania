@@ -58,6 +58,10 @@
   {
     "id": "recorder",
     "general": {
+      "wearable": true,
+      "translationXYZ": [0.00, 0.00, 0.13],
+      "rotationXYZ": [0.00, 0.00, 16.00],
+      "scaleXYZ": [0.50, 0.50, 0.50]
     },
     "sounds": {
       "timbre": "bard_mania:recorder"
