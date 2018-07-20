@@ -20,22 +20,6 @@
     }
   },
   {
-    "id": "lute",
-    "general": {
-    },
-    "sounds": {
-      "timbre": "bard_mania:mandolin_ex"
-    }
-  },
-  {
-    "id": "mandolin",
-    "general": {
-    },
-    "sounds": {
-      "timbre": "bard_mania:mandolin"
-    }
-  },
-  {
     "id": "marching_drums",
     "general": {
       "wearable": true,
