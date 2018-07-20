@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.client;
 
 import com.google.common.collect.ImmutableMap;
-import net.aeronica.mods.bard_mania.client.action.ActionManager;
+import net.aeronica.mods.bard_mania.client.actions.ActionManager;
 import net.aeronica.mods.bard_mania.client.gui.InputModeToast;
 import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ServerProxy;

@@ -1,4 +1,4 @@
-package net.aeronica.mods.bard_mania.client.action;
+package net.aeronica.mods.bard_mania.client.actions;
 
 import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;

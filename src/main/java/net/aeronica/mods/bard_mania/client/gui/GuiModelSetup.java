@@ -1,7 +1,7 @@
 package net.aeronica.mods.bard_mania.client.gui;
 
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.client.action.ActionManager;
+import net.aeronica.mods.bard_mania.client.actions.ActionManager;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;

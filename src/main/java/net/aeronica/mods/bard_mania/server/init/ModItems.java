@@ -21,8 +21,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
 
 @SuppressWarnings("unused")
 public class ModItems
@@ -30,7 +31,7 @@ public class ModItems
     @Mod.EventBusSubscriber
     public static class RegistrationHandler
     {
-        protected static final Set<Item> ITEMS = new HashSet<>();
+        protected static final Set<Item> ITEMS = new LinkedHashSet<>();
 
         static void add(Item item)
         {

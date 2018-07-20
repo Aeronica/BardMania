@@ -17,8 +17,8 @@
 package net.aeronica.mods.bard_mania.client.render;
 
 import net.aeronica.mods.bard_mania.BardMania;
-import net.aeronica.mods.bard_mania.client.action.ActionManager;
-import net.aeronica.mods.bard_mania.client.action.ModelAccessor;
+import net.aeronica.mods.bard_mania.client.actions.ActionManager;
+import net.aeronica.mods.bard_mania.client.actions.ModelAccessor;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
