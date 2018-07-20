@@ -3,9 +3,9 @@
     "id": "banjo",
     "general": {
       "wearable": true,
-      "translationXYZ": [0.05, -0.11, 0.25],
-      "rotationXYZ": [77, -29, 0],
-      "scaleXYZ": [0.7, 0.7, 0.7]
+      "translationXYZ": [0.20, -0.08, 0.30],
+      "rotationXYZ": [80.00, -51.00, 0.00],
+      "scaleXYZ": [0.70, 0.70, 0.70]
     },
     "sounds": {
       "timbre": "bard_mania:banjo"

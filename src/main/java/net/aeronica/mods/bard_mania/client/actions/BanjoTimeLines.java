@@ -24,7 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
 
-public class LuteTimeLines
+public class BanjoTimeLines
 {
     private static final float TARGET_RIGHT_ARM_POSE_ROT_X = -0.87f;
     private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = 0.87f;
@@ -36,7 +36,7 @@ public class LuteTimeLines
     private static final float TARGET_RIGHT_HAND_ITEM_ROT_Y = -10.f;
     private static final float TARGET_WORN_ITEM_SCALE = 1f;
 
-    private LuteTimeLines() {/* NOP */}
+    private BanjoTimeLines() {/* NOP */}
 
     public static Timeline apply(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
@@ -55,16 +55,16 @@ public class LuteTimeLines
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
         timeline.beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.20F).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Z, 0.25F).target(0.20f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.10F).target(0F).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.25F).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Z, 0.15F).target(0.20f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.02F).target(-0.03f * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
 
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_TRANS_X, 0.25F).target(0.087f).ease(TweenEquations.Sine_InOut))
                 .end()
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.55F).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Z, 0.10F).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.10F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 1.0F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Z, 1.0F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.02F).target(0f).ease(TweenEquations.Sine_InOut))
 
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_TRANS_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
@@ -85,6 +85,8 @@ public class LuteTimeLines
 
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_X, 0.25F).target(11f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.25F).target(-10.f).ease(TweenEquations.Sine_InOut))
+
+                .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.5F).target(1f).ease(TweenEquations.Bounce_InOut))
                 .end();
         return timeline;
     }
@@ -103,12 +105,23 @@ public class LuteTimeLines
 
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+
+                .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
         return timeline;
+    }
+    private static boolean isRightHandNote(int normalizedNote)
+    {
+        return (normalizedNote >= 0 && normalizedNote <= 24);
+    }
+
+    private static float rightHandNote(int normalizedNote)
+    {
+        return isRightHandNote(normalizedNote) ? 1f : 0f;
     }
 
     private static float leftHandNotePosition(int normalizedNote)
     {
-        return (normalizedNote >= 0 && normalizedNote <= 24) ? -((normalizedNote-24) * 0.5f) / 24f - 0.25f : -0.25f;
+        return (normalizedNote >= 0 && normalizedNote <= 24) ? -((normalizedNote-24) * 0.7f) / 24f - 0.35f : -0.35f;
     }
 }

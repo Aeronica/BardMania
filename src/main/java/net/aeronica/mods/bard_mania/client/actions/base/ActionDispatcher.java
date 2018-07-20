@@ -16,33 +16,33 @@
 
 package net.aeronica.mods.bard_mania.client.actions.base;
 
+import it.unimi.dsi.fastutil.objects.Object2ReferenceArrayMap;
 import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
 import net.aeronica.dorkbox.tweenEngine.TweenEquations;
+import net.aeronica.mods.bard_mania.client.actions.BanjoTimeLines;
 import net.aeronica.mods.bard_mania.client.actions.FluteTimeLines;
-import net.aeronica.mods.bard_mania.client.actions.LuteTimeLines;
 import net.aeronica.mods.bard_mania.client.actions.MarchingDrumsTimeLines;
 import net.aeronica.mods.bard_mania.client.actions.XylophoneTimeLines;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
 
 public class ActionDispatcher
 {
-    private static final Map<String, IFunctionTimeLine> instActions = new HashMap<>();
+    private static final Map<String, IFunctionTimeLine> instActions = new Object2ReferenceArrayMap<>();
 
     public ActionDispatcher() {/* NOP */}
 
     static
     {
-        instActions.put("lute_play", LuteTimeLines::play);
-        instActions.put("lute_equip", LuteTimeLines::equip);
-        instActions.put("lute_remove", LuteTimeLines::remove);
-        instActions.put("lute_apply", LuteTimeLines::apply);
+        instActions.put("banjo_play", BanjoTimeLines::play);
+        instActions.put("banjo_equip", BanjoTimeLines::equip);
+        instActions.put("banjo_remove", BanjoTimeLines::remove);
+        instActions.put("banjo_apply", BanjoTimeLines::apply);
 
         instActions.put("flute_play", FluteTimeLines::play);
         instActions.put("flute_equip", FluteTimeLines::equip);
