@@ -63,10 +63,10 @@ public class ActionManager
         actions.add(new EquipAction(playerIn, modelDummy));
     }
 
-    public static void unEquipAction(EntityPlayer playerIn)
+    public static void removeAction(EntityPlayer playerIn)
     {
         ModelDummy modelDummy = BardActionHelper.getModelDummy(playerIn);
-        actions.add(new UnEquipAction(playerIn, modelDummy));
+        actions.add(new RemoveAction(playerIn, modelDummy));
     }
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)

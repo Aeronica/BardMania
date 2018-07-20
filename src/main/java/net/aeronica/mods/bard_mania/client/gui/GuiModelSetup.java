@@ -128,7 +128,7 @@ public class GuiModelSetup extends GuiScreen
                 break;
             case 9:
                 BardActionHelper.setInstrumentRemoved(mc.player);
-                ActionManager.unEquipAction(mc.player);
+                ActionManager.removeAction(mc.player);
                 break;
             case 10:
                 System.out.printf("\"translationXYZ\": [%1.2f, %1.2f, %1.2f],\n", inst.general.translationXYZ[0], inst.general.translationXYZ[1], inst.general.translationXYZ[2]);

@@ -71,7 +71,7 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
             }
             else if (actionId == REMOVE)
             {
-                ActionManager.unEquipAction(posingPlayer);
+                ActionManager.removeAction(posingPlayer);
                 BardActionHelper.setInstrumentRemoved(posingPlayer);
                 if (player.getEntityId() == posingPlayerId)
                 {

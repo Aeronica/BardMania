@@ -6,9 +6,9 @@ import net.aeronica.dorkbox.tweenEngine.TweenCallback;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class UnEquipAction extends ActionBase
+public class RemoveAction extends ActionBase
 {
-    public UnEquipAction(EntityPlayer playerIn, ModelDummy modelDummy)
+    public RemoveAction(EntityPlayer playerIn, ModelDummy modelDummy)
     {
         super(playerIn, modelDummy, 0);
     }
