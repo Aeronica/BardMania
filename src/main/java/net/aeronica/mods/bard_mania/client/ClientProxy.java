@@ -3,6 +3,7 @@ package net.aeronica.mods.bard_mania.client;
 import com.google.common.collect.ImmutableMap;
 import net.aeronica.mods.bard_mania.client.action.ActionManager;
 import net.aeronica.mods.bard_mania.client.gui.InputModeToast;
+import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ServerProxy;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
@@ -31,6 +32,15 @@ import static net.aeronica.mods.bard_mania.client.KeyHelper.normalizeNote;
 
 public class ClientProxy extends ServerProxy
 {
+
+    @Override
+    public void setNoteReceiver(IActiveNoteReceiver noteReceiverIn, EntityPlayer playerIn, ItemStack stackIn)
+    {
+        MidiHelper.INSTANCE.setNoteReceiver(noteReceiverIn, playerIn, stackIn);
+    }
+
+    public void notifyRemoved(ItemStack stackIn) { MidiHelper.INSTANCE.notifyRemoved(stackIn); }
+
     public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn)
     {
         WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();

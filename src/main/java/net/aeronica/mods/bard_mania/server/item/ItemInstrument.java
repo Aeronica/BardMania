@@ -18,7 +18,6 @@
 package net.aeronica.mods.bard_mania.server.item;
 
 import net.aeronica.mods.bard_mania.BardMania;
-import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
@@ -78,19 +77,24 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
         {
             if (playerIn.isSneaking())
             {
-                MidiHelper.INSTANCE.notifyRemoved(heldItem);
+                BardMania.proxy.notifyRemoved(heldItem);
                 ModConfig.toggleInputMode();
                 BardMania.proxy.postInputModeToast(heldItem);
             } else
             {
-                MidiHelper.INSTANCE.setNoteReceiver(this, playerIn, heldItem);
+                BardMania.proxy.setNoteReceiver(this, playerIn, heldItem);
             }
         }
-        if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND) && !playerIn.isSneaking())
+        if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND)/* && !playerIn.isSneaking()*/)
         {
-            if (BardActionHelper.isInstrumentEquipped(playerIn))
+            boolean isEquipped = BardActionHelper.isInstrumentEquipped(playerIn);
+            boolean isSneaking = playerIn.isSneaking();
+
+            if (isSneaking && isEquipped)
                 BardActionHelper.setInstrumentRemoved(playerIn);
-            else
+            else if (isEquipped)
+                BardActionHelper.setInstrumentRemoved(playerIn);
+            else if (!isSneaking)
                 BardActionHelper.setInstrumentEquipped(playerIn);
         }
 
@@ -171,12 +175,5 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
         }
         tooltip.add(String.format("%s%s %s%s", TextFormatting.GRAY, I18n.format("tooltip.bard_mania.input_mode"), TextFormatting.BLUE, I18n.format((ModConfig.client.input_mode).toString())));
         tooltip.add(String.format("%s%s", TextFormatting.GRAY, I18n.format("tooltip.bard_mania.sneak_right_click_to_toggle_mode")));
-    }
-
-    @Override
-    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
-    {
-       //BardActionHelper.setInstrumentRemovedByForce((EntityPlayer) player);
-        return true;
     }
 }

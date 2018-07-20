@@ -33,6 +33,10 @@ import javax.annotation.Nullable;
 
 public class ServerProxy
 {
+    public void setNoteReceiver(IActiveNoteReceiver noteReceiverIn, EntityPlayer playerIn, ItemStack stackIn) {/* NOP */}
+
+    public void notifyRemoved(ItemStack stackIn) {/* NOP */}
+
     public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn) {/* NOP */}
 
     public void playSound(EntityPlayer playerIn, int entityId, String soundName, byte noteIn, byte volumeIn) {/* NOP */}
