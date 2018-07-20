@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2018 Paul Boese a.k.a Aeronica
  *

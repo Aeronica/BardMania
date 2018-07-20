@@ -1,3 +1,5 @@
+// TODO: Review, the remove and replace with my own versions of these methods as required
+
 package net.aeronica.mods.bard_mania.client.render;
 
 import net.minecraft.client.Minecraft;
