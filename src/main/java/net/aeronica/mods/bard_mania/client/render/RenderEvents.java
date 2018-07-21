@@ -304,7 +304,7 @@ public class RenderEvents
 
     private static void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float motion, boolean leftHand)
     {
-        model.bipedHead.rotateAngleX += actions.getPartValue(HEAD_POSE_ROT_X) - actions.getPartValue(HEAD_ACTION_ROT_X);
+        model.bipedHead.rotateAngleX = actions.getPartValue(HEAD_POSE_ROT_X) - actions.getPartValue(HEAD_ACTION_ROT_X);
         model.bipedHead.rotateAngleY += actions.getPartValue(HEAD_POSE_ROT_Y) - actions.getPartValue(HEAD_ACTION_ROT_Y);
         model.bipedHead.rotateAngleZ += actions.getPartValue(HEAD_POSE_ROT_Z) - actions.getPartValue(HEAD_ACTION_ROT_Z);
 
