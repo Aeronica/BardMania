@@ -36,11 +36,11 @@ public class RecorderTimeLines
     private static final float TARGET_PLAYER_POSE_ROTATION_YAW = 40f;
     private static final float TARGET_WORN_ITEM_SCALE = 1f;
 
-    private static final int[] rightHandFingering = new int[]{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-                                                               1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    private static final int[] rightHandFingering = new int[]{ 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1,
+                                                               1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1,
                                                                1 };
-    private static final int[] leftHandFingering =  new int[]{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                                                               1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+    private static final int[] leftHandFingering =  new int[]{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0,
+                                                               1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1,
                                                                1 };
 
     private RecorderTimeLines() {/* NOP */}
