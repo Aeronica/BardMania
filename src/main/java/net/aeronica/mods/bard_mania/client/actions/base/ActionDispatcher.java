@@ -51,6 +51,11 @@ public class ActionDispatcher
         instActions.put("flute_remove", FluteTimeLines::remove);
         instActions.put("flute_apply", FluteTimeLines::apply);
 
+        instActions.put("recorder_play", RecorderTimeLines::play);
+        instActions.put("recorder_equip", RecorderTimeLines::equip);
+        instActions.put("recorder_remove", RecorderTimeLines::remove);
+        instActions.put("recorder_apply", RecorderTimeLines::apply);
+
         instActions.put("xylophone_play", XylophoneTimeLines::play);
         instActions.put("xylophone_equip", XylophoneTimeLines::equip);
         instActions.put("xylophone_remove", XylophoneTimeLines::remove);
