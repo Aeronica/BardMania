@@ -24,21 +24,17 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
 
-public class BanjoTimeLines
+public class LyreTimeLines
 {
     private static final float TARGET_RIGHT_ARM_POSE_ROT_X = -0.87f;
-    private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = 0.87f;
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = -0.47f;
     private static final float TARGET_LEFT_ARM_POSE_ROT_X = -0.65f;
-    private static final float TARGET_LEFT_ARM_POSE_ROT_Y = -0.087f;
+    private static final float TARGET_LEFT_ARM_POSE_ROT_Y = 0.25f;
 
-    private static final float TARGET_RIGHT_HAND_ITEM_TRANS_Y = -0.4f;
-    private static final float TARGET_RIGHT_HAND_ITEM_TRANS_Z = -0.15f;
-    private static final float TARGET_RIGHT_HAND_ITEM_ROT_X = 11f;
-    private static final float TARGET_RIGHT_HAND_ITEM_ROT_Y = -10.f;
-
+    private static final float TARGET_PLAYER_POSE_ROTATION_YAW = -40f;
     private static final float TARGET_WORN_ITEM_SCALE = 1f;
 
-    private BanjoTimeLines() {/* NOP */}
+    private LyreTimeLines() {/* NOP */}
 
     public static Timeline apply(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
@@ -46,10 +42,8 @@ public class BanjoTimeLines
         modelDummy.setPartValue(RIGHT_ARM_POSE_ROT_Y, TARGET_RIGHT_ARM_POSE_ROT_Y);
         modelDummy.setPartValue(LEFT_ARM_POSE_ROT_X, TARGET_LEFT_ARM_POSE_ROT_X);
         modelDummy.setPartValue(LEFT_ARM_POSE_ROT_Y, TARGET_LEFT_ARM_POSE_ROT_Y);
-        modelDummy.setPartValue(RIGHT_HAND_ITEM_TRANS_Y, TARGET_RIGHT_HAND_ITEM_TRANS_Y);
-        modelDummy.setPartValue(RIGHT_HAND_ITEM_TRANS_Z, TARGET_RIGHT_HAND_ITEM_TRANS_Z);
-        modelDummy.setPartValue(RIGHT_HAND_ITEM_ROT_X, TARGET_RIGHT_HAND_ITEM_ROT_X);
-        modelDummy.setPartValue(RIGHT_HAND_ITEM_ROT_Y, TARGET_RIGHT_HAND_ITEM_ROT_Y);
+
+        modelDummy.setPartValue(PLAYER_POSE_ROTATION_YAW, TARGET_PLAYER_POSE_ROTATION_YAW);
         modelDummy.setPartValue(WORN_ITEM_SCALE, TARGET_WORN_ITEM_SCALE);
         return timeline;
     }
@@ -57,18 +51,14 @@ public class BanjoTimeLines
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
         timeline.beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.25F).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Z, 0.15F).target(0.20f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.02F).target(-0.03f * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-
-                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_TRANS_X, 0.25F).target(0.087f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.05F).target(0.05f).ease(TweenEquations.Sine_InOut).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Z, 0.15F).target(rightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15F).target(0.25f).ease(TweenEquations.Sine_InOut))
                 .end()
                 .beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 1.0F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.05F).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Z, 1.0F).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.02F).target(0f).ease(TweenEquations.Sine_InOut))
-
-                .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_TRANS_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 1.0F).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
         return timeline;
     }
@@ -77,10 +67,10 @@ public class BanjoTimeLines
     {
         timeline.beginParallel()
                 .push(tweenEngine.to(modelDummy, RIGHT_ARM_POSE_ROT_X, 0.25F).target(-0.87f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_POSE_ROT_Y, 0.25F).target(0.087f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, RIGHT_ARM_POSE_ROT_Y, 0.25F).target(-0.47f).ease(TweenEquations.Sine_InOut))
 
                 .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_X, 0.25F).target(-0.65f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_Y, 0.25F).target(-0.087f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, LEFT_ARM_POSE_ROT_Y, 0.25F).target(0.25f).ease(TweenEquations.Sine_InOut))
 
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_TRANS_Y, 0.25F).target(-0.4f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_TRANS_Z, 0.25F).target(-0.15f).ease(TweenEquations.Sine_InOut))
@@ -88,6 +78,7 @@ public class BanjoTimeLines
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_X, 0.25F).target(11f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.25F).target(-10.f).ease(TweenEquations.Sine_InOut))
 
+                .push(tweenEngine.to(modelDummy, PLAYER_POSE_ROTATION_YAW, 0.25F).target(-40f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.5F).target(1f).ease(TweenEquations.Bounce_InOut))
                 .end();
         return timeline;
@@ -108,22 +99,14 @@ public class BanjoTimeLines
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
 
+                .push(tweenEngine.to(modelDummy, PLAYER_POSE_ROTATION_YAW, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .push(tweenEngine.to(modelDummy, WORN_ITEM_SCALE, 0.25F).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
         return timeline;
     }
-    private static boolean isRightHandNote(int normalizedNote)
-    {
-        return (normalizedNote >= 0 && normalizedNote <= 24);
-    }
 
-    private static float rightHandNote(int normalizedNote)
+    private static float rightHandNotePosition(int normalizedNote)
     {
-        return isRightHandNote(normalizedNote) ? 1f : 0f;
-    }
-
-    private static float leftHandNotePosition(int normalizedNote)
-    {
-        return (normalizedNote >= 0 && normalizedNote <= 24) ? -((normalizedNote-24) * 0.7f) / 24f - 0.35f : -0.35f;
+        return ((normalizedNote-24) * 0.2f) / 24f + 0.2f;
     }
 }

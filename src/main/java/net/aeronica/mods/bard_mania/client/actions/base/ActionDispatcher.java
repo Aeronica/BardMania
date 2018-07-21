@@ -20,10 +20,7 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceArrayMap;
 import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
 import net.aeronica.dorkbox.tweenEngine.TweenEquations;
-import net.aeronica.mods.bard_mania.client.actions.BanjoTimeLines;
-import net.aeronica.mods.bard_mania.client.actions.FluteTimeLines;
-import net.aeronica.mods.bard_mania.client.actions.MarchingDrumsTimeLines;
-import net.aeronica.mods.bard_mania.client.actions.XylophoneTimeLines;
+import net.aeronica.mods.bard_mania.client.actions.*;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -39,6 +36,11 @@ public class ActionDispatcher
 
     static
     {
+        instActions.put("lyre_play", LyreTimeLines::play);
+        instActions.put("lyre_equip", LyreTimeLines::equip);
+        instActions.put("lyre_remove", LyreTimeLines::remove);
+        instActions.put("lyre_apply", LyreTimeLines::apply);
+
         instActions.put("banjo_play", BanjoTimeLines::play);
         instActions.put("banjo_equip", BanjoTimeLines::equip);
         instActions.put("banjo_remove", BanjoTimeLines::remove);

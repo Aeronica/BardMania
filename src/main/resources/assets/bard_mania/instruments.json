@@ -33,7 +33,10 @@
   {
     "id": "lyre",
     "general": {
-      "wearable": true
+      "wearable": true,
+      "translationXYZ": [-0.15, 0.00, 0.13],
+      "rotationXYZ": [16.00, -80.00, 0.00],
+      "scaleXYZ": [0.80, 0.80, 0.80]
     },
     "sounds": {
       "timbre": "bard_mania:harp"
