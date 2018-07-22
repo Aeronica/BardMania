@@ -19,15 +19,18 @@ package net.aeronica.mods.bard_mania.client.render;
 import com.mrcrayfish.obfuscate.client.event.ModelPlayerEvent;
 import com.mrcrayfish.obfuscate.client.event.RenderItemEvent;
 import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
+import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.IPlaceableBounding;
 import net.aeronica.mods.bard_mania.server.LocationArea;
+import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.init.ModInstruments;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -39,14 +42,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderSpecificHandEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -56,6 +58,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.Iterator;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
+import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
+import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen;
 
 /*
  * box Rendering code mechanics by thebrightspark from the mod StructuralRelocation
@@ -73,6 +77,8 @@ import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class RenderEvents
 {
+    public static final ResourceLocation GUI_BACKGROUND = new ResourceLocation(Reference.MOD_ID, "textures/gui/gui_player_background.png");
+    public static final int HOT_BAR_CLEARANCE = 40;
     private static Minecraft mc = Minecraft.getMinecraft();
     private static float motionIncDec = 0.05F;
     private static float motionSimple = 0F;
@@ -153,6 +159,32 @@ public class RenderEvents
                 renderBox(boundingBox.getStartingPoint(), boundingBox.getStartPointPlusSize(), event.getPartialTicks());
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onRenderOverlay(RenderGameOverlayEvent.Post event)
+    {
+        // display a mini-me when in first-person view, in MIDI mode and an instrument is equipped
+        if (mc.gameSettings.showDebugInfo || mc.gameSettings.thirdPersonView > 0 || !mc.inGameHasFocus || ModConfig.client.input_mode != MIDI) return;
+        if (!event.isCancelable() && event.getType() == ElementType.EXPERIENCE && mc.player.getHeldItemMainhand().getItem() instanceof ItemInstrument && RenderHelper.canRenderEqippedInstument(mc.player))
+        {
+            int width = event.getResolution().getScaledWidth();
+            int height = event.getResolution().getScaledHeight() - HOT_BAR_CLEARANCE;
+            drawGuiPlayerBackgroundLayer(mc.getRenderPartialTicks(), (width), height);
+        }
+    }
+
+    // TODO: add position and area size - incomplete
+    private static void drawGuiPlayerBackgroundLayer(float partialTicks, int scaledWidth, int scaledHeight)
+    {
+        mc.getTextureManager().bindTexture(GUI_BACKGROUND);
+        int xPos = (scaledWidth - 50) / scaledWidth ;
+        int yPos = (scaledHeight - 60) / scaledHeight;
+        int entityXPos = (xPos + 50/2) + 2;
+        int entityYPos = (yPos + 60 - 5);
+
+        Gui.drawModalRectWithCustomSizedTexture(xPos, yPos, 0f,0f,50, 60, 128, 128);
+        drawEntityOnScreen(entityXPos, entityYPos , 25, (float) 10, (float) -10, mc.player);
     }
 
     @SubscribeEvent
