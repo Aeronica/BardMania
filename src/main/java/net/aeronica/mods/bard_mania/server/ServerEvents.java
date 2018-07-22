@@ -49,7 +49,6 @@ public class ServerEvents
     {
         if (!event.player.getEntityWorld().isRemote)
         {
-            ModLogger.info("Logged On: %s", event.player.getDisplayName().getUnformattedText());
             event.player.getEntityWorld().playerEntities.stream()
                     .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
@@ -63,7 +62,6 @@ public class ServerEvents
     {
         if (!event.player.getEntityWorld().isRemote)
         {
-            ModLogger.info("Logged On: %s", event.player.getDisplayName().getUnformattedText());
             event.player.getEntityWorld().playerEntities.stream()
                     .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
@@ -77,7 +75,6 @@ public class ServerEvents
     {
         if (!event.player.getEntityWorld().isRemote)
         {
-            ModLogger.info("Changed Dimension: %s", event.player.getDisplayName().getUnformattedText());
             event.player.getEntityWorld().playerEntities.stream()
                     .filter(player -> BardActionHelper.isInstrumentEquipped(player)
                             && (player.getEntityId() != event.player.getEntityId())
@@ -93,7 +90,6 @@ public class ServerEvents
     {
         if (!event.player.getEntityWorld().isRemote)
         {
-            ModLogger.info("Re-spawned after death: %s", event.player.getDisplayName().getUnformattedText());
             event.player.getEntityWorld().playerEntities.stream()
                     .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
@@ -105,7 +101,6 @@ public class ServerEvents
     @SubscribeEvent
     public static void onEvent(ItemTossEvent event)
     {
-        ModLogger.info("Item dropped, %s", event.getEntity().getDisplayName().getUnformattedText());
         ItemStack itemStack = event.getEntityItem().getItem();
         if((itemStack.getItem() instanceof ItemInstrument))
         {

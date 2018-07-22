@@ -17,7 +17,6 @@
 package net.aeronica.mods.bard_mania.client.actions.base;
 
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
-import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,14 +49,12 @@ public abstract class ActionBase
         {
             instrument = ((ItemInstrument) player.getHeldItemMainhand().getItem()).getInstrument();
             instrumentId = instrument.id;
-            ModLogger.info("Triggered      %s", player.getDisplayName().getUnformattedText());
             start();
         }
         else
         {
             instrumentId = "dead_beef";
             isDone = true;
-            ModLogger.info("Aborted trigger %s", player.getDisplayName().getUnformattedText());
         }
     }
 

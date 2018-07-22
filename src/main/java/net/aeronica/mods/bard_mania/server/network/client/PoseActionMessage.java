@@ -72,7 +72,6 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
 
         if (posingPlayer != null)
         {
-            ModLogger.info("  process PoseActionMessage for %s", posingPlayer.getDisplayName().getUnformattedText());
             if (actionId == APPLY)
             {
                 BardActionHelper.setInstrumentEquipped(posingPlayer);

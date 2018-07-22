@@ -141,7 +141,6 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
             Minecraft.getMinecraft().getRenderManager().getSkinMap().entrySet().forEach(e -> {
                 e.getValue().addLayer(LAYER_WEARABLE_INSTRUMENT);
                 isAdded = true;
-                ModLogger.info("LayerWearableInstrument added %s", e.toString());
             });
         } catch (Exception e)
         {

@@ -20,7 +20,6 @@ import net.aeronica.dorkbox.tweenEngine.BaseTween;
 import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenCallback;
 import net.aeronica.dorkbox.tweenEngine.TweenEquations;
-import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.APPLY;
@@ -48,7 +47,6 @@ public class ApplyPose extends ActionBase
             @Override
             public void onEvent(int type, BaseTween<?> source)
             {
-                ModLogger.info("Tween Complete %s", player.getDisplayName().getUnformattedText());
                 modelDummy.tweenStop();
                 isDone = true;
             }

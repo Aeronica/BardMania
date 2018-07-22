@@ -21,7 +21,6 @@ import net.aeronica.dorkbox.tweenEngine.Timeline;
 import net.aeronica.dorkbox.tweenEngine.TweenEngine;
 import net.aeronica.dorkbox.tweenEngine.TweenEquations;
 import net.aeronica.mods.bard_mania.client.actions.*;
-import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.Map;
@@ -106,8 +105,6 @@ public class ActionDispatcher
                 break;
             default:
         }
-
-        ModLogger.info("fallback");
         return timeline;
     }
 

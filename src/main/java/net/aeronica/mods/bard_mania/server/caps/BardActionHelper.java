@@ -18,7 +18,6 @@ package net.aeronica.mods.bard_mania.server.caps;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
-import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.Util;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
@@ -60,10 +59,8 @@ public class BardActionHelper
 
     public static void updateOnJoin(EntityPlayer existingPlayer, EntityLivingBase joiningPlayer)
     {
-        ModLogger.info("  updateOnJoin send %s state to %s", existingPlayer.getDisplayName().getUnformattedText(), joiningPlayer.getDisplayName().getUnformattedText());
         if (existingPlayer.getEntityId() != joiningPlayer.getEntityId())
             sendMessage(existingPlayer, APPLY, false);
-            //PacketDispatcher.sendToDimension(new PoseActionMessage(existingPlayer, APPLY, false), joiningPlayer.getEntityWorld().provider.getDimension());
     }
 
     public static boolean isInstrumentEquipped(EntityPlayer player) { return getImpl(player).isInstrumentEquipped(); }
