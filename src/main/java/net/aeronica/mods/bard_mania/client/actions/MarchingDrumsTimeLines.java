@@ -46,19 +46,41 @@ public class MarchingDrumsTimeLines
 
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
-        timeline.beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(RightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+        Timeline localTimeLine = timeline.beginParallel();
+        if (isLeftHandNote(normalizedNote))
+        {
+            localTimeLine = localTimeLine
+                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.05f).target(10F * leftHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
+        }
+        else
+        {
+            localTimeLine = localTimeLine
+                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(rightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.05f).target(-10F * rightHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
+        }
+        localTimeLine = localTimeLine
                 .end()
-                .beginParallel()
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                .beginParallel();
+        if (isLeftHandNote(normalizedNote))
+        {
+            localTimeLine = localTimeLine
+                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
+        }
+        else
+        {
+            localTimeLine = localTimeLine
+                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
+        }
+        localTimeLine = localTimeLine
                 .end();
-        return timeline;
+        return localTimeLine;
     }
 
     public static Timeline equip(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
@@ -89,9 +111,11 @@ public class MarchingDrumsTimeLines
         return timeline;
     }
 
+    private static boolean isLeftHandNote(int normalizedNote) { return (normalizedNote >= 0 && normalizedNote <= 12); }
+
     private static float leftHandNotePosition(int normalizedNote)
     {
-        return (normalizedNote >= 0 && normalizedNote <=12) ? -(normalizedNote * 1.2f) / 12f + 0.6f : 0f;
+        return (normalizedNote >= 0 && normalizedNote <=12) ? -(normalizedNote * 0.8f) / 12f + 0.8f : 0f;
     }
 
     private static float leftHandNote(int normalizedNote)
@@ -99,9 +123,9 @@ public class MarchingDrumsTimeLines
         return (normalizedNote >= 0 && normalizedNote <=12) ? 1f : 0f;
     }
 
-    private static float RightHandNotePosition(int normalizedNote)
+    private static float rightHandNotePosition(int normalizedNote)
     {
-        return (normalizedNote >= 13 && normalizedNote <= 24) ? -((normalizedNote-13) * 1.2f) / 12f + 0.6f : 0f;
+        return (normalizedNote >= 13 && normalizedNote <= 24) ? -((normalizedNote-13) * 0.8f) / 12f + 0.0f : 0f;
     }
 
     private static float rightHandNote(int normalizedNote)

@@ -119,7 +119,7 @@ public class XylophoneTimeLines
 
     private static float leftHandNotePosition(int normalizedNote)
     {
-        return isLeftHandNote(normalizedNote) ? -(normalizedNote * 1.2f) / 12f + 1.0f : 0f;
+        return isLeftHandNote(normalizedNote) ? -(normalizedNote * 1.2f) / 12f + 1.1f : 0f;
     }
 
     private static float leftHandNote(int normalizedNote)
