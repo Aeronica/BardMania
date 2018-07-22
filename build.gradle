@@ -19,25 +19,21 @@ repositories {
     maven { url = "https://mrcrayfish.com/maven" }
 }
 
-ext.buildProperties = file "build.properties"
 
-buildProperties.withReader {
-    def properties = new Properties()
-    properties.load(it)
-    ext.config = new ConfigSlurper().parse properties
+version = version_major + '.' + version_minor + '.' + version_patch
+if (project.hasProperty('buildQualifier')) {
+    version = project.version + '-' + project.buildQualifier
 }
-
-version = "${config.modVersionMajor}.${config.modVersionMinor}.${config.modVersionRev}"
 group = "net.aeronica.mods.bard_mania"
-archivesBaseName = "bard_mania-${config.minecraftVersion}"
+archivesBaseName = "bard-mania_" + mcversion
 
 minecraft {
-    version = "${config.minecraftVersion}-${config.forgeVersion}"
-    runDir = "${config.runDir}"
-	mappings = "${config.forgeMappings}"
+    version = mcversion + "-" + forgeversion
+    runDir = "run"
+	mappings = mcp_mappings
     
 	replaceIn "net/aeronica/mods/bard_mania/Reference.java"
-    replace "{@MOD_VERSION}", project.version
+    replace '@VERSION@', project.version
 }
 
 dependencies {

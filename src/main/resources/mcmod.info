@@ -5,10 +5,10 @@
   "description": "Play musical instruments and annoy your friends",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://minecraft.curseforge.com/projects/bard-mania",
   "authorList": ["Aeronica"],
   "credits": "The Forge and FML Team, The Modding Community, MrCrayfish, ModDevCafe",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["forge", "obfuscate"]
 }
 ]
