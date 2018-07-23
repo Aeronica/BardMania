@@ -18,12 +18,31 @@ package net.aeronica.mods.bard_mania.client.render;
 
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class RenderHelper
 {
     public static boolean canRenderEqippedInstument(EntityPlayer player)
     {
         return (ActionManager.getModelDummy(player).hasTween() || BardActionHelper.isInstrumentEquipped(player));
+    }
+
+    // TODO: add isPlaying counter and reset per note with 3 second decay
+    public static void setPartyingWhilePlaying(EntityPlayer playerIn)
+    {
+        if (BardActionHelper.isInstrumentEquipped(playerIn))
+            setPartying(playerIn.world, playerIn.getPosition(), true);
+    }
+
+    private static void setPartying(World worldIn, BlockPos pos, boolean doIt)
+    {
+        for (EntityLivingBase entitylivingbase : worldIn.getEntitiesWithinAABB(EntityLivingBase.class, (new AxisAlignedBB(pos)).grow(3.0D)))
+        {
+            entitylivingbase.setPartying(pos, doIt);
+        }
     }
 }

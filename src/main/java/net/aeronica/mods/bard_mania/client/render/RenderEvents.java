@@ -58,6 +58,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.Iterator;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
+import static net.aeronica.mods.bard_mania.client.render.RenderHelper.setPartyingWhilePlaying;
 import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen;
 
@@ -212,6 +213,8 @@ public class RenderEvents
     public static void onRenderLivingEvent(RenderLivingEvent.Pre event)
     {
         renderLivingBase = event.getRenderer();
+        if (mc.player != null)
+            mc.player.getEntityWorld().playerEntities.stream().forEach(player -> setPartyingWhilePlaying(player));
     }
 
     @SubscribeEvent
