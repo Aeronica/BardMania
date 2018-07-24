@@ -76,9 +76,7 @@ public class ServerEvents
         if (!event.player.getEntityWorld().isRemote)
         {
             event.player.getEntityWorld().playerEntities.stream()
-                    .filter(player -> BardActionHelper.isInstrumentEquipped(player)
-                            && (player.getEntityId() != event.player.getEntityId())
-                           && (player.dimension == event.toDim))
+                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
                     .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
             BardActionHelper.setInstrumentRemovedByForce(event.player);
