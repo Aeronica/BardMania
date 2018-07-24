@@ -1,0 +1,11 @@
+2018-07-24 bard-mania_1.12.2-0.2.0-alpha
+Additions:
+    When playing music, parrots around the player will dance.
+
+Fixes:
+    Fix MIDI inUse flag so MIDI device is not reopened on close.
+    Correct Banjo equipped TARGET pose when another user joins the world.
+
+----
+2018-07-22 bard-mania_1.12.2-0.1.0-alpha
+Initial alpha release.
