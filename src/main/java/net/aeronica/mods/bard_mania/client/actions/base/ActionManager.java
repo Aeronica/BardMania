@@ -85,11 +85,11 @@ public class ActionManager
     }
 
     @SubscribeEvent
-    public static void onTick(TickEvent.ClientTickEvent/*TickEvent.RenderTickEvent*/ event)
+    public static void onTick(/*TickEvent.ClientTickEvent*/TickEvent.RenderTickEvent event)
     {
         if (event.phase.equals(TickEvent.Phase.START))
         {
-            partialTicks = mc.getRenderPartialTicks();
+            partialTicks = event.renderTickTime; // mc.getRenderPartialTicks();
             cleanup();
             return;
         }
@@ -110,7 +110,7 @@ public class ActionManager
     public static double getElapsedWorldTime(float partialTicks)
     {
         WorldClient world = mc.world;
-        long time = world != null ? world.getTotalWorldTime() : 0L;
+        long time = world != null ? world.getTotalWorldTime() : (long)total;
         return (time + partialTicks) / 20;
     }
 }
