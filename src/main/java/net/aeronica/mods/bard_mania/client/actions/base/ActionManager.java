@@ -16,11 +16,9 @@
 
 package net.aeronica.mods.bard_mania.client.actions.base;
 
-import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Mod;
@@ -35,7 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
 public class ActionManager
 {
-    private ActionManager instance = new ActionManager();
+    private static Minecraft mc = Minecraft.getMinecraft();
     private static final ModelDummy modelDummy = new ModelDummy();
     private static List<ActionBase> actions =  new CopyOnWriteArrayList<>();
     private static float deltaTime = 0F;
@@ -76,17 +74,14 @@ public class ActionManager
 
     private static void update(float deltaTimeIn)
     {
-        actions.forEach(triggerAction -> triggerAction.update(deltaTimeIn));
+        if (mc.world != null)
+            actions.forEach(triggerAction -> triggerAction.update(deltaTimeIn));
     }
 
     private static void cleanup()
     {
-        actions.stream().filter(ActionBase::isDone).forEach(action -> actions.remove(action));
-
-//        if (cleanupTicks++ % 60 == 0)
-//            playerModels.keySet().stream()
-//                    .filter(playerId -> getPlayerById(playerId) == null)
-//                    .forEach(playerId -> playerModels.remove(playerId));
+        if (mc.world != null)
+            actions.stream().filter(ActionBase::isDone).forEach(action -> actions.remove(action));
     }
 
     @SubscribeEvent
@@ -94,7 +89,7 @@ public class ActionManager
     {
         if (event.phase.equals(TickEvent.Phase.START))
         {
-            partialTicks = getMinecraft().getRenderPartialTicks();//event.renderTickTime;
+            partialTicks = mc.getRenderPartialTicks();
             cleanup();
             return;
         }
@@ -104,7 +99,7 @@ public class ActionManager
 
     private static void calcDelta()
     {
-        if (getThePlayer() != null)
+        if (mc.world != null)
         {
             double oldTotal = total;
             total = getElapsedWorldTime(partialTicks);
@@ -114,17 +109,8 @@ public class ActionManager
 
     public static double getElapsedWorldTime(float partialTicks)
     {
-        WorldClient world = getMinecraft().world;
+        WorldClient world = mc.world;
         long time = world != null ? world.getTotalWorldTime() : 0L;
         return (time + partialTicks) / 20;
-    }
-
-    private static EntityPlayerSP getThePlayer() {return (EntityPlayerSP) BardMania.proxy.getClientPlayer();}
-
-    private static Minecraft getMinecraft() {return BardMania.proxy.getMinecraft();}
-
-    private static EntityPlayer getPlayerById(Integer entityId)
-    {
-        return (getThePlayer() != null) && (entityId != null) ? (EntityPlayer) getThePlayer().getEntityWorld().getEntityByID(entityId) : null;
     }
 }
