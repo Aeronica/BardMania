@@ -32,6 +32,7 @@ public class PlayAction extends ActionBase
     protected void start()
     {
         modelDummy.tweenStart();
+        modelDummy.resetPlayTimer();
         Timeline timeline = tweenEngine.createSequential();
         Timeline newTimeline = ActionDispatcher.select(instrumentId, "play", player, tweenEngine, timeline, modelDummy, normalizedNote);
 

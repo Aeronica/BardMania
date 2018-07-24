@@ -44,7 +44,7 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
         {
             Instrument inst = ((ItemInstrument) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
             ItemStack itemStack = ActionManager.getModelDummy((EntityPlayer) entitylivingbaseIn).getInstrumentStack();
-            if (inst.general.wearable && RenderHelper.canRenderEqippedInstument((EntityPlayer) entitylivingbaseIn))
+            if (inst.general.wearable && RenderHelper.canRenderEquippedInstrument((EntityPlayer) entitylivingbaseIn))
             {
                 GlStateManager.pushMatrix();
                 // apply body translation - i.e. Sneaking

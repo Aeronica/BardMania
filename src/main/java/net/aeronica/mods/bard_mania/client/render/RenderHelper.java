@@ -18,6 +18,7 @@ package net.aeronica.mods.bard_mania.client.render;
 
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,23 +27,34 @@ import net.minecraft.world.World;
 
 public class RenderHelper
 {
-    public static boolean canRenderEqippedInstument(EntityPlayer player)
+    static boolean canRenderEquippedInstrument(EntityPlayer player)
     {
         return (ActionManager.getModelDummy(player).hasTween() || BardActionHelper.isInstrumentEquipped(player));
     }
 
-    // TODO: add isPlaying counter and reset per note with 3 second decay
-    public static void setPartyingWhilePlaying(EntityPlayer playerIn)
+    static void decrementPlayTimers(Minecraft mc)
     {
-        if (BardActionHelper.isInstrumentEquipped(playerIn))
-            setPartying(playerIn.world, playerIn.getPosition(), true);
+        if (mc.player != null)
+            mc.player.getEntityWorld().playerEntities.forEach(player -> ActionManager.getModelDummy(player).decrementPlayTimer());
     }
 
-    private static void setPartying(World worldIn, BlockPos pos, boolean doIt)
+    static void renderPartyingWhilePlaying(Minecraft mc)
+    {
+        if (mc.player != null)
+            mc.player.getEntityWorld().playerEntities.forEach(RenderHelper::setPartyingWhilePlaying);
+    }
+
+    private static void setPartyingWhilePlaying(EntityPlayer playerIn)
+    {
+        if (BardActionHelper.isInstrumentEquipped(playerIn) && ActionManager.getModelDummy(playerIn).hasPlayTicks())
+            setPartying(playerIn.world, playerIn.getPosition());
+    }
+
+    private static void setPartying(World worldIn, BlockPos pos)
     {
         for (EntityLivingBase entitylivingbase : worldIn.getEntitiesWithinAABB(EntityLivingBase.class, (new AxisAlignedBB(pos)).grow(3.0D)))
         {
-            entitylivingbase.setPartying(pos, doIt);
+            entitylivingbase.setPartying(pos, true);
         }
     }
 }

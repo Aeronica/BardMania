@@ -58,7 +58,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.Iterator;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
-import static net.aeronica.mods.bard_mania.client.render.RenderHelper.setPartyingWhilePlaying;
+import static net.aeronica.mods.bard_mania.client.render.RenderHelper.decrementPlayTimers;
+import static net.aeronica.mods.bard_mania.client.render.RenderHelper.renderPartyingWhilePlaying;
 import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 import static net.minecraft.client.gui.inventory.GuiInventory.drawEntityOnScreen;
 
@@ -167,7 +168,7 @@ public class RenderEvents
     {
         // display a mini-me when in first-person view, in MIDI mode and an instrument is equipped
         if (mc.gameSettings.showDebugInfo || mc.gameSettings.thirdPersonView > 0 || !mc.inGameHasFocus || ModConfig.client.input_mode != MIDI) return;
-        if (!event.isCancelable() && event.getType() == ElementType.EXPERIENCE && mc.player.getHeldItemMainhand().getItem() instanceof ItemInstrument && RenderHelper.canRenderEqippedInstument(mc.player))
+        if (!event.isCancelable() && event.getType() == ElementType.EXPERIENCE && mc.player.getHeldItemMainhand().getItem() instanceof ItemInstrument && RenderHelper.canRenderEquippedInstrument(mc.player))
         {
             int width = event.getResolution().getScaledWidth();
             int height = event.getResolution().getScaledHeight() - HOT_BAR_CLEARANCE;
@@ -206,6 +207,7 @@ public class RenderEvents
             motionSimple += motionIncDec;
             if (motionSimple > 1F) motionIncDec = -0.0250F;
             if (motionSimple < -1F) motionIncDec = 0.0250F;
+            decrementPlayTimers(mc);
         }
     }
 
@@ -213,15 +215,14 @@ public class RenderEvents
     public static void onRenderLivingEvent(RenderLivingEvent.Pre event)
     {
         renderLivingBase = event.getRenderer();
-        if (mc.player != null)
-            mc.player.getEntityWorld().playerEntities.stream().forEach(player -> setPartyingWhilePlaying(player));
+        renderPartyingWhilePlaying(mc);
     }
 
     @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
         // Offhand ONLY instruments render normally. TODO: Simplify
-        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument) && RenderHelper.canRenderEqippedInstument((EntityPlayer) event.getEntity()))
+        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(false);
             return;
@@ -245,7 +246,7 @@ public class RenderEvents
         }
 
         heldItem = event.getItem();
-        if (heldItem.getItem() instanceof ItemInstrument && event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEqippedInstument((EntityPlayer) event.getEntity()))
+        if (heldItem.getItem() instanceof ItemInstrument && event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(true);
             Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
@@ -255,7 +256,7 @@ public class RenderEvents
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
 
-        if (heldItem.getItem() instanceof ItemInstrument && !event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEqippedInstument((EntityPlayer) event.getEntity()))
+        if (heldItem.getItem() instanceof ItemInstrument && !event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(true);
             Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
@@ -271,7 +272,7 @@ public class RenderEvents
     {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack heldItem = player.getHeldItemMainhand();
-        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemInstrument) && RenderHelper.canRenderEqippedInstument(player))
+        if (!heldItem.isEmpty() && (heldItem.getItem() instanceof ItemInstrument) && RenderHelper.canRenderEquippedInstrument(player))
         {
             ModelPlayer model = event.getModelPlayer();
             applyPlayerModelRotation(model, ActionManager.getModelDummy(player), motionSimple, player.getPrimaryHand().equals(EnumHandSide.LEFT));

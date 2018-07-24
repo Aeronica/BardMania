@@ -21,7 +21,9 @@ import net.minecraft.item.ItemStack;
 @SuppressWarnings("unused")
 public class ModelDummy
 {
+    private static final int PLAY_TICKS = 15; // 3/4 second
     private int tweenCount = 0;
+    private int playTimer = 0;
     private ItemStack currentInstrument = ItemStack.EMPTY;
 
     public void ModelDummy() {/* NOP */}
@@ -52,6 +54,7 @@ public class ModelDummy
     {
         for(int i = 0 ;i < parts.length;) parts[i++] = 0f;
         tweenCount = 0;
+        playTimer = 0;
         currentInstrument = ItemStack.EMPTY;
     }
 
@@ -62,6 +65,12 @@ public class ModelDummy
     public int getTweenCount() { return tweenCount; }
 
     public boolean hasTween() { return tweenCount > 0; }
+
+    public void resetPlayTimer() { playTimer = PLAY_TICKS; }
+
+    public void decrementPlayTimer() { if (playTimer > 0) playTimer--;  }
+
+    public boolean hasPlayTicks() { return playTimer > 0; }
 
     public void setInstrumentStack(ItemStack itemStack) { currentInstrument = itemStack; }
 
