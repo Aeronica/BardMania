@@ -40,7 +40,10 @@ public class ApplyPose extends ActionBase
         Timeline timeline = tweenEngine.createSequential();
         Timeline newTimeline = ActionDispatcher.select(instrumentId, "apply", player, tweenEngine, timeline, modelDummy, normalizedNote);
         newTimeline.beginParallel()
-                .push(tweenEngine.to(modelDummy, APPLY, 0.1f).target(1f).ease(TweenEquations.Sine_InOut))
+                .push(tweenEngine.to(modelDummy, APPLY, 0.5f).target(1f).ease(TweenEquations.Sine_InOut))
+                .end()
+                .beginParallel()
+                .push(tweenEngine.to(modelDummy, APPLY, 0.5f).target(0f).ease(TweenEquations.Sine_InOut))
                 .end();
         newTimeline.addCallback(new TweenCallback(TweenCallback.Events.COMPLETE)
         {
