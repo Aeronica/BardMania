@@ -57,7 +57,7 @@ public enum MidiHelper implements Receiver
         pos = new BlockPos(player.posX, player.posY, player.posZ);
         stack = stackIn;
 
-        close();
+
         if (ModConfig.client.input_mode == MIDI && !inUse)
         {
             MidiDevice device;
@@ -81,6 +81,7 @@ public enum MidiHelper implements Receiver
                         // if code gets this far without throwing an exception
                         // print a success message
                         ModLogger.info("%s was opened", device.getDeviceInfo());
+                        inUse = true;
                     }
                 } catch (MidiUnavailableException e)
                 {
