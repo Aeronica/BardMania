@@ -27,7 +27,7 @@ import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
 public class BanjoTimeLines
 {
     private static final float TARGET_RIGHT_ARM_POSE_ROT_X = -0.87f;
-    private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = 0.87f;
+    private static final float TARGET_RIGHT_ARM_POSE_ROT_Y = 0.087f;
     private static final float TARGET_LEFT_ARM_POSE_ROT_X = -0.65f;
     private static final float TARGET_LEFT_ARM_POSE_ROT_Y = -0.087f;
 
