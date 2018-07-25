@@ -25,6 +25,7 @@ import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.IPlaceableBounding;
 import net.aeronica.mods.bard_mania.server.LocationArea;
 import net.aeronica.mods.bard_mania.server.ModConfig;
+import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.init.ModInstruments;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
@@ -174,6 +175,28 @@ public class RenderEvents
             int height = event.getResolution().getScaledHeight() - HOT_BAR_CLEARANCE;
             drawGuiPlayerBackgroundLayer(mc.getRenderPartialTicks(), (width), height);
         }
+        int yy = 20;
+        for (EntityPlayer player : mc.world.playerEntities)
+        {
+            drawCenteredString(String.format("%s %s", player.getDisplayName().getUnformattedText(), BardActionHelper.isInstrumentEquipped(player)),
+                               event.getResolution().getScaledWidth()/2, yy += 10, 0xFFFFFF);
+        }
+    }
+
+    /**
+     * Renders the specified text to the screen, center-aligned. Args : renderer, string, x, y, color
+     */
+    public static void drawCenteredString(String text, int x, int y, int color)
+    {
+        mc.fontRenderer.drawStringWithShadow(text, (float)(x - mc.fontRenderer.getStringWidth(text) / 2), (float)y, color);
+    }
+
+    /**
+     * Renders the specified text to the screen. Args : renderer, string, x, y, color
+     */
+    public static void drawString(String text, int x, int y, int color)
+    {
+        mc.fontRenderer.drawStringWithShadow(text, (float)x, (float)y, color);
     }
 
     // TODO: add position and area size - incomplete
