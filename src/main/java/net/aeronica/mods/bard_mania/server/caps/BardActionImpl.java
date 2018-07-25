@@ -20,7 +20,7 @@ import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 
 public class BardActionImpl implements IBardAction
 {
-    private volatile boolean isInstEquipped = false;
+    private boolean isInstEquipped = false;
     private boolean tempBoolean = false;
     private ModelDummy modelDummy = new ModelDummy();
 
