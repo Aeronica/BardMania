@@ -61,10 +61,14 @@ public class BardActionHelper
 
     public static ModelDummy getModelDummy(EntityPlayer player) { return getImpl(player).getModelDummy(); }
 
-    public static void updateOnJoin(EntityPlayer existingPlayer, EntityLivingBase joiningPlayer)
+    public static void updateOnJoin(EntityPlayer existingPlayer, EntityLivingBase joiningPlayer, boolean queue)
     {
         if (existingPlayer.getEntityId() != joiningPlayer.getEntityId())
-            queueMessage(existingPlayer, APPLY, false);
+            if (queue)
+                queueMessage(existingPlayer, APPLY, false);
+            else
+                sendMessage(existingPlayer, APPLY, false);
+
     }
 
     public static boolean isInstrumentEquipped(EntityPlayer player) { return getImpl(player).isInstrumentEquipped(); }

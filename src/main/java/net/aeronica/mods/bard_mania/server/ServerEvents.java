@@ -58,7 +58,7 @@ public class ServerEvents
     {
         event.player.getEntityWorld().playerEntities.stream()
                 .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
-                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player, false));
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
@@ -68,7 +68,7 @@ public class ServerEvents
     {
         event.player.getEntityWorld().playerEntities.stream()
                 .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
-                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player, false));
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
@@ -80,7 +80,7 @@ public class ServerEvents
     {
         BardMania.proxy.getWorldByDimensionId(event.toDim).playerEntities.stream()
                 .filter(player -> BardActionHelper.isInstrumentEquipped(player))
-                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player, true));
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
@@ -107,7 +107,7 @@ public class ServerEvents
     {
         event.player.getEntityWorld().playerEntities.stream()
                 .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
-                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player, false));
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
