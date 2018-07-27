@@ -19,15 +19,19 @@ package net.aeronica.mods.bard_mania.server.caps;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.Util;
+import net.aeronica.mods.bard_mania.server.network.DimChangeMessage;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage.*;
 
@@ -60,7 +64,7 @@ public class BardActionHelper
     public static void updateOnJoin(EntityPlayer existingPlayer, EntityLivingBase joiningPlayer)
     {
         if (existingPlayer.getEntityId() != joiningPlayer.getEntityId())
-            sendMessage(existingPlayer, APPLY, false);
+            queueMessage(existingPlayer, APPLY, false);
     }
 
     public static boolean isInstrumentEquipped(EntityPlayer player) { return getImpl(player).isInstrumentEquipped(); }
@@ -68,12 +72,44 @@ public class BardActionHelper
     @Nullable
     private static IBardAction getImpl(EntityPlayer player)
     {
-        return player.hasCapability(BARD_ACTION_CAP, null) ? player.getCapability(BARD_ACTION_CAP, null) : null;
+        IBardAction bardActionImpl;
+        if (player.hasCapability(BARD_ACTION_CAP, null))
+            bardActionImpl =  player.getCapability(BARD_ACTION_CAP, null);
+        else
+            throw new RuntimeException("IBardAction capability is null");
+        return bardActionImpl;
+    }
+
+    /**
+     * TODO: Fix ugly hack. This delay might work for some client PCs, but may not work on potatoes
+     */
+    private static List<DimChangeMessage> delayedDimChangeMessages = new CopyOnWriteArrayList<>();
+
+    /**
+     * TODO: Fix ugly hack. This delay might work for some client PCs, but may not work on potatoes
+     */
+    public static List<DimChangeMessage> getDimChangeMessages()
+    {
+        return delayedDimChangeMessages;
+    }
+
+    /**
+     * TODO: Fix ugly hack. This delay might work for some client PCs, but may not work on potatoes
+     */
+    public static void queueMessage(EntityPlayer player, int action, boolean byForce)
+    {
+        IMessage message = null;
+        if (BardMania.proxy.getEffectiveSide().equals(Side.SERVER))
+        {
+            delayedDimChangeMessages.add(new DimChangeMessage(new PoseActionMessage(player, action, byForce), player.getEntityWorld().provider.getDimension()));
+        }
     }
 
     private static void sendMessage(EntityPlayer player, int action, boolean byForce)
     {
         if (BardMania.proxy.getEffectiveSide().equals(Side.SERVER))
+        {
             PacketDispatcher.sendToDimension(new PoseActionMessage(player, action, byForce), player.getEntityWorld().provider.getDimension());
+        }
     }
 }

@@ -25,7 +25,6 @@ import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.IPlaceableBounding;
 import net.aeronica.mods.bard_mania.server.LocationArea;
 import net.aeronica.mods.bard_mania.server.ModConfig;
-import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.init.ModInstruments;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
@@ -38,6 +37,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -54,8 +54,10 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
 
 import static net.aeronica.mods.bard_mania.client.actions.base.ModelAccessor.*;
@@ -88,6 +90,8 @@ public class RenderEvents
 
     public static final ItemStack DRUM_STICK = new ItemStack(ModInstruments.DRUM_STICK);
     public static final ItemStack MALLET = new ItemStack(ModInstruments.MALLET);
+
+    public static Field inPortal = ReflectionHelper.findField(Entity.class, "inPortal", "field_71087_bX");
 
     private static RenderLivingBase<?> renderLivingBase;
 
@@ -175,12 +179,19 @@ public class RenderEvents
             int height = event.getResolution().getScaledHeight() - HOT_BAR_CLEARANCE;
             drawGuiPlayerBackgroundLayer(mc.getRenderPartialTicks(), (width), height);
         }
-        int yy = 20;
-        for (EntityPlayer player : mc.world.playerEntities)
-        {
-            drawCenteredString(String.format("%s %s", player.getDisplayName().getUnformattedText(), BardActionHelper.isInstrumentEquipped(player)),
-                               event.getResolution().getScaledWidth()/2, yy += 10, 0xFFFFFF);
-        }
+//        int yy = 20;
+//        for (EntityPlayer player : mc.world.playerEntities)
+//        {boolean isInPortal = false;
+//            try
+//            {
+//                isInPortal = inPortal.getBoolean(player);
+//            } catch (IllegalAccessException e)
+//            {
+//                e.printStackTrace();
+//            }
+//            drawCenteredString(String.format("%s %s isInPortal: %s %5.2f", player.getDisplayName().getUnformattedText(), BardActionHelper.isInstrumentEquipped(player), isInPortal, mc.player.prevTimeInPortal),
+//                               event.getResolution().getScaledWidth()/2, yy += 10, 0xFFFFFF);
+//        }
     }
 
     /**

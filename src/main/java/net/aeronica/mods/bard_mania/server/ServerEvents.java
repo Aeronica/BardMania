@@ -16,8 +16,13 @@
 
 package net.aeronica.mods.bard_mania.server;
 
+import net.aeronica.mods.bard_mania.BardMania;
+import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
+import net.aeronica.mods.bard_mania.server.network.DimChangeMessage;
+import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -26,8 +31,12 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-@Mod.EventBusSubscriber
+import java.lang.reflect.Field;
+
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class ServerEvents
 {
     @SubscribeEvent
@@ -47,60 +56,67 @@ public class ServerEvents
     @SubscribeEvent
     public static void onEvent(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (!event.player.getEntityWorld().isRemote)
-        {
-            event.player.getEntityWorld().playerEntities.stream()
-                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
-                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+        event.player.getEntityWorld().playerEntities.stream()
+                .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
-            BardActionHelper.setInstrumentRemovedByForce(event.player);
-        }
+        BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
 
     @SubscribeEvent
     public static void onEvent(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        if (!event.player.getEntityWorld().isRemote)
-        {
-            event.player.getEntityWorld().playerEntities.stream()
-                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
-                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+        event.player.getEntityWorld().playerEntities.stream()
+                .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
-            BardActionHelper.setInstrumentRemovedByForce(event.player);
-        }
+        BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
+
+    public static Field inPortal = ReflectionHelper.findField(Entity.class, "inPortal", "field_71087_bX");
 
     @SubscribeEvent
     public static void onEvent(PlayerEvent.PlayerChangedDimensionEvent event)
     {
-        if (!event.player.getEntityWorld().isRemote)
-        {
-            event.player.getEntityWorld().playerEntities.stream()
-                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
-                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+        BardMania.proxy.getWorldByDimensionId(event.toDim).playerEntities.stream()
+                .filter(player -> BardActionHelper.isInstrumentEquipped(player))
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
-            BardActionHelper.setInstrumentRemovedByForce(event.player);
+        BardActionHelper.setInstrumentRemovedByForce(event.player);
+    }
+
+    @SubscribeEvent
+    public static void onEvent(TickEvent.ServerTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            for (DimChangeMessage dimChangeMessage : BardActionHelper.getDimChangeMessages())
+            {
+                dimChangeMessage.update();
+                if (dimChangeMessage.canSend())
+                {
+                    PacketDispatcher.sendToDimension(dimChangeMessage.getMessage(), dimChangeMessage.getDimension());
+                    BardActionHelper.getDimChangeMessages().remove(dimChangeMessage);
+                }
+            }
         }
     }
 
     @SubscribeEvent
     public static void onEvent(PlayerEvent.PlayerRespawnEvent event)
     {
-        if (!event.player.getEntityWorld().isRemote)
-        {
-            event.player.getEntityWorld().playerEntities.stream()
-                    .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
-                    .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
+        event.player.getEntityWorld().playerEntities.stream()
+                .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
+                .forEach(player -> BardActionHelper.updateOnJoin(player, event.player));
 
-            BardActionHelper.setInstrumentRemovedByForce(event.player);
-        }
+        BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
 
     @SubscribeEvent
     public static void onEvent(ItemTossEvent event)
     {
         ItemStack itemStack = event.getEntityItem().getItem();
-        if((itemStack.getItem() instanceof ItemInstrument))
+        if ((itemStack.getItem() instanceof ItemInstrument))
         {
             BardActionHelper.setInstrumentRemovedByForce(event.getPlayer());
             if (event.isCancelable()) event.setCanceled(false);

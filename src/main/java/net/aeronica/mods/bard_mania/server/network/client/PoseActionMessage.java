@@ -16,6 +16,7 @@
 
 package net.aeronica.mods.bard_mania.server.network.client;
 
+import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.ModLogger;
@@ -24,7 +25,6 @@ import net.aeronica.mods.bard_mania.server.network.AbstractMessage.AbstractClien
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 
@@ -63,13 +63,15 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
     }
 
     @Override
-    public void process(EntityPlayer player, Side side) { processClient(player); }
+    public void process(EntityPlayer player, Side side)
+    {
+        if (side.equals(Side.CLIENT))
+            processClient(player);
+    }
 
-    @SideOnly(Side.CLIENT)
     private void processClient(EntityPlayer player)
     {
-        EntityPlayer posingPlayer = (EntityPlayer) player.getEntityWorld().getEntityByID(posingPlayerId);
-
+        EntityPlayer posingPlayer = (EntityPlayer) BardMania.proxy.getClientWorld().getEntityByID(posingPlayerId);
         if (posingPlayer != null)
         {
             if (actionId == APPLY)
@@ -99,6 +101,6 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
                 ModLogger.debug("Pose Action %d does not exist", actionId);
         }
         else
-            MidiHelper.INSTANCE.notifyRemoved("Invalid Player ID - ***Dead***");
+            MidiHelper.INSTANCE.notifyRemoved("PoseActionMessage: Invalid posingPlayerId ***Dead***");
     }
 }

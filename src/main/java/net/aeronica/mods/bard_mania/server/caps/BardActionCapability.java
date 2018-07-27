@@ -87,24 +87,22 @@ public class BardActionCapability
     public static void onEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event)
     {
         IBardAction dead = event.getOriginal().getCapability(BARD_ACTION_CAP, null);
-        IBardAction live = event.getEntityPlayer().getCapability(BARD_ACTION_CAP, null);
+        IBardAction live = event.getEntity().getCapability(BARD_ACTION_CAP, null);
 
-        if (event.isWasDeath())
+        if (!event.isWasDeath())
         {
-            // Spawning from death
+            // Clone from the END
             live.setModelDummy(dead.getModelDummy());
+            if (dead.isInstrumentEquipped())
+                live.setInstrumentEquipped();
+            else
+                live.setInstrumentRemoved();
+
             if (dead.getTemp())
                 live.setTempOn();
             else
                 live.setTempOff();
         }
-        else
-        {
-            // Coming from the End
-        }
-        // Both
-        live.setInstrumentRemoved();
-        live.getModelDummy().reset();
     }
 
     private static class Factory implements Callable<IBardAction>
