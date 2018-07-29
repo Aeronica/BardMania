@@ -1,3 +1,11 @@
+2018-07-24 bard-mania_1.12.2-0.3.0-alpha
+Fixes:
+    Equipped state is now honored when another player enters from another dimension.
+
+Changes:
+    Reduce sound range so playing players are less annoying at a distance
+
+----
 2018-07-24 bard-mania_1.12.2-0.2.0-alpha
 Additions:
     When playing music, parrots around the player will dance.
