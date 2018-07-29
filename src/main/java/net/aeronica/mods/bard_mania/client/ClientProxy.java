@@ -77,7 +77,7 @@ public class ClientProxy extends ServerProxy
         EntityPlayer playingPlayer = (EntityPlayer) worldClient.getEntityByID(entityId);
         if ((playerIn.getEntityId()) != entityId)
         {
-            worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 3.0F, calculatePitch(noteIn), false);
+            worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 2.0F, calculatePitch(noteIn), false);
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playingPlayer.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D , playingPlayer.posY + 2.5D, playingPlayer.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
             ActionManager.playAction(playingPlayer, noteIn);
         }
