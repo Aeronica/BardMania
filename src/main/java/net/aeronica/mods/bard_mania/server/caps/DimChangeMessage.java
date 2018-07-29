@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.server.network;
+package net.aeronica.mods.bard_mania.server.caps;
 
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
@@ -30,7 +30,7 @@ public class DimChangeMessage
     IMessage message;
     int dimension;
     // delay for about 4 seconds
-    int delay = 100;
+    int delay = 60;
 
     public boolean canSend()
     {

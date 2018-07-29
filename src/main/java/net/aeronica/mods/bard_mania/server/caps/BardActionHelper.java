@@ -19,7 +19,6 @@ package net.aeronica.mods.bard_mania.server.caps;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.Util;
-import net.aeronica.mods.bard_mania.server.network.DimChangeMessage;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
 import net.minecraft.entity.EntityLivingBase;
