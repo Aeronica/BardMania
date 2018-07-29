@@ -27,10 +27,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
  */
 public class DimChangeMessage
 {
-    IMessage message;
-    int dimension;
-    // delay for about 4 seconds
-    int delay = 60;
+    private IMessage message;
+    private int dimension;
+    private int delay;
 
     public boolean canSend()
     {
@@ -46,6 +45,8 @@ public class DimChangeMessage
     {
         this.message = message;
         this.dimension = dimension;
+        // delay for about 3 seconds
+        delay = 60;
     }
 
     public IMessage getMessage()
