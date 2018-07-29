@@ -19,8 +19,8 @@ package net.aeronica.mods.bard_mania.server;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
+import net.aeronica.mods.bard_mania.server.caps.DimChangeMessage;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
-import net.aeronica.mods.bard_mania.server.network.DimChangeMessage;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +57,7 @@ public class ServerEvents
     public static void onEvent(PlayerEvent.PlayerLoggedInEvent event)
     {
         event.player.getEntityWorld().playerEntities.stream()
-                .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
+                .filter(BardActionHelper::isInstrumentEquipped)
                 .forEach(player -> BardActionHelper.updateOnJoin(player, event.player, false));
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
@@ -67,7 +67,7 @@ public class ServerEvents
     public static void onEvent(PlayerEvent.PlayerLoggedOutEvent event)
     {
         event.player.getEntityWorld().playerEntities.stream()
-                .filter(player -> BardActionHelper.isInstrumentEquipped(player) && (player.getEntityId() != event.player.getEntityId()))
+                .filter(BardActionHelper::isInstrumentEquipped)
                 .forEach(player -> BardActionHelper.updateOnJoin(player, event.player, false));
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
@@ -79,7 +79,7 @@ public class ServerEvents
     public static void onEvent(PlayerEvent.PlayerChangedDimensionEvent event)
     {
         BardMania.proxy.getWorldByDimensionId(event.toDim).playerEntities.stream()
-                .filter(player -> BardActionHelper.isInstrumentEquipped(player))
+                .filter(BardActionHelper::isInstrumentEquipped)
                 .forEach(player -> BardActionHelper.updateOnJoin(player, event.player, true));
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
