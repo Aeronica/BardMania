@@ -37,24 +37,26 @@ import java.io.IOException;
 
 public class GuiModelSetup extends GuiScreen
 {
-    public static final ResourceLocation GUI_BACKGROUND = new ResourceLocation(Reference.MOD_ID, "textures/gui/gui_player_background.png");
+    private static final ResourceLocation GUI_BACKGROUND = new ResourceLocation(Reference.MOD_ID, "textures/gui/gui_player_background.png");
     private String TITLE = I18n.format("gui.bard_mania.gui_model_setup.title");
 
-    GuiSliderMX sliderPlayerRotYaw;
-    GuiSliderMX translateX;
-    GuiSliderMX translateY;
-    GuiSliderMX translateZ;
-    GuiSliderMX rotateX;
-    GuiSliderMX rotateY;
-    GuiSliderMX rotateZ;
-    GuiSliderMX scale;
+    private GuiSliderMX sliderPlayerRotYaw;
+    private GuiSliderMX third_person_translateX;
+    private GuiSliderMX third_person_translateY;
+    private GuiSliderMX third_person_translateZ;
+    private GuiSliderMX third_person_rotateX;
+    private GuiSliderMX third_person_rotateY;
+    private GuiSliderMX third_person_rotateZ;
+    private GuiSliderMX third_person_scale;
+    private GuiSliderMX first_person_translateX;
+    private GuiSliderMX first_person_translateY;
+    private GuiSliderMX first_person_translateZ;
+    private GuiSliderMX first_person_rotateX;
+    private GuiSliderMX first_person_rotateY;
+    private GuiSliderMX first_person_rotateZ;
+    private GuiSliderMX first_person_scale;
 
-    GuiButton equip;
-    GuiButton remove;
-    GuiButton print;
-
-    Instrument inst;
-    float playerYaw;
+    private Instrument inst;
 
     public GuiModelSetup() {/* NOP */}
 
@@ -62,32 +64,49 @@ public class GuiModelSetup extends GuiScreen
     public void initGui()
     {
         super.initGui();
-        playerYaw = 1f;
+        float playerYaw = 1f;
         inst = ((ItemInstrument) mc.player.getHeldItemMainhand().getItem()).getInstrument();
-        int y = 20;
+        int y = 8;
         int x = 10;
         int w = 120;
-        sliderPlayerRotYaw = new GuiSliderMX(0, x, y, w, 20, "Player Yaw", playerYaw, -180f, 180f, 1f);
-        translateX = new GuiSliderMX(1, x, y += 22, w, 20, "Trans X", inst.general.translationXYZ[0], -0.5f, 0.5f, 0.01f);
-        translateY = new GuiSliderMX(2, x, y += 22, w, 20, "Trans Y", inst.general.translationXYZ[1], -0.5f, 0.5f, 0.01f);
-        translateZ = new GuiSliderMX(3, x, y += 22, w, 20, "Trans Z", inst.general.translationXYZ[2], -0.5f, 0.5f, 0.01f);
-        rotateX = new GuiSliderMX(4, x, y += 22, w, 20, "Rotate X", inst.general.rotationXYZ[0], -180f, 180f, 1f);
-        rotateY = new GuiSliderMX(5, x, y += 22, w, 20, "Rotate Y", inst.general.rotationXYZ[1], -180f, 180f, 1f);
-        rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, "Rotate Z", inst.general.rotationXYZ[2], -180f, 180f, 1f);
-        scale = new GuiSliderMX(7, x, y += 22, w, 20, "Scale", inst.general.scaleXYZ[0], 0f, 1.5f, 0.01f);
-
-        equip = new GuiButton(8, x, y += 22, w, 20, "Equip");
-        remove = new GuiButton(9, x += 102, y, w, 20, "Remove");
-        print = new GuiButton(10, x += 102, y, w, 20, "Print");
+        sliderPlayerRotYaw = new GuiSliderMX(0, (width + 26 * 8 - 100) / 2, 140, w, 20, "Player Yaw", playerYaw, -180f, 180f, 1f);
+        third_person_translateX = new GuiSliderMX(1, x, y += 22, w, 20, "Trans X", inst.equipped_third_person.translation[0], -0.5f, 0.5f, 0.01f);
+        third_person_translateY = new GuiSliderMX(2, x, y += 22, w, 20, "Trans Y", inst.equipped_third_person.translation[1], -0.5f, 0.5f, 0.01f);
+        third_person_translateZ = new GuiSliderMX(3, x, y += 22, w, 20, "Trans Z", inst.equipped_third_person.translation[2], -0.5f, 0.5f, 0.01f);
+        third_person_rotateX = new GuiSliderMX(4, x, y += 22, w, 20, "Rotate X", inst.equipped_third_person.rotation[0], -180f, 180f, 1f);
+        third_person_rotateY = new GuiSliderMX(5, x, y += 22, w, 20, "Rotate Y", inst.equipped_third_person.rotation[1], -180f, 180f, 1f);
+        third_person_rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, "Rotate Z", inst.equipped_third_person.rotation[2], -180f, 180f, 1f);
+        third_person_scale = new GuiSliderMX(7, x, y += 22, w, 20, "Scale", inst.equipped_third_person.scale[0], 0f, 1.5f, 0.01f);
+        y = 8;
+        x = 140;
+        w = 120;
+        first_person_translateX = new GuiSliderMX(1, x, y += 22, w, 20, "Trans X", inst.equipped_first_person.translation[0], -0.5f, 0.5f, 0.01f);
+        first_person_translateY = new GuiSliderMX(2, x, y += 22, w, 20, "Trans Y", inst.equipped_first_person.translation[1], -0.5f, 0.5f, 0.01f);
+        first_person_translateZ = new GuiSliderMX(3, x, y += 22, w, 20, "Trans Z", inst.equipped_first_person.translation[2], -0.5f, 0.5f, 0.01f);
+        first_person_rotateX = new GuiSliderMX(4, x, y += 22, w, 20, "Rotate X", inst.equipped_first_person.rotation[0], -180f, 180f, 1f);
+        first_person_rotateY = new GuiSliderMX(5, x, y += 22, w, 20, "Rotate Y", inst.equipped_first_person.rotation[1], -180f, 180f, 1f);
+        first_person_rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, "Rotate Z", inst.equipped_first_person.rotation[2], -180f, 180f, 1f);
+        first_person_scale = new GuiSliderMX(7, x, y += 22, w, 20, "Scale", inst.equipped_first_person.scale[0], 0f, 1.5f, 0.01f);
+        x = 10;
+        GuiButton equip = new GuiButton(8, x, y += 22, w, 20, "Equip");
+        GuiButton remove = new GuiButton(9, x += 102, y, w, 20, "Remove");
+        GuiButton print = new GuiButton(10, x += 102, y, w, 20, "Print");
 
         buttonList.add(sliderPlayerRotYaw);
-        buttonList.add(translateX);
-        buttonList.add(translateY);
-        buttonList.add(translateZ);
-        buttonList.add(rotateX);
-        buttonList.add(rotateY);
-        buttonList.add(rotateZ);
-        buttonList.add(scale);
+        buttonList.add(third_person_translateX);
+        buttonList.add(third_person_translateY);
+        buttonList.add(third_person_translateZ);
+        buttonList.add(third_person_rotateX);
+        buttonList.add(third_person_rotateY);
+        buttonList.add(third_person_rotateZ);
+        buttonList.add(third_person_scale);
+        buttonList.add(first_person_translateX);
+        buttonList.add(first_person_translateY);
+        buttonList.add(first_person_translateZ);
+        buttonList.add(first_person_rotateX);
+        buttonList.add(first_person_rotateY);
+        buttonList.add(first_person_rotateZ);
+        buttonList.add(first_person_scale);
         buttonList.add(equip);
         buttonList.add(remove);
         buttonList.add(print);
@@ -99,15 +118,24 @@ public class GuiModelSetup extends GuiScreen
     @Override
     public void updateScreen()
     {
-        inst.general.translationXYZ[0] = translateX.getValue();
-        inst.general.translationXYZ[1] = translateY.getValue();
-        inst.general.translationXYZ[2] = translateZ.getValue();
-        inst.general.rotationXYZ[0] = rotateX.getValue();
-        inst.general.rotationXYZ[1] = rotateY.getValue();
-        inst.general.rotationXYZ[2] = rotateZ.getValue();
-        inst.general.scaleXYZ[0] = scale.getValue();
-        inst.general.scaleXYZ[1] = scale.getValue();
-        inst.general.scaleXYZ[2] = scale.getValue();
+        inst.equipped_third_person.translation[0] = third_person_translateX.getValue();
+        inst.equipped_third_person.translation[1] = third_person_translateY.getValue();
+        inst.equipped_third_person.translation[2] = third_person_translateZ.getValue();
+        inst.equipped_third_person.rotation[0] = third_person_rotateX.getValue();
+        inst.equipped_third_person.rotation[1] = third_person_rotateY.getValue();
+        inst.equipped_third_person.rotation[2] = third_person_rotateZ.getValue();
+        inst.equipped_third_person.scale[0] = third_person_scale.getValue();
+        inst.equipped_third_person.scale[1] = third_person_scale.getValue();
+        inst.equipped_third_person.scale[2] = third_person_scale.getValue();
+        inst.equipped_first_person.translation[0] = first_person_translateX.getValue();
+        inst.equipped_first_person.translation[1] = first_person_translateY.getValue();
+        inst.equipped_first_person.translation[2] = first_person_translateZ.getValue();
+        inst.equipped_first_person.rotation[0] = first_person_rotateX.getValue();
+        inst.equipped_first_person.rotation[1] = first_person_rotateY.getValue();
+        inst.equipped_first_person.rotation[2] = first_person_rotateZ.getValue();
+        inst.equipped_first_person.scale[0] = first_person_scale.getValue();
+        inst.equipped_first_person.scale[1] = first_person_scale.getValue();
+        inst.equipped_first_person.scale[2] = first_person_scale.getValue();
         super.updateScreen();
     }
 
@@ -117,9 +145,12 @@ public class GuiModelSetup extends GuiScreen
         //drawDefaultBackground();
         drawGuiPlayerBackgroundLayer(partialTicks, mouseX, mouseY, (width + 26 * 8 - 100) / 2, 20);
         int posX = (this.width - getFontRenderer().getStringWidth(TITLE)) / 2;
-        int posY = 10;
+        int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        getFontRenderer().drawStringWithShadow("Equipped Third Person", 10, 20, 0xD3D3D3);
+        getFontRenderer().drawStringWithShadow("Equipped First Person", 140, 20, 0xD3D3D3);
+
+        if (!isShiftKeyDown())super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     protected void drawGuiPlayerBackgroundLayer(float partialTicks, int mouseX, int mouseY, int xIn, int yIn)
@@ -147,9 +178,16 @@ public class GuiModelSetup extends GuiScreen
                 ActionManager.removeAction(mc.player);
                 break;
             case 10:
-                System.out.printf("\"translationXYZ\": [%1.2f, %1.2f, %1.2f],\n", inst.general.translationXYZ[0], inst.general.translationXYZ[1], inst.general.translationXYZ[2]);
-                System.out.printf("\"rotationXYZ\": [%1.2f, %1.2f, %1.2f],\n", inst.general.rotationXYZ[0], inst.general.rotationXYZ[1], inst.general.rotationXYZ[2]);
-                System.out.printf("\"scaleXYZ\": [%1.2f, %1.2f, %1.2f]\n", inst.general.scaleXYZ[0], inst.general.scaleXYZ[1], inst.general.scaleXYZ[2]);
+                System.out.print("\"equipped_first_person\": {\n");
+                System.out.printf("  \"translation\": [%1.2f, %1.2f, %1.2f],\n", inst.equipped_first_person.translation[0], inst.equipped_first_person.translation[1], inst.equipped_first_person.translation[2]);
+                System.out.printf("  \"rotation\": [%1.2f, %1.2f, %1.2f],\n", inst.equipped_first_person.rotation[0], inst.equipped_first_person.rotation[1], inst.equipped_first_person.rotation[2]);
+                System.out.printf("  \"scale\": [%1.2f, %1.2f, %1.2f]\n", inst.equipped_first_person.scale[0], inst.equipped_first_person.scale[1], inst.equipped_first_person.scale[2]);
+                System.out.print("},\n");
+                System.out.print("\"equipped_third_person\": {\n");
+                System.out.printf("  \"translation\": [%1.2f, %1.2f, %1.2f],\n", inst.equipped_third_person.translation[0], inst.equipped_third_person.translation[1], inst.equipped_third_person.translation[2]);
+                System.out.printf("  \"rotation\": [%1.2f, %1.2f, %1.2f],\n", inst.equipped_third_person.rotation[0], inst.equipped_third_person.rotation[1], inst.equipped_third_person.rotation[2]);
+                System.out.printf("  \"scale\": [%1.2f, %1.2f, %1.2f]\n", inst.equipped_third_person.scale[0], inst.equipped_third_person.scale[1], inst.equipped_third_person.scale[2]);
+                System.out.print("},\n");
                 break;
             default:
         }

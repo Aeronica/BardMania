@@ -25,6 +25,7 @@ import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.IPlaceableBounding;
 import net.aeronica.mods.bard_mania.server.LocationArea;
 import net.aeronica.mods.bard_mania.server.ModConfig;
+import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.init.ModInstruments;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
@@ -227,10 +228,29 @@ public class RenderEvents
     public static void onRenderOverlay(RenderSpecificHandEvent event)
     {
         ItemStack heldItem = event.getItemStack();
+        if (event.getHand().equals(EnumHand.OFF_HAND) && BardActionHelper.isInstrumentEquipped(mc.player)) event.setCanceled(true);
 
         if (!(heldItem.getItem() instanceof ItemInstrument)) return;
+        Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
 
-        if (event.getHand().equals(EnumHand.OFF_HAND)) event.setCanceled(true);
+        if (event.getHand() == EnumHand.MAIN_HAND && BardActionHelper.isInstrumentEquipped(mc.player) && instrument.general.wearable)
+        {
+            event.setCanceled(true);
+            GlStateManager.pushMatrix();
+            {
+                // translate the worn item to be in front of the players mid body
+               GlStateManager.translate(0f, -0.0625 * 9, -0.0625 * 9);
+
+                // apply the equipped first person wearable item translations
+                GlStateManager.translate(instrument.equipped_first_person.translation[0], instrument.equipped_first_person.translation[1], instrument.equipped_first_person.translation[2]);
+                GlStateManager.rotate(instrument.equipped_first_person.rotation[0], 0, 0, 1);
+                GlStateManager.rotate(instrument.equipped_first_person.rotation[1], 0, 1, 0);
+                GlStateManager.rotate(instrument.equipped_first_person.rotation[2], 1, 0, 0);
+                GlStateManager.scale(instrument.equipped_first_person.scale[0], instrument.equipped_first_person.scale[1], instrument.equipped_first_person.scale[2]);
+                Minecraft.getMinecraft().getRenderItem().renderItem(event.getItemStack(), ItemCameraTransforms.TransformType.NONE);
+            }
+            GlStateManager.popMatrix();
+        }
     }
 
     @SubscribeEvent
@@ -256,7 +276,7 @@ public class RenderEvents
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
         // Offhand ONLY instruments render normally. TODO: Simplify
-        if(!(event.getEntity() instanceof EntityPlayer && event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
+        if(!((event.getEntity() instanceof EntityPlayer) && (event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument)) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(false);
             return;

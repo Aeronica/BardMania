@@ -2,10 +2,17 @@
   {
     "id": "banjo",
     "general": {
-      "wearable": true,
-      "translationXYZ": [0.20, -0.08, 0.30],
-      "rotationXYZ": [80.00, -51.00, 0.00],
-      "scaleXYZ": [0.70, 0.70, 0.70]
+      "wearable": true
+    },
+    "equipped_first_person": {
+      "translation": [0.20, 0.32, 0.30],
+      "rotation": [80.00, -77.00, 0.00],
+      "scale": [0.70, 0.70, 0.70]
+    },
+    "equipped_third_person": {
+      "translation": [0.20, -0.08, 0.30],
+      "rotation": [80.00, -51.00, 0.00],
+      "scale": [0.70, 0.70, 0.70]
     },
     "sounds": {
       "timbre": "bard_mania:banjo"
@@ -26,6 +33,11 @@
       "leftHand": "drum_stick",
       "rightHand": "drum_stick"
     },
+    "equipped_first_person": {
+      "translation": [0.00, 0.20, -0.50],
+      "rotation": [0.00, 0.00, 0.00],
+      "scale": [1.50, 1.50, 1.50]
+    },
     "sounds": {
       "timbre": "bard_mania:marching_drums"
     }
@@ -33,10 +45,17 @@
   {
     "id": "lyre",
     "general": {
-      "wearable": true,
-      "translationXYZ": [-0.15, 0.00, 0.13],
-      "rotationXYZ": [16.00, -80.00, 0.00],
-      "scaleXYZ": [0.80, 0.80, 0.80]
+      "wearable": true
+    },
+    "equipped_first_person": {
+      "translation": [-0.17, 0.08, 0.07],
+      "rotation": [16.00, -80.00, 0.00],
+      "scale": [0.80, 0.80, 0.80]
+    },
+    "equipped_third_person":{
+      "translation": [-0.15, 0.00, 0.13],
+      "rotation": [16.00, -80.00, 0.00],
+      "scale": [0.80, 0.80, 0.80]
     },
     "sounds": {
       "timbre": "bard_mania:lyre"
@@ -45,10 +64,17 @@
   {
     "id": "recorder",
     "general": {
-      "wearable": true,
-      "translationXYZ": [0.00, 0.00, 0.13],
-      "rotationXYZ": [0.00, 0.00, 16.00],
-      "scaleXYZ": [0.50, 0.50, 0.50]
+      "wearable": true
+    },
+    "equipped_first_person": {
+      "translation": [0.00, -0.05, -0.50],
+      "rotation": [0.00, 0.00, 58.00],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "equipped_third_person": {
+      "translation": [0.00, 0.00, 0.13],
+      "rotation": [0.00, 0.00, 16.00],
+      "scale": [0.50, 0.50, 0.50]
     },
     "sounds": {
       "timbre": "bard_mania:recorder"
@@ -60,6 +86,11 @@
       "wearable": true,
       "leftHand": "mallet",
       "rightHand": "mallet"
+    },
+    "equipped_first_person": {
+      "translation": [0.00, 0.20, -0.50],
+      "rotation": [0.00, 0.00, 0.00],
+      "scale": [1.50, 1.50, 1.50]
     },
     "sounds": {
       "timbre": "bard_mania:xylophone"
