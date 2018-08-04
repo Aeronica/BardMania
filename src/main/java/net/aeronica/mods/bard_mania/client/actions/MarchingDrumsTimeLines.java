@@ -52,14 +52,14 @@ public class MarchingDrumsTimeLines
             localTimeLine = localTimeLine
                     .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.05f).target(10F * leftHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
+                    .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Z, 0.05f).target(10F * leftHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
         }
         else
         {
             localTimeLine = localTimeLine
                     .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(rightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.05f).target(-10F * rightHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
+                    .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Z, 0.05f).target(-10F * rightHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
         }
         localTimeLine = localTimeLine
                 .end()
@@ -69,14 +69,14 @@ public class MarchingDrumsTimeLines
             localTimeLine = localTimeLine
                     .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Y, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
+                    .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Z, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
         }
         else
         {
             localTimeLine = localTimeLine
                     .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Y, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
+                    .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Z, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
         }
         localTimeLine = localTimeLine
                 .end();
