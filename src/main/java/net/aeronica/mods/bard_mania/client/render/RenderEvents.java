@@ -242,11 +242,11 @@ public class RenderEvents
                GlStateManager.translate(0f, -0.0625 * 9, -0.0625 * 9);
 
                 // apply the equipped first person wearable item translations
-                GlStateManager.translate(instrument.equipped_first_person.translation[0], instrument.equipped_first_person.translation[1], instrument.equipped_first_person.translation[2]);
-                GlStateManager.rotate(instrument.equipped_first_person.rotation[0], 0, 0, 1);
-                GlStateManager.rotate(instrument.equipped_first_person.rotation[1], 0, 1, 0);
-                GlStateManager.rotate(instrument.equipped_first_person.rotation[2], 1, 0, 0);
-                GlStateManager.scale(instrument.equipped_first_person.scale[0], instrument.equipped_first_person.scale[1], instrument.equipped_first_person.scale[2]);
+                GlStateManager.translate(instrument.display.equipped_first_person.translation[0], instrument.display.equipped_first_person.translation[1], instrument.display.equipped_first_person.translation[2]);
+                GlStateManager.rotate(instrument.display.equipped_first_person.rotation[0], 0, 0, 1);
+                GlStateManager.rotate(instrument.display.equipped_first_person.rotation[1], 0, 1, 0);
+                GlStateManager.rotate(instrument.display.equipped_first_person.rotation[2], 1, 0, 0);
+                GlStateManager.scale(instrument.display.equipped_first_person.scale[0], instrument.display.equipped_first_person.scale[1], instrument.display.equipped_first_person.scale[2]);
                 Minecraft.getMinecraft().getRenderItem().renderItem(event.getItemStack(), ItemCameraTransforms.TransformType.NONE);
             }
             GlStateManager.popMatrix();
@@ -292,7 +292,7 @@ public class RenderEvents
 
         if (event.getEntity().getPrimaryHand() != event.getHandSide())
         {
-            if (isMainHandHeld)
+            if (isMainHandHeld && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
             {
                 event.setCanceled(true);
                 return;

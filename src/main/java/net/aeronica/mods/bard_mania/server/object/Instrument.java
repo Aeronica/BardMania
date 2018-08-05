@@ -25,8 +25,7 @@ public class Instrument
 {
     public String id;
     public General general = new General();
-    public Translations equipped_first_person = new Translations();
-    public Translations equipped_third_person = new Translations();
+    public Display display = new Display();
     public Sounds sounds;
 
     public static class General
@@ -40,7 +39,13 @@ public class Instrument
         @Optional public AccessoryType rightHand = AccessoryType.EMPTY;
     }
 
-    public static class Translations
+    public static class Display
+    {
+        @Optional public Transforms equipped_first_person = new Transforms();
+        @Optional public Transforms equipped_third_person = new Transforms();
+    }
+
+    public static class Transforms
     {
         @Optional public float[] translation = {0f, 0f, 0f};
         @Optional public float[] rotation = {0f ,0f ,0f};

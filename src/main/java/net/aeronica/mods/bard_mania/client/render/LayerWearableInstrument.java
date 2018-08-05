@@ -55,11 +55,11 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                 GlStateManager.rotate(180, 1, 0, 0);
 
                 // apply the wearable item translations
-                GlStateManager.translate(inst.equipped_third_person.translation[0], inst.equipped_third_person.translation[1], inst.equipped_third_person.translation[2]);
-                GlStateManager.rotate(inst.equipped_third_person.rotation[0], 0, 0, 1);
-                GlStateManager.rotate(inst.equipped_third_person.rotation[1], 0, 1, 0);
-                GlStateManager.rotate(inst.equipped_third_person.rotation[2], 1, 0, 0);
-                GlStateManager.scale(inst.equipped_third_person.scale[0], inst.equipped_third_person.scale[1], inst.equipped_third_person.scale[2]);
+                GlStateManager.translate(inst.display.equipped_third_person.translation[0], inst.display.equipped_third_person.translation[1], inst.display.equipped_third_person.translation[2]);
+                GlStateManager.rotate(inst.display.equipped_third_person.rotation[0], 0, 0, 1);
+                GlStateManager.rotate(inst.display.equipped_third_person.rotation[1], 0, 1, 0);
+                GlStateManager.rotate(inst.display.equipped_third_person.rotation[2], 1, 0, 0);
+                GlStateManager.scale(inst.display.equipped_third_person.scale[0], inst.display.equipped_third_person.scale[1], inst.display.equipped_third_person.scale[2]);
 
                 // apply animated scaling. allows the worn item to bounce in.
                 float actionScale = ActionManager.getModelDummy((EntityPlayer) entitylivingbaseIn).getPartValue(ModelAccessor.WORN_ITEM_SCALE);
