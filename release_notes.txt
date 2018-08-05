@@ -1,3 +1,14 @@
+2018-07-24 bard-mania_1.12.2-0.4.0-alpha
+Additions:
+    Equipped instruments now render in first person view.
+
+Changes:
+    Separate wearable equipped transforms into first and third person transforms.
+
+Fixes:
+    Correct wearable layer item accessory transform order.
+
+----
 2018-07-24 bard-mania_1.12.2-0.3.0-alpha
 Fixes:
     Equipped state is now honored when another player enters from another dimension.
