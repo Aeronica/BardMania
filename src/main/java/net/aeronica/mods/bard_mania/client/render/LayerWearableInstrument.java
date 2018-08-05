@@ -42,9 +42,9 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
     {
         if (!entitylivingbaseIn.isInvisible() && (entitylivingbaseIn.getHeldItemMainhand().getItem() instanceof ItemInstrument))
         {
-            Instrument inst = ((ItemInstrument) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
+            Instrument instrument = ((ItemInstrument) entitylivingbaseIn.getHeldItemMainhand().getItem()).getInstrument();
             ItemStack itemStack = ActionManager.getModelDummy((EntityPlayer) entitylivingbaseIn).getInstrumentStack();
-            if (inst.general.wearable && RenderHelper.canRenderEquippedInstrument((EntityPlayer) entitylivingbaseIn))
+            if (instrument.general.wearable && RenderHelper.canRenderEquippedInstrument((EntityPlayer) entitylivingbaseIn))
             {
                 GlStateManager.pushMatrix();
                 // apply body translation - i.e. Sneaking
@@ -55,11 +55,11 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                 GlStateManager.rotate(180, 1, 0, 0);
 
                 // apply the wearable item translations
-                GlStateManager.translate(inst.display.equipped_third_person.translation[0], inst.display.equipped_third_person.translation[1], inst.display.equipped_third_person.translation[2]);
-                GlStateManager.rotate(inst.display.equipped_third_person.rotation[0], 0, 0, 1);
-                GlStateManager.rotate(inst.display.equipped_third_person.rotation[1], 0, 1, 0);
-                GlStateManager.rotate(inst.display.equipped_third_person.rotation[2], 1, 0, 0);
-                GlStateManager.scale(inst.display.equipped_third_person.scale[0], inst.display.equipped_third_person.scale[1], inst.display.equipped_third_person.scale[2]);
+                GlStateManager.translate(instrument.display.equipped_third_person.translation[0], instrument.display.equipped_third_person.translation[1], instrument.display.equipped_third_person.translation[2]);
+                GlStateManager.rotate(instrument.display.equipped_third_person.rotation[0], 0, 0, 1);
+                GlStateManager.rotate(instrument.display.equipped_third_person.rotation[1], 0, 1, 0);
+                GlStateManager.rotate(instrument.display.equipped_third_person.rotation[2], 1, 0, 0);
+                GlStateManager.scale(instrument.display.equipped_third_person.scale[0], instrument.display.equipped_third_person.scale[1], instrument.display.equipped_third_person.scale[2]);
 
                 // apply animated scaling. allows the worn item to bounce in.
                 float actionScale = ActionManager.getModelDummy((EntityPlayer) entitylivingbaseIn).getPartValue(ModelAccessor.WORN_ITEM_SCALE);
@@ -77,8 +77,8 @@ public class LayerWearableInstrument implements LayerRenderer<EntityLivingBase>
                     GlStateManager.scale(0.5F, 0.5F, 0.5F);
                 }
                 // render the held items per the general wearable options
-                ItemStack rightHandItem = inst.general.rightHand.getHeldAccessory().getItem();
-                ItemStack leftHandItem = inst.general.leftHand.getHeldAccessory().getItem();
+                ItemStack rightHandItem = instrument.general.rightHand.getHeldAccessory().getItem();
+                ItemStack leftHandItem = instrument.general.leftHand.getHeldAccessory().getItem();
                 this.renderHeldItem(entitylivingbaseIn, rightHandItem, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
                 this.renderHeldItem(entitylivingbaseIn, leftHandItem, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, EnumHandSide.LEFT);
                 GlStateManager.popMatrix();

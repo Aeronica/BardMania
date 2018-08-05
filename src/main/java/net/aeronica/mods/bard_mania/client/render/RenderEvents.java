@@ -275,49 +275,44 @@ public class RenderEvents
     @SubscribeEvent
     public static void onRenderHeldItem(RenderItemEvent.Held.Pre event)
     {
-        // Offhand ONLY instruments render normally. TODO: Simplify
         if(!((event.getEntity() instanceof EntityPlayer) && (event.getEntity().getHeldItemMainhand().getItem() instanceof ItemInstrument)) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
         {
             event.setCanceled(false);
             return;
         }
 
-        ItemStack heldItem;
-        ItemStack itemMain = event.getEntity().getHeldItemMainhand();
-        ItemStack itemOff = event.getEntity().getHeldItemOffhand();
-        boolean isMainHandHeld = !itemMain.isEmpty() && itemMain.getItem() instanceof ItemInstrument;
-        boolean isOffHandHeld = !itemOff.isEmpty() && itemOff.getItem() instanceof ItemInstrument;
-        boolean renderLeft = event.getHandSide().equals(EnumHandSide.LEFT);
         EntityPlayer player = (EntityPlayer) event.getEntity();
+        ItemStack itemMain = player.getHeldItemMainhand();
+        boolean isMainHandHeld = !itemMain.isEmpty() && itemMain.getItem() instanceof ItemInstrument;
+        boolean renderLeft = event.getHandSide().equals(EnumHandSide.LEFT);
+        boolean canRenderEquippedInstrument = RenderHelper.canRenderEquippedInstrument(player);
 
-        if (event.getEntity().getPrimaryHand() != event.getHandSide())
-        {
-            if (isMainHandHeld && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
+        if (player.getPrimaryHand() != event.getHandSide())
+            if (isMainHandHeld && canRenderEquippedInstrument)
             {
                 event.setCanceled(true);
                 return;
             }
-        }
 
-        heldItem = event.getItem();
-        if (heldItem.getItem() instanceof ItemInstrument && event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
+        ItemStack heldItem = event.getItem();
+        if (heldItem.getItem() instanceof ItemInstrument && event.getHandSide().equals(player.getPrimaryHand()) && canRenderEquippedInstrument)
         {
             event.setCanceled(true);
             Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
 
             applyRightHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(player, heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
 
-        if (heldItem.getItem() instanceof ItemInstrument && !event.getHandSide().equals(event.getEntity().getPrimaryHand()) && RenderHelper.canRenderEquippedInstrument((EntityPlayer) event.getEntity()))
+        if (heldItem.getItem() instanceof ItemInstrument && !event.getHandSide().equals(player.getPrimaryHand()) && canRenderEquippedInstrument)
         {
             event.setCanceled(true);
             Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
             if (instrument.general.wearable) return;
 
             applyLeftHandHeldItemTransforms(ActionManager.getModelDummy(player), motionSimple);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(event.getEntity(), heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(player, heldItem, renderLeft ? ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, renderLeft);
         }
     }
 
