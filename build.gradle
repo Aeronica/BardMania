@@ -38,7 +38,7 @@ minecraft {
 
 dependencies {
     // compile "com.mrcrayfish:obfuscate:0.2.3-1.12.2"
-	compile files ("lib/obfuscate-0.2.4-1.12.2.jar")
+	compile files ("lib/obfuscate-0.2.5-1.12.2.jar")
 }
 
 processResources
