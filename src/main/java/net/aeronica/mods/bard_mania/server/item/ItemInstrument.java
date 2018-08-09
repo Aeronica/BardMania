@@ -81,7 +81,7 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
                 BardMania.proxy.postInputModeToast(heldItem);
             } else
             {
-                BardMania.proxy.setNoteReceiver(this, playerIn, heldItem);
+                BardMania.proxy.setNoteReceiver();
             }
         }
         if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND)/* && !playerIn.isSneaking()*/)
@@ -103,7 +103,7 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
     /**
      * <pre>
      * ItemStack nbt "RepairCost" is used as a flag to facilitate the automatic activation and removal of the active
-     *   note receiver focus. This is tied to the MidiHelper class via two main methods setNoteReceiver and
+     *   note receiver focus. This is tied to the MidiHelper class via two main methods setMidiNoteReceiver and
      *   notifyRemoved.
      *
      * Three methods on the ItemHandHeld class set and read the stack repair cost and provide several key features.
