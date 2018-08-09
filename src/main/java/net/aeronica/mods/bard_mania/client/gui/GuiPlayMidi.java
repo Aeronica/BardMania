@@ -20,7 +20,6 @@ import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
-import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
@@ -196,7 +195,6 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener
     {
         isPlaying = true;
         boolean midiException = false;
-        BardMania.proxy.setNoteReceiver((IActiveNoteReceiver) mc.player.getHeldItemMainhand().getItem(), mc.player, mc.player.getHeldItemMainhand());
         try
         {
             sequencer = MidiSystem.getSequencer(false);
