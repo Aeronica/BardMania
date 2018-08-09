@@ -1,13 +1,13 @@
-/**
+/*
  * This network code is from coolAlias's github repository
  * https://github.com/coolAlias/Tutorial-Demo
  */
 package net.aeronica.mods.bard_mania.server.network;
 
 import net.aeronica.mods.bard_mania.Reference;
+import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
 import net.aeronica.mods.bard_mania.server.network.client.OpenGuiMessage;
 import net.aeronica.mods.bard_mania.server.network.client.PlaySoundMessage;
-import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
 import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.aeronica.mods.bard_mania.server.network.server.GuiClosedMessage;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,22 +54,24 @@ public class PacketDispatcher
      */
     private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
 
-    /**
+    /*
      * Call this during pre-init or loading and register all of your packets
      * (messages) here
      */
     public static final void registerPackets()
     {
-        /** Packets handled on CLIENT */
+        /* Packets handled on CLIENT */
         registerMessage(PlaySoundMessage.class);
         registerMessage(OpenGuiMessage.class);
-        registerMessage(PoseActionMessage.class);
 
-        /** Packets handled on SERVER */
+        /* Packets handled on SERVER */
         registerMessage(ActiveReceiverMessage.class);
         registerMessage(GuiClosedMessage.class);
-        
-        /**
+
+        /* Bidirectional packets: */
+        registerMessage(PoseActionMessage.class);
+
+        /*
          * If you don't want to make a 'registerMessage' method, you can do it
          * directly:
          */
@@ -77,9 +79,6 @@ public class PacketDispatcher
         // SyncPlayerPropsMessage.class, packetId++, Side.CLIENT);
         // PacketDispatcher.dispatcher.registerMessage(OpenGuiMessage.class,
         // OpenGuiMessage.class, packetId++, Side.SERVER);
-
-        /** Bidirectional packets: */
-
     }
 
     /**
@@ -87,12 +86,12 @@ public class PacketDispatcher
      */
     private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz)
     {
-        /**
+        /*
          * We can tell by the message class which side to register it on by
          * using #isAssignableFrom (google it)
          */
 
-        /**
+        /*
          * Also, one can see the convenience of using a static counter
          * 'packetId' to keep track of the current index, rather than
          * hard-coding them all, plus it's one less parameter to pass.
@@ -105,7 +104,7 @@ public class PacketDispatcher
             PacketDispatcher.dispatcher.registerMessage(clazz, clazz, packetId++, Side.SERVER);
         } else
         {
-            /**
+            /*
              * hopefully you didn't forget to extend the right class, or you
              * will get registered on both sides
              */

@@ -14,21 +14,22 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.server.network.client;
+package net.aeronica.mods.bard_mania.server.network.bi;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
-import net.aeronica.mods.bard_mania.server.network.AbstractMessage.AbstractClientMessage;
+import net.aeronica.mods.bard_mania.server.network.AbstractMessage;
+import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 
-public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
+public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
 {
     public static final int APPLY = 0;
     public static final int EQUIP = 1;
@@ -67,6 +68,8 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
     {
         if (side.equals(Side.CLIENT))
             processClient(player);
+        else
+            processServer(player);
     }
 
     private void processClient(EntityPlayer player)
@@ -102,5 +105,11 @@ public class PoseActionMessage extends AbstractClientMessage<PoseActionMessage>
         }
         else
             MidiHelper.INSTANCE.notifyRemoved("PoseActionMessage: Invalid posingPlayerId ***Dead***");
+    }
+
+    private void processServer(EntityPlayer player)
+    {
+        EntityPlayer posingPlayer = (EntityPlayer) BardMania.proxy.getWorldByDimensionId(player.dimension).getEntityByID(posingPlayerId);
+        PacketDispatcher.sendToDimension(new PoseActionMessage(posingPlayer, actionId, forced), posingPlayer.dimension);
     }
 }

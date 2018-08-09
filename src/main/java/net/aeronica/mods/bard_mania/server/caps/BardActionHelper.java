@@ -20,7 +20,7 @@ import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
 import net.aeronica.mods.bard_mania.server.Util;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
-import net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage;
+import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.capabilities.Capability;
@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static net.aeronica.mods.bard_mania.server.network.client.PoseActionMessage.*;
+import static net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage.*;
 
 @SuppressWarnings("ConstantConditions")
 public class BardActionHelper

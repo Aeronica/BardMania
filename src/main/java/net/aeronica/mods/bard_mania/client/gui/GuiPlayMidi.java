@@ -19,10 +19,11 @@ package net.aeronica.mods.bard_mania.client.gui;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
-import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
+import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
+import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -114,12 +115,14 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener
         switch (button.id)
         {
             case 1:
+                PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.EQUIP, false));
                 BardActionHelper.setInstrumentEquipped(mc.player);
-                ActionManager.equipAction(mc.player);
                 break;
             case 2:
+                PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
                 BardActionHelper.setInstrumentRemoved(mc.player);
-                ActionManager.removeAction(mc.player);
+                break;
+            case 3:
                 break;
             case 4:
                 play();
