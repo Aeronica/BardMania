@@ -22,8 +22,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import javax.annotation.Nullable;
 
-import static net.aeronica.mods.bard_mania.client.gui.GuiGuid.KEYBOARD;
-import static net.aeronica.mods.bard_mania.client.gui.GuiGuid.MODEL_SETUP;
+import static net.aeronica.mods.bard_mania.client.gui.GuiGuid.*;
 
 public class GuiHandler implements IGuiHandler
 {
@@ -36,6 +35,7 @@ public class GuiHandler implements IGuiHandler
         switch (ID) {
             case KEYBOARD:
             case MODEL_SETUP:
+            case PLAY_MIDI:
             default:
                 return null;
         }
@@ -50,6 +50,8 @@ public class GuiHandler implements IGuiHandler
                 return new GuiKeyboard();
             case MODEL_SETUP:
                 return  new GuiModelSetup();
+            case PLAY_MIDI:
+                return new GuiPlayMidi();
             default:
                 return null;
         }

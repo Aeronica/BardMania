@@ -17,11 +17,12 @@
 package net.aeronica.mods.bard_mania;
 
 import net.aeronica.mods.bard_mania.client.gui.GuiHandler;
-import net.aeronica.mods.bard_mania.server.CommandModelSetup;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.ModTab;
 import net.aeronica.mods.bard_mania.server.ServerProxy;
 import net.aeronica.mods.bard_mania.server.caps.BardActionCapability;
+import net.aeronica.mods.bard_mania.server.cmds.CommandModelSetup;
+import net.aeronica.mods.bard_mania.server.cmds.CommandPlayMidi;
 import net.aeronica.mods.bard_mania.server.init.ModBlocks;
 import net.aeronica.mods.bard_mania.server.init.ModInstruments;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
@@ -94,5 +95,6 @@ public class BardMania
     public void onEvent(FMLServerStartingEvent event)
     {
         event.registerServerCommand(new CommandModelSetup());
+        event.registerServerCommand(new CommandPlayMidi());
     }
 }

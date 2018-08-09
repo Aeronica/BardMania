@@ -1,6 +1,9 @@
 commands.bard_mania.modelsetup.usage=modelsetup
 commands.bard_mania.modelsetup.success=Opened Model Setup Gui
 commands.bard_mania.modelsetup.failure=Must be holding an instrument in your main hand
+commands.bard_mania.playmidi.usage=playmidi
+commands.bard_mania.playmidi.success=Opened Play Midi Gui
+commands.bard_mania.playmidi.failure=Must be holding an instrument in your main hand
 config.bard_mania.title=Bard Mania
 config.bard_mania.client_options.title=Client Options
 config.bard_mania.input_mode=Input Mode
@@ -11,6 +14,7 @@ config.bard_mania.midi_options.all_channels=Listen on all channels
 config.bard_mania.midi_options.channel=MIDI Channel [1-16]
 gui.bard_mania.gui_keyboard.title=PC Piano Keyboard
 gui.bard_mania.gui_model_setup.title=Model Setup
+gui.bard_mania.gui_play_midi.title=Play Midi File
 gui.bard_mania.gui_key_Z=Z
 gui.bard_mania.gui_key_S=S
 gui.bard_mania.gui_key_X=X

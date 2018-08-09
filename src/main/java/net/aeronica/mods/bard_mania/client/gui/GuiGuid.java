@@ -20,4 +20,5 @@ public class GuiGuid
 {
     public static final int KEYBOARD = 0;
     public static final int MODEL_SETUP = 1;
+    public static final int PLAY_MIDI = 2;
 }

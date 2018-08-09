@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package net.aeronica.mods.bard_mania.server;
+package net.aeronica.mods.bard_mania.server.cmds;
 
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
@@ -28,7 +28,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 
-public class CommandModelSetup extends CommandBase
+public class CommandPlayMidi extends CommandBase
 {
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender)
@@ -40,20 +40,20 @@ public class CommandModelSetup extends CommandBase
     public int getRequiredPermissionLevel() { return 2; }
 
     @Override
-    public String getName() { return "modelsetup"; }
+    public String getName() { return "playmidi"; }
 
     @Override
-    public String getUsage(ICommandSender sender) { return "commands.bard_mania.modelsetup.usage"; }
+    public String getUsage(ICommandSender sender) { return "commands.bard_mania.playmidi.usage"; }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (sender instanceof EntityPlayer && ((EntityPlayer)sender).getHeldItemMainhand().getItem() instanceof ItemInstrument)
         {
-            PacketDispatcher.sendTo(new OpenGuiMessage(GuiGuid.MODEL_SETUP), (EntityPlayerMP) sender);
-            sender.sendMessage(new TextComponentTranslation("commands.bard_mania.modelsetup.success", ""));
+            PacketDispatcher.sendTo(new OpenGuiMessage(GuiGuid.PLAY_MIDI), (EntityPlayerMP) sender);
+            sender.sendMessage(new TextComponentTranslation("commands.bard_mania.playmidi.success", ""));
         }
         else
-            sender.sendMessage(new TextComponentTranslation("commands.bard_mania.modelsetup.failure", ""));
+            sender.sendMessage(new TextComponentTranslation("commands.bard_mania.playmidi.failure", ""));
     }
 }
