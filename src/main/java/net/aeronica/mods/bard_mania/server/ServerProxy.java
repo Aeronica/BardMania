@@ -34,7 +34,9 @@ import javax.annotation.Nullable;
 
 public class ServerProxy
 {
-    public void setNoteReceiver(IActiveNoteReceiver noteReceiverIn, EntityPlayer playerIn, ItemStack stackIn) {/* NOP */}
+    public void setNoteReceiver() {/* NOP */}
+
+    public void notifyRemoved(String message) {/* NOP */}
 
     public void notifyRemoved(ItemStack stackIn) {/* NOP */}
 

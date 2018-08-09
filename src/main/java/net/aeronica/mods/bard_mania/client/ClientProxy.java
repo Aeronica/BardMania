@@ -19,7 +19,7 @@ package net.aeronica.mods.bard_mania.client;
 import com.google.common.collect.ImmutableMap;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.client.gui.InputModeToast;
-import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
+import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ServerProxy;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
@@ -45,18 +45,26 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import static net.aeronica.mods.bard_mania.client.KeyHelper.calculatePitch;
 import static net.aeronica.mods.bard_mania.client.KeyHelper.normalizeNote;
+import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MIDI;
 
 public class ClientProxy extends ServerProxy
 {
 
     @Override
-    public void setNoteReceiver(IActiveNoteReceiver noteReceiverIn, EntityPlayer playerIn, ItemStack stackIn)
-    {
-        MidiHelper.INSTANCE.setNoteReceiver(noteReceiverIn, playerIn, stackIn);
+    public void setNoteReceiver() {
+        if (ModConfig.client.input_mode == MIDI)
+            MidiHelper.INSTANCE.setMidiNoteReceiver();
+        else
+            MidiHelper.INSTANCE.setKeyboardNoteReceiver();
     }
 
+    @Override
+    public void notifyRemoved(String message) { MidiHelper.INSTANCE.notifyRemoved(message); }
+
+    @Override
     public void notifyRemoved(ItemStack stackIn) { MidiHelper.INSTANCE.notifyRemoved(stackIn); }
 
+    @Override
     public void playSound(EntityPlayer playerIn, byte noteIn, byte volumeIn)
     {
         WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();
