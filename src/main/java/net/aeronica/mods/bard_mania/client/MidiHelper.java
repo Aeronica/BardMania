@@ -18,7 +18,6 @@ package net.aeronica.mods.bard_mania.client;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
-import net.aeronica.mods.bard_mania.server.IActiveNoteReceiver;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
@@ -26,7 +25,6 @@ import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -44,20 +42,24 @@ public enum MidiHelper implements Receiver
 {
     INSTANCE;
     private static List<MidiDevice> openDevices = new CopyOnWriteArrayList<>();
-    static IActiveNoteReceiver noteReceiver;
-    static EntityPlayer player;
-    static BlockPos pos;
-    static ItemStack stack = ItemStack.EMPTY;
     static boolean inUse = false;
 
-    public void setNoteReceiver(IActiveNoteReceiver noteReceiverIn, EntityPlayer playerIn, ItemStack stackIn)
+    // TODO: rethink and refactor since class this is only for the CLIENT player.
+    // TODO: separate MIDI and PC Keyboard logic.
+    // TODO: consider other living entity instrument players and machines/TE
+
+    public void setKeyboardNoteReceiver()
     {
-        noteReceiver = noteReceiverIn;
-        player = playerIn;
-        pos = new BlockPos(player.posX, player.posY, player.posZ);
-        stack = stackIn;
+        if (ModConfig.client.input_mode == KEYBOARD)
+        {
+            EntityPlayer playerIn = BardMania.proxy.getClientPlayer();
+            playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, playerIn.getEntityWorld(), 0, 0, 0);
+            inUse = true;
+        }
+    }
 
-
+    public void setMidiNoteReceiver()
+    {
         if (ModConfig.client.input_mode == MIDI && !inUse)
         {
             MidiDevice device;
@@ -89,8 +91,6 @@ public enum MidiHelper implements Receiver
                 }
             }
         }
-        else if (ModConfig.client.input_mode == KEYBOARD)
-            playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, playerIn.getEntityWorld(), 0, 0, 0);
     }
 
     public static List<String> getOpenDeviceNames()
@@ -139,11 +139,12 @@ public enum MidiHelper implements Receiver
 
     public static void send(byte note, byte volume)
     {
+        EntityPlayer player = BardMania.proxy.getClientPlayer();
         if ((player != null) && KeyHelper.isMidiNoteInRange(note))
         {
-                ActiveReceiverMessage packet = new ActiveReceiverMessage(pos ,player.getEntityId(), note, volume);
-                PacketDispatcher.sendToServer(packet);
-                BardMania.proxy.playSound(player, note, volume);
+            ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), note, volume);
+            PacketDispatcher.sendToServer(packet);
+            BardMania.proxy.playSound(player, note, volume);
         }
     }
 
@@ -173,14 +174,15 @@ public enum MidiHelper implements Receiver
 
     public void notifyRemoved(ItemStack stackIn)
     {
-        if(stack.equals(stackIn))
+        if(!stackIn.isEmpty())
             invalidate(stackIn.getDisplayName());
+        else
+            invalidate("EMPTY STACK");
     }
 
     private void invalidate(String message)
     {
         ModLogger.info("ActiveNoteReceiver Removed: %s", message);
-        stack = ItemStack.EMPTY;
         inUse = false;
         close();
     }
