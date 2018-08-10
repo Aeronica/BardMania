@@ -18,12 +18,14 @@ package net.aeronica.mods.bard_mania.client.gui;
 
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
-import net.aeronica.mods.bard_mania.client.MidiHelper;
+import net.aeronica.mods.bard_mania.client.KeyHelper;
+import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
+import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -35,21 +37,22 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiSlider;
 
-import javax.sound.midi.MetaEventListener;
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequencer;
+import javax.sound.midi.*;
 import java.io.IOException;
 
-public class GuiPlayMidi extends GuiScreen implements MetaEventListener
+public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receiver
 {
     private static final ResourceLocation GUI_BACKGROUND = new ResourceLocation(Reference.MOD_ID, "textures/gui/gui_player_background.png");
     private String TITLE = I18n.format("gui.bard_mania.gui_play_midi.title");
     private Instrument inst;
     private Sequencer sequencer = null;
     boolean isPlaying = false;
+
+    private GuiSlider transpose;
 
     public GuiPlayMidi() {/* NOP */}
 
@@ -61,17 +64,19 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener
         int y = 8;
         int x = 10;
         int w = 100;
-        GuiButton equip = new GuiButton(1, x, y += 22, w, 20, "Equip");
-        GuiButton remove = new GuiButton(2, x, y += 22, w, 20, "Remove");
-        GuiButton choose = new GuiButton(3, x, y += 22, w, 20, "Choose File");
-        GuiButton play = new GuiButton(4, x, y += 22, w, 20, "Play");
-        GuiButton stop = new GuiButton(5, x, y += 22, w, 20, "Stop");
+        GuiButton equip =   new GuiButton(1, x, y += 22, w,20, "Equip");
+        GuiButton remove =  new GuiButton(2, x, y += 22, w,20, "Remove");
+        GuiButton choose =  new GuiButton(3, x, y += 22, w,20, "Choose File");
+        GuiButton play =    new GuiButton(4, x, y += 22, w,20, "Play");
+        GuiButton stop =    new GuiButton(5, x, y += 22, w,20, "Stop");
+        transpose =         new GuiSlider(6, x, y += 22, w, 20, "semi ", " tones", -12d, 12d, 0, false,true);
 
         buttonList.add(equip);
         buttonList.add(remove);
         buttonList.add(choose);
         buttonList.add(play);
         buttonList.add(stop);
+        buttonList.add(transpose);
     }
 
     @Override
@@ -201,7 +206,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener
         try
         {
             sequencer = MidiSystem.getSequencer(false);
-            sequencer.getTransmitter().setReceiver(MidiHelper.INSTANCE);
+            sequencer.getTransmitter().setReceiver(this);
             sequencer.open();
             sequencer.addMetaEventListener(this);
             sequencer.setSequence(BardMania.class.getResourceAsStream("/assets/bard_mania/test.mid"));
@@ -235,14 +240,14 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener
             } catch (InterruptedException e)
             {
                 ModLogger.error(e);
-                close();
+                closeMidi();
                 Thread.currentThread().interrupt();
             }
-            close();
+            closeMidi();
         }
     }
 
-    void close()
+    void closeMidi()
     {
         if (sequencer != null && sequencer.isOpen()) sequencer.close();
         isPlaying = false;
@@ -257,5 +262,65 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener
             ModLogger.debug("MetaMessage EOS event received");
             stop();
         }
+    }
+
+    @Override
+    public void send(MidiMessage msg, long timeStamp)
+    {
+        byte[] message = msg.getMessage();
+        int command = msg.getStatus() & 0xF0;
+        int channel = msg.getStatus() & 0x0F;
+        boolean allChannels = ModConfig.client.midi_options.allChannels;
+        boolean sendNoteOff = ModConfig.client.midi_options.sendNoteOff;
+
+        switch (command)
+        {
+            case ShortMessage.NOTE_OFF:
+                message[2] = 0;
+                break;
+            case ShortMessage.NOTE_ON:
+                break;
+            default:
+                return;
+        }
+
+        boolean channelFlag = allChannels || channel == ModConfig.client.midi_options.channel - 1;
+        boolean noteOffFlag = sendNoteOff || message[2] != 0;
+
+        if (channelFlag && noteOffFlag)
+        {
+            // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
+            Minecraft.getMinecraft().addScheduledTask(() -> {
+                send(message[1], message[2]);
+                ModLogger.debug("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);
+            });
+
+        }
+    }
+
+    public void send(byte note, byte volume)
+    {
+        EntityPlayer player = BardMania.proxy.getClientPlayer();
+        if ((player != null))
+        {
+            byte noteWrapped = smartClampMIDI(note);
+            ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), noteWrapped, volume);
+            PacketDispatcher.sendToServer(packet);
+            BardMania.proxy.playSound(player, noteWrapped, volume);
+        }
+    }
+
+    @Override
+    public void close() { /* NOP */ }
+
+    public byte smartClampMIDI(byte midiNoteIn)
+    {
+        byte midiNoteClamped = (byte) (midiNoteIn + (byte) transpose.getValue());
+        while (midiNoteClamped < KeyHelper.MIDI_NOTE_LOW || midiNoteClamped > KeyHelper.MIDI_NOTE_HIGH)
+        {
+            if (midiNoteClamped < KeyHelper.MIDI_NOTE_LOW) midiNoteClamped += 12;
+            if (midiNoteClamped > KeyHelper.MIDI_NOTE_HIGH) midiNoteClamped -= 12;
+        }
+        return midiNoteClamped;
     }
 }
