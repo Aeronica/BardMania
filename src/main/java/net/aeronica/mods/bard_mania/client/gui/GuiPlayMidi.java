@@ -21,7 +21,6 @@ import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
-import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
@@ -50,11 +49,13 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private String TITLE = I18n.format("gui.bard_mania.gui_play_midi.title");
     private Instrument inst;
     private Sequencer sequencer = null;
-    boolean isPlaying = false;
+    private boolean isPlaying = false;
 
+    private GuiButton play;
+    private GuiButton stop;
     private GuiSlider transpose;
 
-    public GuiPlayMidi() {/* NOP */}
+    GuiPlayMidi() {/* NOP */}
 
     @Override
     public void initGui()
@@ -67,10 +68,11 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         GuiButton equip =   new GuiButton(1, x, y += 22, w,20, "Equip");
         GuiButton remove =  new GuiButton(2, x, y += 22, w,20, "Remove");
         GuiButton choose =  new GuiButton(3, x, y += 22, w,20, "Choose File");
-        GuiButton play =    new GuiButton(4, x, y += 22, w,20, "Play");
-        GuiButton stop =    new GuiButton(5, x, y += 22, w,20, "Stop");
+        play =              new GuiButton(4, x, y += 22, w,20, "Play");
+        stop =              new GuiButton(5, x, y += 22, w,20, "Stop");
         transpose =         new GuiSlider(6, x, y += 22, w, 20, "semi ", " tones", -12d, 12d, 0, false,true);
 
+        setPlayState(isPlaying);
         buttonList.add(equip);
         buttonList.add(remove);
         buttonList.add(choose);
@@ -103,7 +105,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         if (!isShiftKeyDown())super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    protected void drawGuiPlayerBackgroundLayer(float partialTicks, int mouseX, int mouseY, int xIn, int yIn)
+    private void drawGuiPlayerBackgroundLayer(float partialTicks, int mouseX, int mouseY, int xIn, int yIn)
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(GUI_BACKGROUND);
@@ -121,11 +123,11 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         {
             case 1:
                 PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.EQUIP, false));
-                BardActionHelper.setInstrumentEquipped(mc.player);
+                //BardActionHelper.setInstrumentEquipped(mc.player);
                 break;
             case 2:
                 PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
-                BardActionHelper.setInstrumentRemoved(mc.player);
+                //BardActionHelper.setInstrumentRemoved(mc.player);
                 break;
             case 3:
                 break;
@@ -157,9 +159,16 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     @Override
     public boolean doesGuiPauseGame() {return false;}
 
+    @Override
+    public void onResize(Minecraft mcIn, int w, int h)
+    {
+        setPlayState(isPlaying);
+        super.onResize(mcIn, w, h);
+    }
+
     private FontRenderer getFontRenderer() {return mc.fontRenderer;}
 
-    public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent, float playerYaw)
+    private static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent, float playerYaw)
     {
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
@@ -199,9 +208,14 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
-    void play()
+    private void setPlayState(boolean state)
     {
-        isPlaying = true;
+        play.enabled = !(stop.enabled = isPlaying = state);
+    }
+
+    private void play()
+    {
+        setPlayState(true);
         boolean midiException = false;
         try
         {
@@ -214,7 +228,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             sequencer.start();
         } catch (Exception e)
         {
-            isPlaying = false;
+            setPlayState(false);
             midiException = true;
         }
         finally
@@ -227,7 +241,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         }
     }
 
-    void stop()
+    private void stop()
     {
         if (sequencer != null && sequencer.isOpen())
         {
@@ -247,10 +261,10 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         }
     }
 
-    void closeMidi()
+    private void closeMidi()
     {
         if (sequencer != null && sequencer.isOpen()) sequencer.close();
-        isPlaying = false;
+        setPlayState(false);
         BardMania.proxy.notifyRemoved(mc.player.getHeldItemMainhand());
     }
 
@@ -303,7 +317,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         EntityPlayer player = BardMania.proxy.getClientPlayer();
         if ((player != null))
         {
-            byte noteWrapped = smartClampMIDI(note);
+            byte noteWrapped = wrapMIDI(note);
             ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), noteWrapped, volume);
             PacketDispatcher.sendToServer(packet);
             BardMania.proxy.playSound(player, noteWrapped, volume);
@@ -313,14 +327,14 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     @Override
     public void close() { /* NOP */ }
 
-    public byte smartClampMIDI(byte midiNoteIn)
+    private byte wrapMIDI(byte midiNoteIn)
     {
-        byte midiNoteClamped = (byte) (midiNoteIn + (byte) transpose.getValue());
-        while (midiNoteClamped < KeyHelper.MIDI_NOTE_LOW || midiNoteClamped > KeyHelper.MIDI_NOTE_HIGH)
+        byte wrappedNote = (byte) (midiNoteIn + (byte) transpose.getValue());
+        while (wrappedNote < KeyHelper.MIDI_NOTE_LOW || wrappedNote > KeyHelper.MIDI_NOTE_HIGH)
         {
-            if (midiNoteClamped < KeyHelper.MIDI_NOTE_LOW) midiNoteClamped += 12;
-            if (midiNoteClamped > KeyHelper.MIDI_NOTE_HIGH) midiNoteClamped -= 12;
+            if (wrappedNote < KeyHelper.MIDI_NOTE_LOW) wrappedNote += 12;
+            if (wrappedNote > KeyHelper.MIDI_NOTE_HIGH) wrappedNote -= 12;
         }
-        return midiNoteClamped;
+        return wrappedNote;
     }
 }
