@@ -21,6 +21,7 @@ import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
+import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
@@ -53,6 +54,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private boolean isPlaying = false;
     private double tuning = 0d;
 
+    private GuiButton equip;
+    private GuiButton remove;
+    private GuiButton choose;
     private GuiButton play;
     private GuiButton stop;
     private GuiSlider transpose;
@@ -64,17 +68,17 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     {
         super.initGui();
         inst = ((ItemInstrument) mc.player.getHeldItemMainhand().getItem()).getInstrument();
-        int y = 8;
+        int y = 0;
         int x = 10;
         int w = 100;
-        GuiButton equip =   new GuiButton(1, x, y += 22, w,20, "Equip");
-        GuiButton remove =  new GuiButton(2, x, y += 22, w,20, "Remove");
-        GuiButton choose =  new GuiButton(3, x, y += 22, w,20, "Choose File");
-        play =              new GuiButton(4, x, y += 22, w,20, "Play");
-        stop =              new GuiButton(5, x, y += 22, w,20, "Stop");
-        transpose =         new GuiSlider(6, x, y += 22, w, 20, "semi ", " tones", -12d, 12d, tuning, false,true);
+        equip =     new GuiButton(1, x, y += 20, w,20, "Equip");
+        remove =    new GuiButton(2, x, y += 20, w,20, "Remove");
+        choose =    new GuiButton(3, x, y += 20, w,20, "Choose File");
+        play =      new GuiButton(4, x, y += 20, w,20, "Play");
+        stop =      new GuiButton(5, x, y += 20, w,20, "Stop");
+        transpose = new GuiSlider(6, x, y += 20, w, 20, "semi ", " tones", -12d, 12d, tuning, false,true);
 
-        setPlayState(isPlaying);
+        setButtonState(isPlaying);
         buttonList.add(equip);
         buttonList.add(remove);
         buttonList.add(choose);
@@ -93,6 +97,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     @Override
     public void updateScreen()
     {
+        setButtonState(isPlaying);
         super.updateScreen();
     }
 
@@ -164,7 +169,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     @Override
     public void onResize(Minecraft mcIn, int w, int h)
     {
-        setPlayState(isPlaying);
+        setButtonState(isPlaying);
         super.onResize(mcIn, w, h);
     }
 
@@ -210,15 +215,21 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
-    private void setPlayState(boolean state)
+    private void setButtonState(boolean state)
     {
-        play.enabled = !(stop.enabled = isPlaying = state);
+        isPlaying = state;
+        boolean isEquipped = BardActionHelper.isInstrumentEquipped(mc.player);
+        equip.enabled = !isPlaying && !isEquipped;
+        remove.enabled = !isPlaying && isEquipped;
+        choose.enabled = !isPlaying && !isEquipped;
+        play.enabled = !isPlaying && isEquipped;
+        stop.enabled = isPlaying && isEquipped;
         tuning = transpose.getValue();
     }
 
     private void play()
     {
-        setPlayState(true);
+        setButtonState(true);
         boolean midiException = false;
         try
         {
@@ -231,7 +242,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             sequencer.start();
         } catch (Exception e)
         {
-            setPlayState(false);
+            setButtonState(false);
             midiException = true;
         }
         finally
@@ -257,7 +268,6 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             } catch (InterruptedException e)
             {
                 ModLogger.error(e);
-                closeMidi();
                 Thread.currentThread().interrupt();
             }
             closeMidi();
@@ -267,7 +277,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private void closeMidi()
     {
         if (sequencer != null && sequencer.isOpen()) sequencer.close();
-        setPlayState(false);
+        setButtonState(false);
         BardMania.proxy.notifyRemoved(mc.player.getHeldItemMainhand());
     }
 
