@@ -96,8 +96,12 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
                 if (player.getEntityId() == posingPlayerId)
                 {
                     if (forced)
+                    {
                         ActionManager.getModelDummy(posingPlayer).reset();
-                    MidiHelper.INSTANCE.notifyRemoved("Force Removed by Server Request");
+                        MidiHelper.INSTANCE.notifyRemoved("Force Removed by Server Request");
+                    }
+                    else
+                        MidiHelper.INSTANCE.notifyRemoved("Removed by Server Request");
                 }
             }
             else
@@ -110,6 +114,7 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
     private void processServer(EntityPlayer player)
     {
         EntityPlayer posingPlayer = (EntityPlayer) BardMania.proxy.getWorldByDimensionId(player.dimension).getEntityByID(posingPlayerId);
-        PacketDispatcher.sendToDimension(new PoseActionMessage(posingPlayer, actionId, forced), posingPlayer.dimension);
+        if (posingPlayer != null)
+            PacketDispatcher.sendToDimension(new PoseActionMessage(posingPlayer, actionId, forced), posingPlayer.dimension);
     }
 }

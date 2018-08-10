@@ -47,35 +47,49 @@ public class XylophoneTimeLines
     public static Timeline play(EntityPlayer playerIn, TweenEngine tweenEngine, Timeline timeline, ModelDummy modelDummy, int normalizedNote)
     {
         Timeline localTimeLine = timeline.beginParallel();
+        localTimeLine = localTimeLine
+                // Head look note
+                .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_Y, 0.15F).target(lookNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut));
+
         if (isLeftHandNote(normalizedNote))
         {
             localTimeLine = localTimeLine
-                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.12f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.12f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    // Head nod
+                    .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_X, 0.15F).target(-0.17f).ease(TweenEquations.Sine_InOut).ease(TweenEquations.Sine_InOut))
+
+                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * leftHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(leftHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Z, 0.05f).target(10F * leftHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
         }
         else
         {
             localTimeLine = localTimeLine
-                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.12f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.12f).target(rightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(-0.1F * rightHandNote(normalizedNote)).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(rightHandNotePosition(normalizedNote)).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Z, 0.05f).target(-10F * rightHandNote(normalizedNote)).ease(TweenEquations.Cubic_In));
         }
         localTimeLine =localTimeLine
                 .end()
                 .beginParallel();
+
+        localTimeLine = localTimeLine
+                // Head look note
+                .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_Y, 0.15F).target(0f).ease(TweenEquations.Sine_InOut));
         if (isLeftHandNote(normalizedNote))
         {
             localTimeLine = localTimeLine
+                    // Head nod
+                    .push(tweenEngine.to(modelDummy, HEAD_ACTION_ROT_X, 0.25F).target(0f).ease(TweenEquations.Sine_InOut).ease(TweenEquations.Sine_InOut))
+
                     .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.35f).target(0f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, LEFT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, LEFT_HAND_ITEM_ROT_Z, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
         }
         else
         {
             localTimeLine = localTimeLine
                     .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_X, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
-                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.35f).target(0f).ease(TweenEquations.Sine_InOut))
+                    .push(tweenEngine.to(modelDummy, RIGHT_ARM_ACTION_ROT_Y, 0.15f).target(0f).ease(TweenEquations.Sine_InOut))
                     .push(tweenEngine.to(modelDummy, RIGHT_HAND_ITEM_ROT_Z, 0.01f).target(0f).ease(TweenEquations.Cubic_Out));
         }
         localTimeLine = localTimeLine
@@ -135,5 +149,10 @@ public class XylophoneTimeLines
     private static float rightHandNote(int normalizedNote)
     {
         return (normalizedNote >= 13 && normalizedNote <= 24) ? 1f : 0f;
+    }
+
+    private static float lookNotePosition(int normalizedNote)
+    {
+        return -(normalizedNote * 0.8f) / 24f + 0.4f;
     }
 }
