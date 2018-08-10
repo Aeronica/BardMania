@@ -49,7 +49,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private String TITLE = I18n.format("gui.bard_mania.gui_play_midi.title");
     private Instrument inst;
     private Sequencer sequencer = null;
+
     private boolean isPlaying = false;
+    private double tuning = 0d;
 
     private GuiButton play;
     private GuiButton stop;
@@ -70,7 +72,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         GuiButton choose =  new GuiButton(3, x, y += 22, w,20, "Choose File");
         play =              new GuiButton(4, x, y += 22, w,20, "Play");
         stop =              new GuiButton(5, x, y += 22, w,20, "Stop");
-        transpose =         new GuiSlider(6, x, y += 22, w, 20, "semi ", " tones", -12d, 12d, 0, false,true);
+        transpose =         new GuiSlider(6, x, y += 22, w, 20, "semi ", " tones", -12d, 12d, tuning, false,true);
 
         setPlayState(isPlaying);
         buttonList.add(equip);
@@ -211,6 +213,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private void setPlayState(boolean state)
     {
         play.enabled = !(stop.enabled = isPlaying = state);
+        tuning = transpose.getValue();
     }
 
     private void play()
