@@ -19,7 +19,6 @@ package net.aeronica.mods.bard_mania.client.gui;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
-import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
@@ -45,6 +44,9 @@ import javax.sound.midi.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receiver
 {
@@ -55,15 +57,21 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private File file = null;
     private boolean isPlaying = false;
     private double tuning = 0d;
+    private Set<Integer> channels = new HashSet<>(Arrays.asList(new Integer[]{0, 1, 2, 3}));
+    private boolean allChannels = false;
+    private boolean sendNoteOff = false;
 
+    private ChannelSelectors selectors;
     private GuiButton equip;
     private GuiButton remove;
     private GuiButton choose;
     private GuiButton play;
     private GuiButton stop;
     private GuiSlider transpose;
+    private GuiButton allOn;
+    private GuiButton allOff;
 
-    GuiPlayMidi() {/* NOP */}
+    GuiPlayMidi() { /* NOP */ }
 
     @Override
     public void initGui()
@@ -73,20 +81,27 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int y = 0;
         int x = 10;
         int w = 100;
-        equip =     new GuiButton(1, x, y += 20, w,20, "Equip");
-        remove =    new GuiButton(2, x, y += 20, w,20, "Remove");
-        choose =    new GuiButton(3, x, y += 20, w,20, "Choose File");
-        play =      new GuiButton(4, x, y += 20, w,20, "Play");
-        stop =      new GuiButton(5, x, y += 20, w,20, "Stop");
-        transpose = new GuiSlider(6, x, y += 20, w, 20, "semi ", " tones", -12d, 12d, tuning, false,true);
+        equip =     new GuiButton(21, x, y += 20, w,20, "Equip");
+        remove =    new GuiButton(22, x, y += 20, w,20, "Remove");
+        choose =    new GuiButton(23, x, y += 20, w,20, "Choose File");
+        play =      new GuiButton(24, x, y += 20, w,20, "Play");
+        stop =      new GuiButton(25, x, y += 20, w,20, "Stop");
+        transpose = new GuiSlider(26, x, y += 20, w, 20, "semi ", " tones", -12d, 12d, tuning, false,true);
+        selectors = new ChannelSelectors(0, x, y);
+        allOn =     new GuiButton(27, x, y += 44, w/2,20, "All On");
+        allOff =    new GuiButton(28, x += 50, y, w/2,20, "All Off");
 
         setButtonState(isPlaying);
+        updateChannelSelectors();
+        buttonList.addAll(selectors.getCheckBoxes());
         buttonList.add(equip);
         buttonList.add(remove);
         buttonList.add(choose);
         buttonList.add(play);
         buttonList.add(stop);
         buttonList.add(transpose);
+        buttonList.add(allOn);
+        buttonList.add(allOff);
     }
 
     @Override
@@ -134,24 +149,29 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
+        updateChannelSelectors();
         switch (button.id)
         {
-            case 1:
+            case 21:
                 PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.EQUIP, false));
                 break;
-            case 2:
+            case 22:
                 PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
                 break;
-            case 3:
+            case 23:
                 new MidiChooser(ActionGetFile.INSTANCE);
                 break;
-            case 4:
+            case 24:
                 play();
                 break;
-            case 5:
+            case 25:
                 stop();
                 break;
-            case 10:
+            case 27:
+                selectors.setAll(true);
+                break;
+            case 28:
+                selectors.setAll(false);
                 break;
             default:
         }
@@ -237,6 +257,11 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         tuning = transpose.getValue();
     }
 
+    private void updateChannelSelectors()
+    {
+        channels = selectors.getChannels();
+    }
+
     private void play()
     {
         if (ActionGetFile.INSTANCE.getFile() == null) return;
@@ -311,8 +336,6 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         byte[] message = msg.getMessage();
         int command = msg.getStatus() & 0xF0;
         int channel = msg.getStatus() & 0x0F;
-        boolean allChannels = ModConfig.client.midi_options.allChannels;
-        boolean sendNoteOff = ModConfig.client.midi_options.sendNoteOff;
 
         switch (command)
         {
@@ -325,12 +348,12 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
                 return;
         }
 
-        boolean channelFlag = allChannels || channel == ModConfig.client.midi_options.channel - 1;
+        boolean channelFlag = allChannels ||  channels.contains(channel);
         boolean noteOffFlag = sendNoteOff || message[2] != 0;
 
         if (channelFlag && noteOffFlag)
         {
-            // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
+            // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | selectors & 0x0F), note, volume ]
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 send(message[1], message[2]);
                 ModLogger.debug("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);

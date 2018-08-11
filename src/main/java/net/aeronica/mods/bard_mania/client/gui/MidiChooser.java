@@ -19,6 +19,12 @@ package net.aeronica.mods.bard_mania.client.gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * <p>Based on the FileSelector class from MineTunes by Vazkii</p>
+ * <p>https://github.com/Vazkii/MineTunes</p>
+ * <p><a ref="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_GB">
+ * Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0)</a></p>
+ */
 public class MidiChooser extends JFrame
 {
     MidiChooser(ISelectorAction action)
