@@ -42,6 +42,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiSlider;
 
 import javax.sound.midi.*;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receiver
@@ -50,7 +52,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private String TITLE = I18n.format("gui.bard_mania.gui_play_midi.title");
     private Instrument inst;
     private Sequencer sequencer = null;
-
+    private File file = null;
     private boolean isPlaying = false;
     private double tuning = 0d;
 
@@ -109,6 +111,12 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int posX = (this.width - getFontRenderer().getStringWidth(TITLE)) / 2;
         int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
+        if (ActionMakeInputStream.INSTANCE.getFile() != null)
+        {
+            String name = ActionMakeInputStream.INSTANCE.getFileName();
+            posX = (this.width - getFontRenderer().getStringWidth(name)) / 2;
+            getFontRenderer().drawStringWithShadow(name,  posX,height - 50, 0xD3D3D3);
+        }
         if (!isShiftKeyDown())super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -130,13 +138,12 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         {
             case 1:
                 PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.EQUIP, false));
-                //BardActionHelper.setInstrumentEquipped(mc.player);
                 break;
             case 2:
                 PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
-                //BardActionHelper.setInstrumentRemoved(mc.player);
                 break;
             case 3:
+                new MidiChooser(ActionMakeInputStream.INSTANCE);
                 break;
             case 4:
                 play();
@@ -215,6 +222,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
+    /*
+     * MIDI
+     */
     private void setButtonState(boolean state)
     {
         isPlaying = state;
@@ -229,6 +239,8 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
 
     private void play()
     {
+        if (ActionMakeInputStream.INSTANCE.getFile() == null) return;
+
         setButtonState(true);
         boolean midiException = false;
         try
@@ -237,7 +249,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             sequencer.getTransmitter().setReceiver(this);
             sequencer.open();
             sequencer.addMetaEventListener(this);
-            sequencer.setSequence(BardMania.class.getResourceAsStream("/assets/bard_mania/test.mid"));
+            FileInputStream fis = new FileInputStream(ActionMakeInputStream.INSTANCE.getFile());
+            sequencer.setSequence(fis);
+            fis.close();
             sequencer.setTickPosition(0L);
             sequencer.start();
         } catch (Exception e)
