@@ -17,33 +17,16 @@
 package net.aeronica.mods.bard_mania.client.gui;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
-public class ActionMakeInputStream implements ISelectorAction
+public class ActionGetFile implements ISelectorAction
 {
-    public static final ActionMakeInputStream INSTANCE = new ActionMakeInputStream();
-    private FileInputStream fis = null;
+    public static final ActionGetFile INSTANCE = new ActionGetFile();
     private File file;
 
-    private String fileName;
     @Override
-    public void select(File fileIn)
-    {
-        try
-        {
-            file = fileIn;
-            fis = new FileInputStream(fileIn);
-            fileName = fileIn.getName();
-        } catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
+    public void select(File fileIn) { file = fileIn; }
 
-    public FileInputStream getFileInputStream() { return fis; }
-
-    public String getFileName() { return fileName; }
+    public String getFileName() { return file.getName(); }
 
     public File getFile() { return file; }
 }

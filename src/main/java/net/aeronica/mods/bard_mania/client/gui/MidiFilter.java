@@ -41,7 +41,7 @@ public class MidiFilter extends FileFilter
     @Override
     public String getDescription()
     {
-        return "Just MIDI";
+        return "*.midi, *.mid";
     }
 
     private static String getExtension(File f)

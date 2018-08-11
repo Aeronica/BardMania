@@ -111,9 +111,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int posX = (this.width - getFontRenderer().getStringWidth(TITLE)) / 2;
         int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
-        if (ActionMakeInputStream.INSTANCE.getFile() != null)
+        if (ActionGetFile.INSTANCE.getFile() != null)
         {
-            String name = ActionMakeInputStream.INSTANCE.getFileName();
+            String name = ActionGetFile.INSTANCE.getFileName();
             posX = (this.width - getFontRenderer().getStringWidth(name)) / 2;
             getFontRenderer().drawStringWithShadow(name,  posX,height - 50, 0xD3D3D3);
         }
@@ -143,7 +143,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
                 PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
                 break;
             case 3:
-                new MidiChooser(ActionMakeInputStream.INSTANCE);
+                new MidiChooser(ActionGetFile.INSTANCE);
                 break;
             case 4:
                 play();
@@ -239,7 +239,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
 
     private void play()
     {
-        if (ActionMakeInputStream.INSTANCE.getFile() == null) return;
+        if (ActionGetFile.INSTANCE.getFile() == null) return;
 
         setButtonState(true);
         boolean midiException = false;
@@ -249,7 +249,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             sequencer.getTransmitter().setReceiver(this);
             sequencer.open();
             sequencer.addMetaEventListener(this);
-            FileInputStream fis = new FileInputStream(ActionMakeInputStream.INSTANCE.getFile());
+            FileInputStream fis = new FileInputStream(ActionGetFile.INSTANCE.getFile());
             sequencer.setSequence(fis);
             fis.close();
             sequencer.setTickPosition(0L);

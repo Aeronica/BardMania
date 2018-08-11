@@ -21,18 +21,12 @@ import java.awt.*;
 
 public class MidiChooser extends JFrame
 {
-    private static final int WIDTH = 200;
-    private static final int HEIGHT = 75;
-
-    private JFileChooser chooser;
-    JPanel panel = new JPanel();
-
     MidiChooser(ISelectorAction action)
     {
         super("");
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        chooser = new JFileChooser()
+        JFileChooser chooser = new JFileChooser()
         {
             @Override
             protected JDialog createDialog(Component parent) throws HeadlessException
