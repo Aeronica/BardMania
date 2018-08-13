@@ -33,15 +33,17 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
     private int entityId;
     private byte note;
     private byte volume;
+    private long timeStamp;
 
     public ActiveReceiverMessage() {/* NOP */}
 
-    public ActiveReceiverMessage(BlockPos pos, int entityId, byte note, byte volume)
+    public ActiveReceiverMessage(BlockPos pos, int entityId, byte note, byte volume, long timeStamp)
     {
         this.blockPos = pos;
         this.entityId = entityId;
         this.note = note;
         this.volume = volume;
+        this.timeStamp = timeStamp;
     }
 
     @Override
@@ -51,6 +53,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
         entityId = buffer.readInt();
         note = buffer.readByte();
         volume = buffer.readByte();
+        timeStamp = buffer.readLong();
     }
 
     @Override
@@ -60,6 +63,7 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
         buffer.writeInt(entityId);
         buffer.writeByte(note);
         buffer.writeByte(volume);
+        buffer.writeLong(timeStamp);
     }
 
     @Override
@@ -74,11 +78,11 @@ public class ActiveReceiverMessage extends AbstractServerMessage<ActiveReceiverM
             if (state.getBlock() instanceof IActiveNoteReceiver)
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) state.getBlock();
-                instrument.noteReceiver(world, blockPos, entityId, note, volume);
+                instrument.noteReceiver(world, blockPos, entityId, note, volume, timeStamp);
             } else if ((entityId == player.getEntityId()) && (personPlaying != null) && !personPlaying.getHeldItemMainhand().isEmpty() && (personPlaying.getHeldItemMainhand().getItem() instanceof IActiveNoteReceiver))
             {
                 IActiveNoteReceiver instrument = (IActiveNoteReceiver) personPlaying.getHeldItemMainhand().getItem();
-                instrument.noteReceiver(world, blockPos, entityId, note, volume);
+                instrument.noteReceiver(world, blockPos, entityId, note, volume, timeStamp);
             }
         }
     }

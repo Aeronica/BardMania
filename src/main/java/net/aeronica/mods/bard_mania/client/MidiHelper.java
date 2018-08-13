@@ -130,19 +130,19 @@ public enum MidiHelper implements Receiver
         {
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
             Minecraft.getMinecraft().addScheduledTask(() -> {
-                send(message[1], message[2]);
-                ModLogger.debug("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);
+                send(message[1], message[2], timeStamp);
+                ModLogger.info("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);
             });
 
         }
     }
 
-    public static void send(byte note, byte volume)
+    public static void send(byte note, byte volume, long timeStamp)
     {
         EntityPlayer player = BardMania.proxy.getClientPlayer();
         if ((player != null) && KeyHelper.isMidiNoteInRange(note))
         {
-            ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), note, volume);
+            ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), note, volume, timeStamp);
             PacketDispatcher.sendToServer(packet);
             BardMania.proxy.playSound(player, note, volume);
         }

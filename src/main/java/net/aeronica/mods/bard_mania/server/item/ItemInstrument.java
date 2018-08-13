@@ -142,14 +142,14 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
     }
 
     @Override
-    public void noteReceiver(World worldIn, BlockPos posIn, int entityID, byte noteIn, byte volumeIn)
+    public void noteReceiver(World worldIn, BlockPos posIn, int entityID, byte noteIn, byte volumeIn, long timeStamp)
     {
         if (!worldIn.isRemote && volumeIn != 0)
         {
             EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
             if (player != null)
             {
-                PacketDispatcher.sendToAllAround(new PlaySoundMessage(entityID, instrument.sounds.timbre, noteIn, volumeIn), player, 64f);
+                PacketDispatcher.sendToAllAround(new PlaySoundMessage(entityID, instrument.sounds.timbre, noteIn, volumeIn, timeStamp), player, 64f);
             }
         }
     }

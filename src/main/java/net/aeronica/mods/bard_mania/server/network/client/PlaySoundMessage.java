@@ -30,15 +30,17 @@ public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<Play
     private String soundName;
     private byte noteIn;
     private byte volumeIn;
+    private long timeStamp;
 
     public PlaySoundMessage() {/* NOP */}
 
-    public PlaySoundMessage(int entityId, String soundName, byte noteIn, byte volumeIn)
+    public PlaySoundMessage(int entityId, String soundName, byte noteIn, byte volumeIn, long timeStamp)
     {
         this.entityId = entityId;
         this.soundName = soundName;
         this.noteIn = noteIn;
         this.volumeIn = volumeIn;
+        this.timeStamp = timeStamp;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<Play
         soundName = buffer.readString(100);
         noteIn = buffer.readByte();
         volumeIn = buffer.readByte();
+        timeStamp = buffer.readLong();
     }
 
     @Override
@@ -57,6 +60,7 @@ public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<Play
         buffer.writeString(soundName);
         buffer.writeByte(noteIn);
         buffer.writeByte(volumeIn);
+        buffer.writeLong(timeStamp);
     }
 
     @Override

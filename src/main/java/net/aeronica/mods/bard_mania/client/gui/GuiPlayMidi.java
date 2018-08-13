@@ -19,12 +19,12 @@ package net.aeronica.mods.bard_mania.client.gui;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
+import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
-import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -36,7 +36,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiSlider;
 
@@ -262,6 +261,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         channels = selectors.getChannels();
     }
 
+    public long getSystemTime() { return Math.abs(System.nanoTime()) / 1000L; }
+
+    long startTime = 0;
     private void play()
     {
         if (ActionGetFile.INSTANCE.getFile() == null) return;
@@ -271,6 +273,8 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         try
         {
             sequencer = MidiSystem.getSequencer(false);
+            sequencer.setMasterSyncMode(Sequencer.SyncMode.INTERNAL_CLOCK);
+            sequencer.setSlaveSyncMode(Sequencer.SyncMode.MIDI_TIME_CODE);
             sequencer.getTransmitter().setReceiver(this);
             sequencer.open();
             sequencer.addMetaEventListener(this);
@@ -278,6 +282,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             sequencer.setSequence(fis);
             fis.close();
             sequencer.setTickPosition(0L);
+            startTime = getSystemTime() - 1000000L;
             sequencer.start();
         } catch (Exception e)
         {
@@ -336,6 +341,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         byte[] message = msg.getMessage();
         int command = msg.getStatus() & 0xF0;
         int channel = msg.getStatus() & 0x0F;
+        long ts = getSystemTime() - startTime;
 
         switch (command)
         {
@@ -355,28 +361,21 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         {
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | selectors & 0x0F), note, volume ]
             Minecraft.getMinecraft().addScheduledTask(() -> {
-                send(message[1], message[2]);
-                ModLogger.debug("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);
+                send(message[1], message[2], ts);
+                ModLogger.info("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], ts);
             });
 
-        }
-    }
-
-    public void send(byte note, byte volume)
-    {
-        EntityPlayer player = BardMania.proxy.getClientPlayer();
-        if ((player != null))
-        {
-            byte noteWrapped = wrapMIDI(note);
-            ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), noteWrapped, volume);
-            PacketDispatcher.sendToServer(packet);
-            BardMania.proxy.playSound(player, noteWrapped, volume);
         }
     }
 
     @Override
     public void close() { /* NOP */ }
 
+    private void send(byte note, byte volume, long timeStamp) { MidiHelper.send(wrapMIDI(note), volume, timeStamp); }
+
+    /*
+     * Wrap midi notes to the 24 available Minecraft notes and allow transposing too
+     */
     private byte wrapMIDI(byte midiNoteIn)
     {
         byte wrappedNote = (byte) (midiNoteIn + (byte) transpose.getValue());

@@ -21,5 +21,5 @@ import net.minecraft.world.World;
 
 public interface IActiveNoteReceiver
 {
-    void noteReceiver(World worldIn, BlockPos posIn, int entityId, byte noteIn, byte volumeIn);
+    void noteReceiver(World worldIn, BlockPos posIn, int entityId, byte noteIn, byte volumeIn, long timeStamp);
 }
