@@ -22,7 +22,6 @@ import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.caps.DimChangeMessage;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -32,9 +31,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
-import java.lang.reflect.Field;
 
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class ServerEvents
@@ -72,8 +68,6 @@ public class ServerEvents
 
         BardActionHelper.setInstrumentRemovedByForce(event.player);
     }
-
-    public static Field inPortal = ReflectionHelper.findField(Entity.class, "inPortal", "field_71087_bX");
 
     @SubscribeEvent
     public static void onEvent(PlayerEvent.PlayerChangedDimensionEvent event)

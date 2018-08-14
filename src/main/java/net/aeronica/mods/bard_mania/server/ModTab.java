@@ -33,14 +33,14 @@ public class ModTab extends CreativeTabs
 
     @Override
     @SideOnly(Side.CLIENT)
-    public String getTranslatedTabLabel()
+    public String getTranslationKey()
     {
         return Reference.MOD_NAME;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getTabIconItem()
+    public ItemStack createIcon()
     {
         return new ItemStack(Item.getByNameOrId("bard_mania:lyre"));
     }

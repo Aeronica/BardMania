@@ -53,7 +53,7 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
     {
         this.instrument = instrument;
         this.setRegistryName(instrument.id.toLowerCase());
-        this.setUnlocalizedName(getRegistryName().toString());
+        this.setTranslationKey(getRegistryName().toString());
         this.setCreativeTab(BardMania.MOD_TAB);
         this.setMaxStackSize(1);
         this.setHasSubtypes(false);
