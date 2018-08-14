@@ -130,7 +130,7 @@ public enum MidiHelper implements Receiver
         {
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | channel & 0x0F), note, volume ]
             Minecraft.getMinecraft().addScheduledTask(() -> {
-                send(message[1], message[2], timeStamp);
+                send(message[1], message[2], 5);
                 ModLogger.info("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], timeStamp);
             });
 

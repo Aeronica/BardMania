@@ -261,9 +261,11 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         channels = selectors.getChannels();
     }
 
-    public long getSystemTime() { return Math.abs(System.nanoTime()) / 1000L; }
+    public long getSystemTime() { return System.nanoTime() / 1000L; }
 
     long startTime = 0;
+    long prevTime = 0;
+
     private void play()
     {
         if (ActionGetFile.INSTANCE.getFile() == null) return;
@@ -282,7 +284,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             sequencer.setSequence(fis);
             fis.close();
             sequencer.setTickPosition(0L);
-            startTime = getSystemTime() - 1000000L;
+            prevTime = startTime = getSystemTime();
             sequencer.start();
         } catch (Exception e)
         {
@@ -341,7 +343,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         byte[] message = msg.getMessage();
         int command = msg.getStatus() & 0xF0;
         int channel = msg.getStatus() & 0x0F;
-        long ts = getSystemTime() - startTime;
+
 
         switch (command)
         {
@@ -359,6 +361,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
 
         if (channelFlag && noteOffFlag)
         {
+            startTime = getSystemTime();
+            long ts = startTime - prevTime;
+            prevTime = startTime;
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | selectors & 0x0F), note, volume ]
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 send(message[1], message[2], ts);

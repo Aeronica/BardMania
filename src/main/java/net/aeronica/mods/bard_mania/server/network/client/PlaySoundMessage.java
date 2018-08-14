@@ -68,6 +68,7 @@ public class PlaySoundMessage extends AbstractMessage.AbstractClientMessage<Play
     {
         if(side.isClient())
         {
+            //MidiNoteReTimer.queueNote(player, entityId, soundName, noteIn, volumeIn, timeStamp);
             BardMania.proxy.playSound(player, entityId, soundName, noteIn, volumeIn);
         }
     }

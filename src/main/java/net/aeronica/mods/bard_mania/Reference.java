@@ -33,6 +33,7 @@ public class Reference {
                                             + "required-after:obfuscate@[0.2.4,);";
     public static final String PROXY_CLIENT = "net.aeronica.mods.bard_mania.client.ClientProxy";
     public static final String PROXY_SERVER = "net.aeronica.mods.bard_mania.server.ServerProxy";
+    public static final Boolean DEBUG = true;
 
     @CapabilityInject(IBardAction.class)
     public static final Capability<IBardAction> BARD_ACTION_CAP = Util.nonNullInjected();

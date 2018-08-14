@@ -42,7 +42,6 @@ public class GuiKeyboard extends GuiScreen
     private static int[] SHARPES = {1, 3, -1, 6, 8, 10};
     private static int[] NATURAL = {0, 2, 4, 5, 7, 9, 11, 12};
     private String TITLE = I18n.format("gui.bard_mania.gui_keyboard.title");
-    long startTime = getSystemTime() - 1000000L;
 
     public GuiKeyboard()
     {
@@ -130,13 +129,10 @@ public class GuiKeyboard extends GuiScreen
 
     private void sendNote(int note)
     {
-        long timeStamp = getSystemTime() - startTime;
-        MidiHelper.send((byte) note, (byte) 64, timeStamp);
+        MidiHelper.send((byte) note, (byte) 64, 5);
     }
 
     private FontRenderer getFontRenderer() {return mc.fontRenderer;}
-
-    private long getSystemTime() { return Math.abs(System.nanoTime()) / 1000L; }
 
     private void makeGuiKeys(int xIn, int yIn, int[] keyType, boolean raiseOctave)
     {
