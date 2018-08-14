@@ -17,11 +17,13 @@
 package net.aeronica.mods.bard_mania.client.util;
 
 import net.aeronica.mods.bard_mania.server.ModLogger;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.init.SoundEvents;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.lwjgl.opengl.Display;
 
 import static net.aeronica.mods.bard_mania.Reference.DEBUG;
 
@@ -33,12 +35,22 @@ public class DevUtil
      * silence the damn button clicks when I want to make demo videos
      */
     @SubscribeEvent
-    public static void PlaySoundEvent(PlaySoundEvent event)
+    public static void onEvent(PlaySoundEvent event)
     {
         if (DEBUG  && event.getSound().getSoundLocation().equals(SoundEvents.UI_BUTTON_CLICK.getSoundName()))
         {
             ModLogger.info("*** BUTTON CLICK ***");
             event.setResultSound(null);
         }
+    }
+
+    /*
+     * OBS likes unique window titles
+     */
+    @SubscribeEvent
+    public static void onEvent(net.minecraftforge.event.entity.player.PlayerEvent event)
+    {
+        if (DEBUG && (event.getEntityLiving() instanceof EntityPlayerSP))
+            Display.setTitle(String.format("Minecraft 1.12.2 %s", event.getEntityPlayer().getName()));
     }
 }
