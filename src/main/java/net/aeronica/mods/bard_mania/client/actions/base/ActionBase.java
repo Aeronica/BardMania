@@ -31,6 +31,7 @@ public abstract class ActionBase
     protected Instrument instrument;
     protected String instrumentId;
     protected int normalizedNote;
+    private int timeToLive = 240;
 
     protected TweenEngine tweenEngine = TweenEngine.create()
             .unsafe()
@@ -60,7 +61,11 @@ public abstract class ActionBase
 
     protected abstract void start();
 
-    public void update(float deltaTime) {tweenEngine.update(deltaTime);}
+    public void update(float deltaTime)
+    {
+        tweenEngine.update(deltaTime);
+        if (timeToLive-- < 0) isDone = true;
+    }
 
     public ModelDummy getModelDummy() {return modelDummy;}
 
