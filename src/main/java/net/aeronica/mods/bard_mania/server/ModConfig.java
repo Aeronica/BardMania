@@ -36,8 +36,16 @@ public class ModConfig
     public static class Client
     {
         @Config.LangKey("config.bard_mania.input_mode")
-        @Config.Comment("Input Mode: Use MIDI or PC Keyboard. Defaults to PC Keyboard")
+        @Config.Comment("Input Mode: Use MIDI or PC Keyboard. Defaults to PC Keyboard.")
         public INPUT_MODE input_mode = INPUT_MODE.KEYBOARD;
+
+        @Config.LangKey("config.bard_mania.player_name_in_window_title")
+        @Config.Comment("Player name in window title. Updates on logon and/or changing dimension.")
+        public PLAYER_NAME_IN_WINDOW_TITLE player_name_in_window_title = PLAYER_NAME_IN_WINDOW_TITLE.DISABLED;
+
+        @Config.LangKey("config.bard_mania.sound_gui_button")
+        @Config.Comment("Gui Button Sound")
+        public SOUND_GUI_BUTTON sound_gui_button = SOUND_GUI_BUTTON.ENABLED;
 
         public enum INPUT_MODE
         {
@@ -80,6 +88,34 @@ public class ModConfig
             @Config.RangeInt(min = 1, max = 16)
             @Config.Comment("MIDI Channel [1-16]")
             public int channel;
+        }
+
+        public enum PLAYER_NAME_IN_WINDOW_TITLE
+        {
+            @Config.LangKey("config.bard_mania.player_name_in_title.disabled")
+            DISABLED("config.bard_mania.player_name_in_title.disabled"),
+            @Config.LangKey("config.bard_mania.player_name_in_title.enabled")
+            ENABLED("config.bard_mania.player_name_in_title.enabled");
+
+            private String translateKey;
+
+            PLAYER_NAME_IN_WINDOW_TITLE(String translateKeyIn) {this.translateKey = translateKeyIn;}
+
+            public String toString() {return this.translateKey;}
+        }
+
+        public enum SOUND_GUI_BUTTON
+        {
+            @Config.LangKey("config.bard_mania.sound_gui_button.disabled")
+            DISABLED("config.bard_mania.sound_gui_button.disabled"),
+            @Config.LangKey("config.bard_mania.sound_gui_button.enabled")
+            ENABLED("config.bard_mania.sound_gui_button.enabled");
+
+            private String translateKey;
+
+            SOUND_GUI_BUTTON(String translateKeyIn) {this.translateKey = translateKeyIn;}
+
+            public String toString() {return this.translateKey;}
         }
     }
 
