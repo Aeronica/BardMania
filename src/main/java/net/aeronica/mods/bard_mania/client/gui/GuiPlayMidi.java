@@ -102,16 +102,6 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         buttonList.add(transpose);
         buttonList.add(allOn);
         buttonList.add(allOff);
-        System.out.print("-------------------------\n");
-        System.out.print("isActive:   " + org.lwjgl.opengl.Display.isActive() + "\n");
-        System.out.print("wasResize:  " + org.lwjgl.opengl.Display.wasResized() + "\n");
-        System.out.print("isDirty:    " + org.lwjgl.opengl.Display.isDirty() + "\n");
-        System.out.print("height:     " + org.lwjgl.opengl.Display.getHeight() + "\n");
-        System.out.print("width:      " + org.lwjgl.opengl.Display.getWidth() + "\n");
-        System.out.print("X:          " + org.lwjgl.opengl.Display.getX() + "\n");
-        System.out.print("Y:          " + org.lwjgl.opengl.Display.getY() + "\n");
-
-        if ((org.lwjgl.opengl.Display.isActive() && org.lwjgl.opengl.Display.wasResized() && !org.lwjgl.opengl.Display.isDirty()) && sequencer != null && sequencer.isOpen() && isPlaying) sequencer.start();
     }
 
     @Override
@@ -137,6 +127,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int posX = (this.width - getFontRenderer().getStringWidth(TITLE)) / 2;
         int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
+        getFontRenderer().drawStringWithShadow("Tween Count: " + BardActionHelper.getModelDummy(mc.player).getTweenCount(), 10 ,posY, 0xD3D3D3);
         if (ActionGetFile.INSTANCE.getFile() != null)
         {
             String name = ActionGetFile.INSTANCE.getFileName();
@@ -196,26 +187,13 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     }
 
     @Override
-    public void setWorldAndResolution(Minecraft mc, int width, int height)
-    {
-        super.setWorldAndResolution(mc, width, height);
-    }
-
-    @Override
     public boolean doesGuiPauseGame() {return false;}
 
     @Override
     public void onResize(Minecraft mcIn, int w, int h)
     {
-        if (sequencer != null && sequencer.isOpen() && sequencer.isRunning() && isPlaying) sequencer.stop();
         setButtonState(isPlaying);
         super.onResize(mcIn, w, h);
-    }
-
-    @Override
-    public void setGuiSize(int w, int h)
-    {
-        super.setGuiSize(w, h);
     }
 
     private FontRenderer getFontRenderer() {return mc.fontRenderer;}
