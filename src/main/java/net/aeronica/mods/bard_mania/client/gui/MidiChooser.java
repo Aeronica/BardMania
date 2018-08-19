@@ -18,6 +18,8 @@ package net.aeronica.mods.bard_mania.client.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.prefs.Preferences;
 
 /**
  * <p>Based on the FileSelector class from MineTunes by Vazkii</p>
@@ -27,6 +29,8 @@ import java.awt.*;
  */
 public class MidiChooser extends JFrame
 {
+    private static Preferences preferences = Preferences.userNodeForPackage(MidiChooser.class);
+
     MidiChooser(ISelectorAction action)
     {
         super("");
@@ -46,14 +50,30 @@ public class MidiChooser extends JFrame
 
         chooser.setAcceptAllFileFilterUsed(false);
         chooser.addChoosableFileFilter(new MidiFilter());
+        chooser.setCurrentDirectory(loadPreferences(chooser));
 
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         setAlwaysOnTop(true);
 
+        // set Details view
+        Action details = chooser.getActionMap().get("viewTypeDetails");
+        details.actionPerformed(null);
+
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
+            savePreferences(chooser);
             action.select(chooser.getSelectedFile());
             dispose();
         }
+    }
+
+    private void savePreferences(JFileChooser chooser)
+    {
+        preferences.put("path", chooser.getSelectedFile().getParent());
+    }
+
+    private File loadPreferences(JFileChooser chooser)
+    {
+        return new File(preferences.get("path", chooser.getCurrentDirectory().getParent()));
     }
 }
