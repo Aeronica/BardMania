@@ -21,9 +21,11 @@ import net.minecraft.item.ItemStack;
 @SuppressWarnings("unused")
 public class ModelDummy
 {
+    // Timer to keep entities dancing between notes.
     private static final int PLAY_TICKS = 15; // 3/4 second
-    private int tweenCount = 0;
     private int playTimer = 0;
+    // Current active tween count
+    private int tweenCount = 0;
     private ItemStack currentInstrument = ItemStack.EMPTY;
 
     public void ModelDummy() {/* NOP */}
@@ -58,18 +60,33 @@ public class ModelDummy
         currentInstrument = ItemStack.EMPTY;
     }
 
+    /**
+     * Adds and active tween
+     */
     public void tweenStart() { tweenCount++; }
 
+    /**
+     * Removes an expired tween
+     */
     public void tweenStop() { if (tweenCount > 0) tweenCount--; }
 
     public int getTweenCount() { return tweenCount; }
 
     public boolean hasTween() { return tweenCount > 0; }
 
+    /**
+     * Start / Continue Dancing timer
+     */
     public void resetPlayTimer() { playTimer = PLAY_TICKS; }
 
+    /**
+     * Decrement the Dancing timer
+     */
     public void decrementPlayTimer() { if (playTimer > 0) playTimer--;  }
 
+    /** canDance, isPlaying
+     * @return true if playTimer > 0
+     */
     public boolean hasPlayTicks() { return playTimer > 0; }
 
     public void setInstrumentStack(ItemStack itemStack) { currentInstrument = itemStack; }
