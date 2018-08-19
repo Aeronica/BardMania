@@ -82,6 +82,18 @@ public class ActionManager
     {
         if (mc.world != null)
             actions.stream().filter(ActionBase::isDone).forEach(action -> actions.remove(action));
+
+        if (cleanupTicks++ % 120 == 0)
+        {
+            System.out.print("-------------------------\n");
+            System.out.print("isActive:   " + org.lwjgl.opengl.Display.isActive() + "\n");
+            System.out.print("wasResize:  " + org.lwjgl.opengl.Display.wasResized() + "\n");
+            System.out.print("isDirty:    " + org.lwjgl.opengl.Display.isDirty() + "\n");
+            System.out.print("height:     " + org.lwjgl.opengl.Display.getHeight() + "\n");
+            System.out.print("width:      " + org.lwjgl.opengl.Display.getWidth() + "\n");
+            System.out.print("X:          " + org.lwjgl.opengl.Display.getX() + "\n");
+            System.out.print("Y:          " + org.lwjgl.opengl.Display.getY() + "\n");
+        }
     }
 
     @SubscribeEvent
