@@ -19,12 +19,12 @@ package net.aeronica.mods.bard_mania.client.gui;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
-import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.bi.PoseActionMessage;
+import net.aeronica.mods.bard_mania.server.network.server.ActiveReceiverMessage;
 import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -36,6 +36,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiSlider;
 
@@ -101,12 +102,23 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         buttonList.add(transpose);
         buttonList.add(allOn);
         buttonList.add(allOff);
+        System.out.print("-------------------------\n");
+        System.out.print("isActive:   " + org.lwjgl.opengl.Display.isActive() + "\n");
+        System.out.print("wasResize:  " + org.lwjgl.opengl.Display.wasResized() + "\n");
+        System.out.print("isDirty:    " + org.lwjgl.opengl.Display.isDirty() + "\n");
+        System.out.print("height:     " + org.lwjgl.opengl.Display.getHeight() + "\n");
+        System.out.print("width:      " + org.lwjgl.opengl.Display.getWidth() + "\n");
+        System.out.print("X:          " + org.lwjgl.opengl.Display.getX() + "\n");
+        System.out.print("Y:          " + org.lwjgl.opengl.Display.getY() + "\n");
+
+        if ((org.lwjgl.opengl.Display.isActive() && org.lwjgl.opengl.Display.wasResized() && !org.lwjgl.opengl.Display.isDirty()) && sequencer != null && sequencer.isOpen() && isPlaying) sequencer.start();
     }
 
     @Override
     public void onGuiClosed()
     {
         stop();
+        PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
         super.onGuiClosed();
     }
 
@@ -195,8 +207,15 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     @Override
     public void onResize(Minecraft mcIn, int w, int h)
     {
+        if (sequencer != null && sequencer.isOpen() && sequencer.isRunning() && isPlaying) sequencer.stop();
         setButtonState(isPlaying);
         super.onResize(mcIn, w, h);
+    }
+
+    @Override
+    public void setGuiSize(int w, int h)
+    {
+        super.setGuiSize(w, h);
     }
 
     private FontRenderer getFontRenderer() {return mc.fontRenderer;}
@@ -367,7 +386,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
             // NOTE_ON | NOTE_OFF MIDI message [ (message & 0xF0 | selectors & 0x0F), note, volume ]
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 send(message[1], message[2], ts);
-                ModLogger.info("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], ts);
+                //ModLogger.info("  cmd: %02x ch: %02x, note: %02x, vol: %02x, ts: %d", command, channel, message[1], message[2], ts);
             });
 
         }
@@ -376,12 +395,26 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     @Override
     public void close() { /* NOP */ }
 
-    private void send(byte note, byte volume, long timeStamp) { MidiHelper.send(wrapMIDI(note), volume, timeStamp); }
+    //private void send(byte note, byte volume, long timeStamp) { MidiHelper.send(midiWrapTranspose(note), volume, timeStamp); }
 
+    public void send(byte noteIn, byte volume, long timeStamp)
+    {
+        byte note = midiWrapTranspose(noteIn);
+        EntityPlayer player = BardMania.proxy.getClientPlayer();
+        if ((player != null) && KeyHelper.isMidiNoteInRange(note))
+        {
+            if (BardMania.proxy.getMinecraft().isIntegratedServerRunning())
+            {
+                ActiveReceiverMessage packet = new ActiveReceiverMessage(player.getPosition(), player.getEntityId(), note, volume, timeStamp);
+                PacketDispatcher.sendToServer(packet);
+            }
+            BardMania.proxy.playSound(player, note, volume);
+        }
+    }
     /*
      * Wrap midi notes to the 24 available Minecraft notes and allow transposing too
      */
-    private byte wrapMIDI(byte midiNoteIn)
+    private byte midiWrapTranspose(byte midiNoteIn)
     {
         byte wrappedNote = (byte) (midiNoteIn + (byte) transpose.getValue());
         while (wrappedNote < KeyHelper.MIDI_NOTE_LOW || wrappedNote > KeyHelper.MIDI_NOTE_HIGH)
