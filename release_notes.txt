@@ -1,3 +1,39 @@
+2018-08-19 bard-mania_1.12.2-0.5.0-alpha
+Additions:
+    /playmidi command - opens a gui where you can select a midi file and play it.
+    The player must be holding an instrument in the main hand.
+    Only works single player or as the host of an open to LAN connection.
+    Channels can be enabled/disabled individually. e.g. disable percussion track channel 10 or 9.
+    MIDI note wrap to fit within the 24 note range available to the instruments.
+    A transpose slider allows adjusting notes -12 to +12 semitones. I allows find the best setting
+    needed to bring out the melody/bass. You can make many MIDI files sound pretty darn good.
+    This command was added for producing a teaser video, but I thought some players might
+    enjoy using it. https://www.reddit.com/r/feedthebeast/comments/97z3nh/bard_mania_teaser/
+
+    Add configuration options to allow disabling the gui button sound.
+    I use this when making videos to eliminate those annoying clicks.
+
+    Add a configuration option to append the client players IGN to
+    the Minecraft window title. This is useful when using
+    "Open Broadcaster Software" (OBS) and running multiple Minecraft
+    clients using different player names in the dev environment or normal use.
+
+Fixes:
+    Stop running stuff from the ***Constructor***
+
+    Tween sequences were not completing and leaving instances of
+    themselves in the action update list and the tween count
+    per ModelDummy was not returning to zero.
+
+    This is related to:
+    -- "Don't pass 'this' out of a constructor"
+    -- http://www.javapractices.com/topic/TopicAction.do?Id=252
+
+    Moving the start() out of the constructor solved the issue.
+    I'll have to see if I can remove the Time-To-Live (TTL) since it
+    appears the tween complete event is signaling isDone reliably now.
+
+----
 2018-08-04 bard-mania_1.12.2-0.4.0-alpha
 Additions:
     Equipped instruments now render in first person view.
