@@ -27,30 +27,34 @@ public abstract class ActionBase
 {
     protected EntityPlayer player;
     protected ModelDummy modelDummy;
-    protected boolean isDone = false;
+    protected boolean isDone;
+    protected boolean isStarted;
     protected Instrument instrument;
     protected String instrumentId;
     protected int normalizedNote;
-    private int timeToLive = 240;
+    private int timeToLive;
 
-    protected TweenEngine tweenEngine = TweenEngine.create()
-            .unsafe()
-            .setWaypointsLimit(10)
-            .setCombinedAttributesLimit(1)
-            .registerAccessor(ModelDummy.class, new ModelAccessor())
-            .build();
+    protected TweenEngine tweenEngine;
 
     public ActionBase(EntityPlayer playerIn, ModelDummy modelDummy, int noteIn)
     {
+        this.tweenEngine = TweenEngine.create()
+                .unsafe()
+                .setWaypointsLimit(20)
+                .setCombinedAttributesLimit(1)
+                .registerAccessor(ModelDummy.class, new ModelAccessor())
+                .build();
 
         this.player = playerIn;
         this.modelDummy = modelDummy;
         this.normalizedNote = normalizeNote(noteIn);
+        isDone = false;
+        isStarted = false;
+        timeToLive = 240;
         if (!player.getHeldItemMainhand().isEmpty() && (player.getHeldItemMainhand().getItem() instanceof ItemInstrument))
         {
             instrument = ((ItemInstrument) player.getHeldItemMainhand().getItem()).getInstrument();
             instrumentId = instrument.id;
-            start();
         }
         else
         {
@@ -61,13 +65,28 @@ public abstract class ActionBase
 
     protected abstract void start();
 
-    public void update(float deltaTime)
+    private void processStart()
     {
-        tweenEngine.update(deltaTime);
-        if (timeToLive-- < 0) isDone = true;
+        if (!isStarted && instrument != null)
+        {
+            start();
+            isStarted = true;
+        }
     }
 
-    public ModelDummy getModelDummy() {return modelDummy;}
+    public void update(float deltaTime)
+    {
+        processStart();
+        testDone();
+        tweenEngine.update(deltaTime);
+    }
 
-    public boolean isDone() {return isDone || player.swingProgress > 0 || player.hurtTime > 0;}
+    private void testDone()
+    {
+        if(0 >= --timeToLive) isDone = false;
+    }
+
+    public ModelDummy getModelDummy() { return modelDummy; }
+
+    public boolean isDone() { return isDone || player.swingProgress > 0 || player.hurtTime > 0; }
 }
