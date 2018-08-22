@@ -24,7 +24,7 @@ import net.aeronica.mods.bard_mania.server.init.ModInstruments;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
-public class BardManiaPlugIn implements IModPlugin
+public class BardManiaJEIPlugin implements IModPlugin
 {
     @Override
     public void register(IModRegistry registry)
