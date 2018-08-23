@@ -1,3 +1,8 @@
+2018-08-23 bard-mania_1.12.2-0.6.0-alpha
+Additions:
+    Initial JEI support: Hide drumstick and mallet items. For visual use only, not ingredients.
+
+----
 2018-08-19 bard-mania_1.12.2-0.5.0-alpha
 Additions:
     /playmidi command - opens a gui where you can select a midi file and play it.
