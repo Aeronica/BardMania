@@ -81,15 +81,15 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int y = 0;
         int x = 10;
         int w = 100;
-        equip =     new GuiButton(21, x, y += 20, w,20, "Equip");
-        remove =    new GuiButton(22, x, y += 20, w,20, "Remove");
-        choose =    new GuiButton(23, x, y += 20, w,20, "Choose File");
-        play =      new GuiButton(24, x, y += 20, w,20, "Play");
-        stop =      new GuiButton(25, x, y += 20, w,20, "Stop");
-        transpose = new GuiSlider(26, x, y += 20, w, 20, "semi ", " tones", -12d, 12d, tuning, false,true);
+        equip =     new GuiButton(21, x, y += 20, w,20, I18n.format("gui.bard_mania.button_equip"));
+        remove =    new GuiButton(22, x, y += 20, w,20, I18n.format("gui.bard_mania.button_remove"));
+        choose =    new GuiButton(23, x, y += 20, w,20, I18n.format("gui.bard_mania.button_choose_file"));
+        play =      new GuiButton(24, x, y += 20, w,20, I18n.format("gui.bard_mania.button_play"));
+        stop =      new GuiButton(25, x, y += 20, w,20, I18n.format("gui.bard_mania.button_stop"));
+        transpose = new GuiSlider(26, x, y += 20, w, 20, I18n.format("gui.bard_mania.slider_semitones") + " ", " \u266b", -12d, 12d, tuning, false,true);
         selectors = new ChannelSelectors(0, x, y);
-        allOn =     new GuiButton(27, x, y += 44, w/2,20, "All On");
-        allOff =    new GuiButton(28, x += 50, y, w/2,20, "All Off");
+        allOn =     new GuiButton(27, x, y += 44, w/2,20, I18n.format("gui.bard_mania.button_all_on"));
+        allOff =    new GuiButton(28, x += 50, y, w/2,20, I18n.format("gui.bard_mania.button_all_off"));
 
         setButtonState(isPlaying);
         updateChannelSelectors();
@@ -127,7 +127,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int posX = (this.width - getFontRenderer().getStringWidth(TITLE)) / 2;
         int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
-        getFontRenderer().drawStringWithShadow("Tween Count: " + BardActionHelper.getModelDummy(mc.player).getTweenCount(), 10 ,posY, 0xD3D3D3);
+        getFontRenderer().drawStringWithShadow(I18n.format("gui.bard_mania.gui_play_midi.label_tween_count") + String.format(": %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), 10 ,posY, 0xD3D3D3);
         if (ActionGetFile.INSTANCE.getFile() != null)
         {
             String name = ActionGetFile.INSTANCE.getFileName();
