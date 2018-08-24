@@ -69,28 +69,28 @@ public class GuiModelSetup extends GuiScreen
         int y = 8;
         int x = 10;
         int w = 120;
-        sliderPlayerRotYaw = new GuiSliderMX(0, (width + 26 * 8 - 100) / 2, 140, w, 20, "Player Yaw", playerYaw, -180f, 180f, 1f);
-        third_person_translateX = new GuiSliderMX(1, x, y += 22, w, 20, "Trans X", inst.display.equipped_third_person.translation[0], -0.5f, 0.5f, 0.01f);
-        third_person_translateY = new GuiSliderMX(2, x, y += 22, w, 20, "Trans Y", inst.display.equipped_third_person.translation[1], -0.5f, 0.5f, 0.01f);
-        third_person_translateZ = new GuiSliderMX(3, x, y += 22, w, 20, "Trans Z", inst.display.equipped_third_person.translation[2], -0.5f, 0.5f, 0.01f);
-        third_person_rotateX = new GuiSliderMX(4, x, y += 22, w, 20, "Rotate X", inst.display.equipped_third_person.rotation[0], -180f, 180f, 1f);
-        third_person_rotateY = new GuiSliderMX(5, x, y += 22, w, 20, "Rotate Y", inst.display.equipped_third_person.rotation[1], -180f, 180f, 1f);
-        third_person_rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, "Rotate Z", inst.display.equipped_third_person.rotation[2], -180f, 180f, 1f);
-        third_person_scale = new GuiSliderMX(7, x, y += 22, w, 20, "Scale", inst.display.equipped_third_person.scale[0], 0f, 1.5f, 0.01f);
+        sliderPlayerRotYaw = new GuiSliderMX(0, (width + 26 * 8 - 100) / 2, 140, w, 20, I18n.format("gui.bard_mania.gui_model_setup.player_yaw"), playerYaw, -180f, 180f, 1f);
+        third_person_translateX = new GuiSliderMX(1, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.translate_X"), inst.display.equipped_third_person.translation[0], -0.5f, 0.5f, 0.01f);
+        third_person_translateY = new GuiSliderMX(2, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.translate_Y"), inst.display.equipped_third_person.translation[1], -0.5f, 0.5f, 0.01f);
+        third_person_translateZ = new GuiSliderMX(3, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.translate_Z"), inst.display.equipped_third_person.translation[2], -0.5f, 0.5f, 0.01f);
+        third_person_rotateX = new GuiSliderMX(4, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_X"), inst.display.equipped_third_person.rotation[0], -180f, 180f, 1f);
+        third_person_rotateY = new GuiSliderMX(5, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_Y"), inst.display.equipped_third_person.rotation[1], -180f, 180f, 1f);
+        third_person_rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_Z"), inst.display.equipped_third_person.rotation[2], -180f, 180f, 1f);
+        third_person_scale = new GuiSliderMX(7, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.scale"), inst.display.equipped_third_person.scale[0], 0f, 1.5f, 0.01f);
         y = 8;
         x = 140;
         w = 120;
         first_person_translateX = new GuiSliderMX(1, x, y += 22, w, 20, "Trans X", inst.display.equipped_first_person.translation[0], -0.5f, 0.5f, 0.01f);
         first_person_translateY = new GuiSliderMX(2, x, y += 22, w, 20, "Trans Y", inst.display.equipped_first_person.translation[1], -0.5f, 0.5f, 0.01f);
         first_person_translateZ = new GuiSliderMX(3, x, y += 22, w, 20, "Trans Z", inst.display.equipped_first_person.translation[2], -0.5f, 0.5f, 0.01f);
-        first_person_rotateX = new GuiSliderMX(4, x, y += 22, w, 20, "Rotate X", inst.display.equipped_first_person.rotation[0], -180f, 180f, 1f);
-        first_person_rotateY = new GuiSliderMX(5, x, y += 22, w, 20, "Rotate Y", inst.display.equipped_first_person.rotation[1], -180f, 180f, 1f);
-        first_person_rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, "Rotate Z", inst.display.equipped_first_person.rotation[2], -180f, 180f, 1f);
-        first_person_scale = new GuiSliderMX(7, x, y += 22, w, 20, "Scale", inst.display.equipped_first_person.scale[0], 0f, 1.5f, 0.01f);
+        first_person_rotateX = new GuiSliderMX(4, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_X"), inst.display.equipped_first_person.rotation[0], -180f, 180f, 1f);
+        first_person_rotateY = new GuiSliderMX(5, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_Y"), inst.display.equipped_first_person.rotation[1], -180f, 180f, 1f);
+        first_person_rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_Z"), inst.display.equipped_first_person.rotation[2], -180f, 180f, 1f);
+        first_person_scale = new GuiSliderMX(7, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.scale"), inst.display.equipped_first_person.scale[0], 0f, 1.5f, 0.01f);
         x = 10;
-        GuiButton equip = new GuiButton(8, x, y += 22, w, 20, "Equip");
-        GuiButton remove = new GuiButton(9, x += 102, y, w, 20, "Remove");
-        GuiButton print = new GuiButton(10, x += 102, y, w, 20, "Print");
+        GuiButton equip = new GuiButton(8, x, y += 22, w, 20, I18n.format("gui.bard_mania.button_equip"));
+        GuiButton remove = new GuiButton(9, x += 102, y, w, 20, I18n.format("gui.bard_mania.button_remove"));
+        GuiButton print = new GuiButton(10, x += 102, y, w, 20, I18n.format("gui.bard_mania.button_print"));
 
         buttonList.add(sliderPlayerRotYaw);
         buttonList.add(third_person_translateX);
@@ -147,8 +147,8 @@ public class GuiModelSetup extends GuiScreen
         int posX = (this.width - getFontRenderer().getStringWidth(TITLE)) / 2;
         int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
-        getFontRenderer().drawStringWithShadow("Equipped Third Person", 10, 20, 0xD3D3D3);
-        getFontRenderer().drawStringWithShadow("Equipped First Person", 140, 20, 0xD3D3D3);
+        getFontRenderer().drawStringWithShadow(I18n.format("gui.bard_mania.gui_model_setup.label_equipped_third_person"), 10, 20, 0xD3D3D3);
+        getFontRenderer().drawStringWithShadow(I18n.format("gui.bard_mania.gui_model_setup.label_equipped_first_person"), 140, 20, 0xD3D3D3);
 
         if (!isShiftKeyDown())super.drawScreen(mouseX, mouseY, partialTicks);
     }
