@@ -80,9 +80,9 @@ public class GuiModelSetup extends GuiScreen
         y = 8;
         x = 140;
         w = 120;
-        first_person_translateX = new GuiSliderMX(1, x, y += 22, w, 20, "Trans X", inst.display.equipped_first_person.translation[0], -0.5f, 0.5f, 0.01f);
-        first_person_translateY = new GuiSliderMX(2, x, y += 22, w, 20, "Trans Y", inst.display.equipped_first_person.translation[1], -0.5f, 0.5f, 0.01f);
-        first_person_translateZ = new GuiSliderMX(3, x, y += 22, w, 20, "Trans Z", inst.display.equipped_first_person.translation[2], -0.5f, 0.5f, 0.01f);
+        first_person_translateX = new GuiSliderMX(1, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.translate_X"), inst.display.equipped_first_person.translation[0], -0.5f, 0.5f, 0.01f);
+        first_person_translateY = new GuiSliderMX(2, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.translate_Y"), inst.display.equipped_first_person.translation[1], -0.5f, 0.5f, 0.01f);
+        first_person_translateZ = new GuiSliderMX(3, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.translate_Z"), inst.display.equipped_first_person.translation[2], -0.5f, 0.5f, 0.01f);
         first_person_rotateX = new GuiSliderMX(4, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_X"), inst.display.equipped_first_person.rotation[0], -180f, 180f, 1f);
         first_person_rotateY = new GuiSliderMX(5, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_Y"), inst.display.equipped_first_person.rotation[1], -180f, 180f, 1f);
         first_person_rotateZ = new GuiSliderMX(6, x, y += 22, w, 20, I18n.format("gui.bard_mania.gui_model_setup.rotate_Z"), inst.display.equipped_first_person.rotation[2], -180f, 180f, 1f);
