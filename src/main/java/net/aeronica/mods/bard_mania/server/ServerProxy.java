@@ -58,7 +58,7 @@ public class ServerProxy
 
     public EntityPlayer getClientPlayer() {return null;}
 
-    public Minecraft getMinecraft() {return Minecraft.getMinecraft();}
+    public Minecraft getMinecraft() {return null;}
 
     public World getClientWorld() {return null;}
 
