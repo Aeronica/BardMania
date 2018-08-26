@@ -52,7 +52,7 @@ public class GuiClosedMessage extends AbstractServerMessage<GuiClosedMessage>
     @Override
     public void process(EntityPlayer player, Side side)
     {
-        if (GuiGuid.KEYBOARD == guiGuid)
+        if (guiGuid == GuiGuid.KEYBOARD)
             BardActionHelper.setInstrumentRemoved(player);
     }
 }
