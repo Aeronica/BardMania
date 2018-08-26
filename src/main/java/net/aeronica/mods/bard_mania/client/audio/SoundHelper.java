@@ -41,7 +41,6 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALC11;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
-import paulscode.sound.SoundSystemException;
 
 import java.nio.IntBuffer;
 import java.util.HashMap;
@@ -59,13 +58,11 @@ public class SoundHelper
     private static HashMap<String, Integer> uuidEntityId = new HashMap<>();
     private static HashMap<String, Integer> uuidNote = new HashMap<>();
     private static HashMap<String, Boolean> uuidStreaming = new HashMap<>();
-    static SoundHandler sndHandler;
-    static SoundManager sndManager;
-    static SoundSystem sndSystem;
+    private static SoundHandler sndHandler;
+    private static SoundManager sndManager;
+    private static SoundSystem sndSystem;
 
-    static final int MAX_STREAM_CHANNELS = 24;
-    static int normalChannelCount = 0;
-    static int streamChannelCount = 0;
+    private static final int MAX_STREAM_CHANNELS = 24;
 
     public static void noteOff(EntityLivingBase livingEntity, int midiNote)
     {
@@ -83,6 +80,21 @@ public class SoundHelper
                     //ModLogger.info("Note Off: eid: %05d, note: %02d,  UUID: %s, inst: %s", livingEntity.getEntityId(), midiNote, uuid, livingEntity.getHeldItemMainhand().getDisplayName());
                     return;
                 }
+            }
+        }
+    }
+
+    public static void stopNotes(EntityLivingBase entityLivingBase)
+    {
+        int entityId = entityLivingBase.getEntityId();
+        for(String uuid : uuidEntityId.keySet())
+        {
+            if (entityId == uuidEntityId.get(uuid))
+            {
+                if (uuidStreaming.get(uuid)) sndSystem.fadeOut(uuid, null,150L);
+                uuidNote.remove(uuid);
+                uuidEntityId.remove(uuid);
+                uuidStreaming.remove(uuid);
             }
         }
     }
@@ -139,7 +151,7 @@ public class SoundHelper
     }
 
     @SubscribeEvent
-    public static void soundSetupEvent(SoundSetupEvent event) throws SoundSystemException
+    public static void soundSetupEvent(SoundSetupEvent event) // throws SoundSystemException
     {
         ModLogger.info("Sound Setup Event %s", event);
         configureSound();
@@ -164,10 +176,10 @@ public class SoundHelper
             ModLogger.error(e);
         }
 
-        normalChannelCount = 32;// ModConfig.getNormalSoundChannelCount();
-        streamChannelCount = 24;// ModConfig.getStreamingSoundChannelCount();
+        int normalChannelCount = 28;// ModConfig.getNormalSoundChannelCount();
+        int streamChannelCount = 4; // ModConfig.getStreamingSoundChannelCount();
 
-        if (/*ModConfig.getAutoConfigureChannels()*/true && totalChannels > 64) {
+        if (/*ModConfig.getAutoConfigureChannels() && */totalChannels > 64) {
             totalChannels = ((totalChannels + 1) * 3) / 4;
             streamChannelCount = Math.min(totalChannels / 5, MAX_STREAM_CHANNELS);
             normalChannelCount = totalChannels - streamChannelCount;
@@ -190,16 +202,15 @@ public class SoundHelper
             int height = event.getResolution().getScaledHeight() - 40;
             int x = 130;
             int y = 22;
-            if (playingSounds != null) mc.fontRenderer.drawStringWithShadow("Sound count : " + playingSounds.size(), x, y +=10, 0xd0d0d0);
+            if (playingSounds != null) mc.fontRenderer.drawStringWithShadow("Sound count : " + playingSounds.size(), x, y += 10, 0xd0d0d0);
             mc.fontRenderer.drawStringWithShadow("Sound stream: " + uuidStreaming.size(), x, y +=10, 0xd0d0d0);
             mc.fontRenderer.drawStringWithShadow("Sound notes : " + uuidNote.size(), x, y +=10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow("Tween count : " + BardActionHelper.getModelDummy(mc.player).getTweenCount(), x, y +=10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow("Tween count : " + BardActionHelper.getModelDummy(mc.player).getTweenCount(), x, y += 10, 0xd0d0d0);
 
-            int yy = 80;
             for (EntityPlayer player : mc.world.playerEntities)
             {
                 RenderEvents.drawCenteredString(String.format("%s %s %5.2f", player.getDisplayName().getUnformattedText(), BardActionHelper.isInstrumentEquipped(player), mc.player.prevTimeInPortal),
-                                                event.getResolution().getScaledWidth() / 2, yy += 10, 0xFFFFFF);
+                                                width / 2, y += 10, 0xFFFFFF);
             }
         }
     }
