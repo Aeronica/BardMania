@@ -16,32 +16,53 @@
 
 package net.aeronica.mods.bard_mania.client.audio;
 
+import net.aeronica.mods.bard_mania.BardMania;
 import net.minecraft.client.audio.MovingSound;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class NoteSound extends MovingSound
 {
-    private EntityLivingBase entityLiving;
+    private EntityLivingBase entityLivingBase;
     private int entityId;
     private String uuid;
     private int midiNote;
+    private BlockPos blockPos;
 
-    public NoteSound(EntityLivingBase entityLiving, SoundEvent soundEvent, int midiNote, float pitch, float volumeIn)
+    public NoteSound(EntityLivingBase entityLivingBase, SoundEvent soundEvent, int midiNote, float pitch, float volumeIn)
     {
         super(soundEvent, SoundCategory.PLAYERS);
-        this.entityLiving = entityLiving;
-        this.entityId = entityLiving.getEntityId();
+        this.entityLivingBase = entityLivingBase;
+        this.entityId = entityLivingBase.getEntityId();
         this.midiNote = midiNote;
         this.pitch = pitch;
         this.volume = volumeIn;
-        this.xPosF = (float) entityLiving.posX;
-        this.yPosF = (float) entityLiving.posY;
-        this.zPosF = (float) entityLiving.posZ;
+        this.xPosF = (float) entityLivingBase.posX;
+        this.yPosF = (float) entityLivingBase.posY;
+        this.zPosF = (float) entityLivingBase.posZ;
+        this.blockPos = entityLivingBase.getPosition();
+        this.repeat = false;
+        this.repeatDelay = 0;
+        this.uuid = "";
+        this.attenuationType = AttenuationType.LINEAR;
+    }
+
+    public NoteSound(BlockPos blockPos, SoundEvent soundEvent, int midiNote, float pitch, float volumeIn)
+    {
+        super(soundEvent, SoundCategory.PLAYERS);
+        this.blockPos = blockPos;
+        this.entityLivingBase = null;
+        this.midiNote = midiNote;
+        this.pitch = pitch;
+        this.volume = volumeIn;
+        this.xPosF = (float) blockPos.getX() + 0.5f;
+        this.yPosF = (float) blockPos.getY() + 0.5f;
+        this.zPosF = (float) blockPos.getZ() + 0.5f;
         this.repeat = false;
         this.repeatDelay = 0;
         this.uuid = "";
@@ -51,11 +72,12 @@ public class NoteSound extends MovingSound
     @Override
     public void update()
     {
-        if (!this.entityLiving.isDead)
+        if ((entityLivingBase != null && !entityLivingBase.isDead) || BardMania.proxy.getClientWorld().isBlockLoaded(blockPos))
         {
-            this.xPosF = (float) entityLiving.posX;
-            this.yPosF = (float) entityLiving.posY;
-            this.zPosF = (float) entityLiving.posZ;
+            blockPos = entityLivingBase != null ? entityLivingBase.getPosition() : blockPos;
+            this.xPosF = (float) blockPos.getX();
+            this.yPosF = (float) blockPos.getY();
+            this.zPosF = (float) blockPos.getZ();
         }
         else
             setDonePlaying();
@@ -63,13 +85,15 @@ public class NoteSound extends MovingSound
 
     public void setUuid(String uuid) { this.uuid = uuid; }
 
+    public String getUuid() { return this.uuid; }
+
     public int getEntityId() { return entityId; }
 
     public int getMidiNote() { return midiNote; }
 
     private void setDonePlaying()
     {
-        SoundHelper.noteOff(entityLiving, midiNote);
+        SoundHelper.noteOff(entityLivingBase, midiNote);
         //this.donePlaying = true;
     }
 
