@@ -24,7 +24,7 @@ import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiKeyButton extends GuiButton
 {
-    public GuiKeyButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText)
+    GuiKeyButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText)
     {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
     }
@@ -37,7 +37,6 @@ public class GuiKeyButton extends GuiButton
             FontRenderer fontrenderer = mc.fontRenderer;
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-            int i = this.getHoverState(this.hovered);
             this.drawBox(this.x,this.y,this.width, this.height);
             this.mouseDragged(mc, mouseX, mouseY);
             int j = 14737632;
@@ -62,9 +61,8 @@ public class GuiKeyButton extends GuiButton
     @Override
     public void playPressSound(SoundHandler soundHandlerIn) {/* NOP */}
 
-    public void drawBox(int x, int y, int width, int height) {
+    private void drawBox(int x, int y, int width, int height) {
         drawRect(x - 2, y - 2, x + width + 2, y + height + 2, 0x88222222);
-        drawRect(x, y, x + width, y + height, 0xCC444444);
-
+        drawRect(x, y, x + width, y + height, this.hovered ? 0xCC444444 : 0x66444444);
     }
 }
