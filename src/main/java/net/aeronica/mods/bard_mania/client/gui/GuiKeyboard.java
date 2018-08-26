@@ -19,6 +19,7 @@ package net.aeronica.mods.bard_mania.client.gui;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
+import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.server.GuiClosedMessage;
 import net.minecraft.client.Minecraft;
@@ -63,8 +64,11 @@ public class GuiKeyboard extends GuiScreen
     @Override
     public void onGuiClosed()
     {
-        PacketDispatcher.sendToServer(new GuiClosedMessage(GuiGuid.KEYBOARD));
-        MidiHelper.INSTANCE.notifyRemoved("Gui Keyboard Closed");
+        Minecraft.getMinecraft().addScheduledTask(() -> {
+            SoundHelper.stopNotes(mc.player);
+            PacketDispatcher.sendToServer(new GuiClosedMessage(GuiGuid.KEYBOARD));
+            MidiHelper.INSTANCE.notifyRemoved("Gui Keyboard Closed");
+        });
         super.onGuiClosed();
     }
 
@@ -91,31 +95,40 @@ public class GuiKeyboard extends GuiScreen
         mc.getTextureManager().bindTexture(GUI_BACKGROUND);
         int i = xIn + 100/2;
         int j = 120+8;
-        //drawBox(xIn, yIn, 100, 120);
         drawTexturedModalRect(xIn, yIn, 0,0, 100, 120);
         drawEntityOnScreen(i, j , 50, (float) xIn - xIn + 10, (float) yIn - yIn - 10, this.mc.player);
-    }
-
-    public void drawBox(int x, int y, int width, int height)
-    {
-        drawRect(x, y, x + width, y + height, 0x55000000);
-        drawRect(x - 2, y - 2, x + width + 2, y + height + 2, 0x44000000);
     }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException
     {
         if (KeyHelper.hasKey(button.id))
-            sendNote(KeyHelper.getKey(button.id) + (isShiftKeyDown() ? 12 : 0));
+            sendNote(KeyHelper.getKey(button.id) + (isShiftKeyDown() ? 12 : 0), false);
         super.actionPerformed(button);
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    public void handleKeyboardInput() throws IOException
+    {
+        char c0 = Keyboard.getEventCharacter();
+
+        if (c0 >= ' ' && Keyboard.getEventKeyState())
+            keyDown(c0, Keyboard.getEventKey());
+        if (!Keyboard.getEventKeyState())
+            keyUp(c0, Keyboard.getEventKey());
+        super.handleKeyboardInput();
+    }
+
+    private void keyDown(char c0, int keyCode)
     {
         if (KeyHelper.hasKey(keyCode) && !Keyboard.isRepeatEvent())
-            sendNote(KeyHelper.getKey(keyCode) + (isShiftKeyDown() ? 12 : 0));
-        super.keyTyped(typedChar, keyCode);
+            sendNote(KeyHelper.getKey(keyCode), false);
+    }
+
+    private void keyUp(char c0, int keyCode)
+    {
+        if (KeyHelper.hasKey(keyCode))
+            sendNote(KeyHelper.getKey(keyCode), true);
     }
 
     @Override
@@ -127,9 +140,9 @@ public class GuiKeyboard extends GuiScreen
     @Override
     public boolean doesGuiPauseGame() {return false;}
 
-    private void sendNote(int note)
+    private void sendNote(int note, boolean off)
     {
-        MidiHelper.send((byte) note, (byte) 64, 5);
+        MidiHelper.send((byte) note, (byte) (off ? 0 : 64), 5);
     }
 
     private FontRenderer getFontRenderer() {return mc.fontRenderer;}
