@@ -144,7 +144,7 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
     @Override
     public void noteReceiver(World worldIn, BlockPos posIn, int entityID, byte noteIn, byte volumeIn, long timeStamp)
     {
-        if (!worldIn.isRemote && volumeIn != 0)
+        if (!worldIn.isRemote)
         {
             EntityPlayer player = (EntityPlayer) worldIn.getEntityByID(entityID);
             if (player != null)

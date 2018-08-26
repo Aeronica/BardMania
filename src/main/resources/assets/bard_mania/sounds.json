@@ -1,8 +1,8 @@
 {
   "banjo": { "category": "player", "sounds": [{ "name": "bard_mania:banjo", "stream": false }]},
-  "flute": { "category": "player", "sounds": [{ "name": "bard_mania:flute", "stream": false }]},
+  "flute": { "category": "player", "sounds": [{ "name": "bard_mania:flute", "stream": true }]},
   "lyre": { "category": "player", "sounds": [{ "name": "bard_mania:lyre", "stream": false }]},
   "marching_drums": { "category": "player", "sounds": [{ "name": "bard_mania:marching_drums", "stream": false }]},
-  "recorder": { "category": "player", "sounds": [{ "name": "bard_mania:recorder", "stream": false }]},
+  "recorder": { "category": "player", "sounds": [{ "name": "bard_mania:recorder", "stream": true }]},
   "xylophone": { "category": "player", "sounds": [{ "name": "bard_mania:xylophone", "stream": false }]}
 }

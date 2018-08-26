@@ -110,7 +110,7 @@ public enum MidiHelper implements Receiver
         int command = msg.getStatus() & 0xF0;
         int channel = msg.getStatus() & 0x0F;
         boolean allChannels = ModConfig.client.midi_options.allChannels;
-        boolean sendNoteOff = ModConfig.client.midi_options.sendNoteOff;
+        boolean sendNoteOff = true; //ModConfig.client.midi_options.sendNoteOff;
 
         switch (command)
         {

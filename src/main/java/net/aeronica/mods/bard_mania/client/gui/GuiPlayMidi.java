@@ -59,7 +59,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private double tuning = 0d;
     private Set<Integer> channels = new HashSet<>(Arrays.asList(new Integer[]{0, 1, 2, 3}));
     private boolean allChannels = false;
-    private boolean sendNoteOff = false;
+    private boolean sendNoteOff = true;
 
     private ChannelSelectors selectors;
     private GuiButton equip;
