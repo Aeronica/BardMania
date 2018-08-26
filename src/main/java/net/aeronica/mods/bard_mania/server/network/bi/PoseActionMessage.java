@@ -19,6 +19,7 @@ package net.aeronica.mods.bard_mania.server.network.bi;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
+import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.network.AbstractMessage;
@@ -93,6 +94,7 @@ public class PoseActionMessage extends AbstractMessage<PoseActionMessage>
             {
                 ActionManager.removeAction(posingPlayer);
                 BardActionHelper.setInstrumentRemoved(posingPlayer);
+                SoundHelper.stopNotes(posingPlayer);
                 if (player.getEntityId() == posingPlayerId)
                 {
                     if (forced)
