@@ -19,6 +19,7 @@ package net.aeronica.mods.bard_mania.client.gui;
 import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
+import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
@@ -108,7 +109,11 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     public void onGuiClosed()
     {
         stop();
-        PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
+        Minecraft.getMinecraft().addScheduledTask(() ->
+            {
+                SoundHelper.stopNotes(mc.player);
+                PacketDispatcher.sendToServer(new PoseActionMessage(mc.player, PoseActionMessage.REMOVE, false));
+            });
         super.onGuiClosed();
     }
 
