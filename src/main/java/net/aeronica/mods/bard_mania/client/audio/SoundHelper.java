@@ -54,32 +54,22 @@ public class SoundHelper
     private static final String SRG_sndSystem = "field_148620_e";
     private static final String SRG_playingSounds = "field_148629_h";
     private static Map<String, ISound> playingSounds;
+    private static SoundSystem sndSystem;
 
     private static HashMap<String, Integer> uuidEntityId = new HashMap<>();
     private static HashMap<String, Integer> uuidNote = new HashMap<>();
     private static HashMap<String, Boolean> uuidStreaming = new HashMap<>();
-    private static SoundHandler sndHandler;
-    private static SoundManager sndManager;
-    private static SoundSystem sndSystem;
 
     private static final int MAX_STREAM_CHANNELS = 24;
 
     public static void noteOff(EntityLivingBase livingEntity, int midiNote)
     {
-        //if (uuidEntityId.containsKey(midiNote) && uuidEntityId.containsValue(livingEntity.getEntityId()))
+        for (String uuid : uuidNote.keySet())
         {
-            for (String uuid: uuidNote.keySet())
+            if (uuidNote.get(uuid) == midiNote && uuidEntityId.get(uuid) == livingEntity.getEntityId())
             {
-                if (uuidNote.get(uuid) == midiNote && uuidEntityId.get(uuid) == livingEntity.getEntityId())
-                {
-                    if (uuidStreaming.get(uuid)) sndSystem.fadeOut(uuid, null,150L);
-                    uuidNote.remove(uuid);
-                    uuidEntityId.remove(uuid);
-                    uuidStreaming.remove(uuid);
-                    //if (playingSounds.containsKey(uuid)) ((NoteSound) playingSounds.get(uuid)).kill();
-                    //ModLogger.info("Note Off: eid: %05d, note: %02d,  UUID: %s, inst: %s", livingEntity.getEntityId(), midiNote, uuid, livingEntity.getHeldItemMainhand().getDisplayName());
-                    return;
-                }
+                stopNote(uuid);
+                return;
             }
         }
     }
@@ -87,25 +77,27 @@ public class SoundHelper
     public static void stopNotes(EntityLivingBase entityLivingBase)
     {
         int entityId = entityLivingBase.getEntityId();
-        for(String uuid : uuidEntityId.keySet())
+        for (String uuid : uuidEntityId.keySet())
         {
             if (entityId == uuidEntityId.get(uuid))
-            {
-                if (uuidStreaming.get(uuid)) sndSystem.fadeOut(uuid, null,150L);
-                uuidNote.remove(uuid);
-                uuidEntityId.remove(uuid);
-                uuidStreaming.remove(uuid);
-            }
+                stopNote(uuid);
         }
+    }
+
+    public static void stopNote(String uuid)
+    {
+        if (uuidStreaming.get(uuid)) sndSystem.fadeOut(uuid, null, 150L);
+        uuidNote.remove(uuid);
+        uuidEntityId.remove(uuid);
+        uuidStreaming.remove(uuid);
     }
 
     private static void init()
     {
         if (sndSystem == null || sndSystem.randomNumberGenerator == null)
         {
-            sndHandler = mc.getSoundHandler();
-            sndManager = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, Minecraft.getMinecraft().getSoundHandler(),
-                                                                     "sndManager", SRG_sndManager);
+            SoundManager sndManager = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, mc.getSoundHandler(),
+                                                                                  "sndManager", SRG_sndManager);
             sndSystem = ObfuscationReflectionHelper.getPrivateValue(SoundManager.class, sndManager,
                                                                     "sndSystem", SRG_sndSystem);
             playingSounds = ObfuscationReflectionHelper.getPrivateValue(SoundManager.class, sndManager,
@@ -116,7 +108,6 @@ public class SoundHelper
     @SubscribeEvent
     public static void onEvent(PlaySoundEvent event)
     {
-        //if (event.getSound().getSoundLocation().getNamespace().equals(Reference.MOD_ID))
         if (event.getSound() instanceof NoteSound)
         {
             init();
@@ -160,10 +151,12 @@ public class SoundHelper
     /*
      * This section Poached from Dynamic Surroundings
      */
-    private static void configureSound() {
+    private static void configureSound()
+    {
         int totalChannels = -1;
 
-        try {
+        try
+        {
             final boolean create = !AL.isCreated();
             if (create)
                 AL.create();
@@ -172,14 +165,16 @@ public class SoundHelper
             totalChannels = ib.get(0);
             if (create)
                 AL.destroy();
-        } catch (final Throwable e) {
+        } catch (final Throwable e)
+        {
             ModLogger.error(e);
         }
 
         int normalChannelCount = 28;// ModConfig.getNormalSoundChannelCount();
         int streamChannelCount = 4; // ModConfig.getStreamingSoundChannelCount();
 
-        if (/*ModConfig.getAutoConfigureChannels() && */totalChannels > 64) {
+        if (/*ModConfig.getAutoConfigureChannels() && */totalChannels > 64)
+        {
             totalChannels = ((totalChannels + 1) * 3) / 4;
             streamChannelCount = Math.min(totalChannels / 5, MAX_STREAM_CHANNELS);
             normalChannelCount = totalChannels - streamChannelCount;
@@ -191,7 +186,7 @@ public class SoundHelper
         SoundSystemConfig.setNumberStreamingChannels(streamChannelCount);
     }
 
-//    @SubscribeEvent
+    //    @SubscribeEvent
     public static void onRenderOverlay(RenderGameOverlayEvent.Post event)
     {
         // display a mini-me when in first-person view, in MIDI mode and an instrument is equipped
@@ -202,9 +197,10 @@ public class SoundHelper
             int height = event.getResolution().getScaledHeight() - 40;
             int x = 130;
             int y = 22;
-            if (playingSounds != null) mc.fontRenderer.drawStringWithShadow("Sound count : " + playingSounds.size(), x, y += 10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow("Sound stream: " + uuidStreaming.size(), x, y +=10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow("Sound notes : " + uuidNote.size(), x, y +=10, 0xd0d0d0);
+            if (playingSounds != null)
+                mc.fontRenderer.drawStringWithShadow("Sound count : " + playingSounds.size(), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow("Sound stream: " + uuidStreaming.size(), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow("Sound notes : " + uuidNote.size(), x, y += 10, 0xd0d0d0);
             mc.fontRenderer.drawStringWithShadow("Tween count : " + BardActionHelper.getModelDummy(mc.player).getTweenCount(), x, y += 10, 0xd0d0d0);
 
             for (EntityPlayer player : mc.world.playerEntities)

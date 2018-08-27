@@ -34,10 +34,11 @@ public class NoteSound extends MovingSound
     private int midiNote;
     private BlockPos blockPos;
 
-    public NoteSound(EntityLivingBase entityLivingBase, SoundEvent soundEvent, int midiNote, float pitch, float volumeIn)
+    public NoteSound(EntityLivingBase entityLivingBase, SoundEvent soundEvent, int midiNote, float pitch, float volumeIn, boolean useLinearAT)
     {
         super(soundEvent, SoundCategory.PLAYERS);
         this.entityLivingBase = entityLivingBase;
+        this.blockPos = null;
         this.entityId = entityLivingBase.getEntityId();
         this.midiNote = midiNote;
         this.pitch = pitch;
@@ -45,11 +46,10 @@ public class NoteSound extends MovingSound
         this.xPosF = (float) entityLivingBase.posX;
         this.yPosF = (float) entityLivingBase.posY;
         this.zPosF = (float) entityLivingBase.posZ;
-        this.blockPos = entityLivingBase.getPosition();
         this.repeat = false;
         this.repeatDelay = 0;
         this.uuid = "";
-        this.attenuationType = AttenuationType.LINEAR;
+        this.attenuationType = useLinearAT ? AttenuationType.LINEAR : AttenuationType.NONE;
     }
 
     public NoteSound(BlockPos blockPos, SoundEvent soundEvent, int midiNote, float pitch, float volumeIn)
@@ -72,12 +72,17 @@ public class NoteSound extends MovingSound
     @Override
     public void update()
     {
-        if ((entityLivingBase != null && !entityLivingBase.isDead) || BardMania.proxy.getClientWorld().isBlockLoaded(blockPos))
+        if ((entityLivingBase != null && !entityLivingBase.isDead))
         {
-            blockPos = entityLivingBase != null ? entityLivingBase.getPosition() : blockPos;
-            this.xPosF = (float) blockPos.getX();
-            this.yPosF = (float) blockPos.getY();
-            this.zPosF = (float) blockPos.getZ();
+            this.xPosF = (float) entityLivingBase.posX;
+            this.yPosF = (float) entityLivingBase.posY;
+            this.zPosF = (float) entityLivingBase.posZ;
+        }
+        else if (blockPos != null && BardMania.proxy.getClientWorld().isBlockLoaded(blockPos))
+        {
+            this.xPosF = (float) blockPos.getX() + 0.5f;
+            this.yPosF = (float) blockPos.getY() + 0.5f;
+            this.zPosF = (float) blockPos.getZ() + 0.5f;
         }
         else
             setDonePlaying();
@@ -91,11 +96,7 @@ public class NoteSound extends MovingSound
 
     public int getMidiNote() { return midiNote; }
 
-    private void setDonePlaying()
-    {
-        SoundHelper.noteOff(entityLivingBase, midiNote);
-        //this.donePlaying = true;
-    }
+    private void setDonePlaying() { SoundHelper.stopNote(uuid); }
 
     public void kill() { this.donePlaying = true; }
 }
