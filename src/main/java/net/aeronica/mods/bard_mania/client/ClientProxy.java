@@ -95,7 +95,7 @@ public class ClientProxy extends ServerProxy
             SoundHelper.noteOff(playingPlayer, noteIn);
             return;
         }
-        if ((playerIn.getEntityId()) != entityId)
+        if ((playingPlayer != null) && (playerIn.getEntityId() != entityId))
         {
             //worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 1f + (volumeIn/127), calculatePitch(noteIn), false);
             getMinecraft().getSoundHandler().playSound(new NoteSound(playingPlayer, ModSoundEvents.getSound(soundName), noteIn, calculatePitch(noteIn), 1f + (volumeIn/127), true));
