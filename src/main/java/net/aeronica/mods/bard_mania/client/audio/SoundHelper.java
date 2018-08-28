@@ -43,8 +43,8 @@ import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 
 import java.nio.IntBuffer;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class SoundHelper
@@ -56,9 +56,9 @@ public class SoundHelper
     private static Map<String, ISound> playingSounds;
     private static SoundSystem sndSystem;
 
-    private static HashMap<String, Integer> uuidEntityId = new HashMap<>();
-    private static HashMap<String, Integer> uuidNote = new HashMap<>();
-    private static HashMap<String, Boolean> uuidStreaming = new HashMap<>();
+    private static Map<String, Integer> uuidEntityId = new ConcurrentHashMap<>();
+    private static Map<String, Integer> uuidNote = new ConcurrentHashMap<>();
+    private static Map<String, Boolean> uuidStreaming = new ConcurrentHashMap<>();
 
     private static final int MAX_STREAM_CHANNELS = 24;
 
@@ -86,7 +86,7 @@ public class SoundHelper
 
     public static void stopNote(String uuid)
     {
-        if (uuidStreaming.get(uuid)) sndSystem.fadeOut(uuid, null, 150L);
+        if (uuidStreaming.containsKey(uuid) && uuidStreaming.get(uuid)) sndSystem.fadeOut(uuid, null, 150L);
         uuidNote.remove(uuid);
         uuidEntityId.remove(uuid);
         uuidStreaming.remove(uuid);
