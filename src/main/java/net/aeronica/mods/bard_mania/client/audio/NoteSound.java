@@ -33,6 +33,7 @@ public class NoteSound extends MovingSound
     private String uuid;
     private int midiNote;
     private BlockPos blockPos;
+    private boolean useLinearAT;
 
     public NoteSound(EntityLivingBase entityLivingBase, SoundEvent soundEvent, int midiNote, float pitch, float volumeIn, boolean useLinearAT)
     {
@@ -49,6 +50,7 @@ public class NoteSound extends MovingSound
         this.repeat = false;
         this.repeatDelay = 0;
         this.uuid = "";
+        this.useLinearAT = useLinearAT;
         this.attenuationType = useLinearAT ? AttenuationType.LINEAR : AttenuationType.NONE;
     }
 
@@ -74,9 +76,12 @@ public class NoteSound extends MovingSound
     {
         if ((entityLivingBase != null && !entityLivingBase.isDead))
         {
-            this.xPosF = (float) entityLivingBase.posX;
-            this.yPosF = (float) entityLivingBase.posY;
-            this.zPosF = (float) entityLivingBase.posZ;
+            if (useLinearAT)
+            {
+                this.xPosF = (float) entityLivingBase.posX;
+                this.yPosF = (float) entityLivingBase.posY;
+                this.zPosF = (float) entityLivingBase.posZ;
+            }
         }
         else if (blockPos != null && BardMania.proxy.getClientWorld().isBlockLoaded(blockPos))
         {
