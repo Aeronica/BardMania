@@ -1,3 +1,12 @@
+2018-08-29 bard-mania_1.12.2-0.8.0-alpha
+Changes:
+    Localize strings in GuiPlayMidi and GuiModelSetup. Thanks to Snownee for the Chinese Translation for same.
+
+Additions:
+    [Feature Request] Determine the length of note according to the time of key pressed #3 by Snownee
+        Initial sustained note support for Flute and Recorder. That is note-on/note-off handling for
+        MIDI and PC Keyboard GUI modes.
+
 2018-08-23 bard-mania_1.12.2-0.7.0-alpha
 Additions:
     Add Simplified Chinese (zh_CN) language file. Thanks to Snownee.
