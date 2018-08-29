@@ -46,6 +46,7 @@ public class GuiKeyboard extends GuiScreen
     private static int[] NATURAL = {0, 2, 4, 5, 7, 9, 11, 12};
     private String TITLE = I18n.format("gui.bard_mania.gui_keyboard.title");
     private boolean sendNoteOff;
+    private GuiKeyButton exit;
 
     public GuiKeyboard()
     {
@@ -63,6 +64,8 @@ public class GuiKeyboard extends GuiScreen
         makeGuiKeys(centerNatural, 56, NATURAL, true);
         makeGuiKeys(centerSharpes, 82, SHARPES, false);
         makeGuiKeys(centerNatural, 108, NATURAL, false);
+        exit = new GuiKeyButton(9999, (centerNatural + 26 * 2) , 138, 202 - 26 * 4, 20,  I18n.format("gui.done"));
+        addButton(exit);
         super.initGui();
     }
 
@@ -108,8 +111,23 @@ public class GuiKeyboard extends GuiScreen
     protected void actionPerformed(GuiButton button) throws IOException
     {
         if (KeyHelper.hasKey(button.id))
-            sendNote(KeyHelper.getKey(button.id) + (isShiftKeyDown() ? 12 : 0), false);
+            sendNote(KeyHelper.getKey(button.id), false);
+        if (button.id == 9999)
+            keyTyped((char) 0x01, Keyboard.KEY_ESCAPE);
         super.actionPerformed(button);
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state)
+    {
+        if (this.selectedButton != null && state == 0)
+        {
+            if (KeyHelper.hasKey(this.selectedButton.id) && sendNoteOff)
+                sendNote(KeyHelper.getKey(this.selectedButton.id), true);
+            this.selectedButton.mouseReleased(mouseX, mouseY);
+            this.selectedButton = null;
+        }
+        //super.mouseReleased(mouseX, mouseY, state);
     }
 
     @Override
