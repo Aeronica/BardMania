@@ -59,9 +59,9 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     private File file = null;
     private boolean isPlaying = false;
     private double tuning = 0d;
-    private Set<Integer> channels = new HashSet<>(Arrays.asList(new Integer[]{0, 1, 2, 3}));
+    private Set<Integer> channels = new HashSet<>(Arrays.asList(0, 1, 2, 3));
     private boolean allChannels = false;
-    private boolean sendNoteOff = true;
+    private boolean sendNoteOff;
 
     private ChannelSelectors selectors;
     private GuiButton equip;
@@ -80,6 +80,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
     {
         super.initGui();
         inst = ((ItemInstrument) mc.player.getHeldItemMainhand().getItem()).getInstrument();
+        sendNoteOff = SoundHelper.shouldSendNoteOff(inst.sounds.timbre);
         int y = 0;
         int x = 10;
         int w = 100;
@@ -135,7 +136,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
         getFontRenderer().drawStringWithShadow(I18n.format("gui.bard_mania.gui_play_midi.label_tween_count") + String.format(": %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), 10 ,posY, 0xD3D3D3);
-        if (ActionGetFile.INSTANCE.getFile() != null)
+        if ((ActionGetFile.INSTANCE.getFile()) != null)
         {
             String name = ActionGetFile.INSTANCE.getFileName();
             posX = (this.width - getFontRenderer().getStringWidth(name)) / 2;

@@ -16,19 +16,17 @@
 
 package net.aeronica.mods.bard_mania.client.audio;
 
-import net.aeronica.mods.bard_mania.client.render.RenderEvents;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
+import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.client.event.sound.PlayStreamingSourceEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -58,7 +56,6 @@ public class SoundHelper
 
     private static Map<String, Integer> uuidEntityId = new ConcurrentHashMap<>();
     private static Map<String, Integer> uuidNote = new ConcurrentHashMap<>();
-    private static Map<String, Boolean> uuidStreaming = new ConcurrentHashMap<>();
 
     private static final int MAX_STREAM_CHANNELS = 24;
 
@@ -86,10 +83,9 @@ public class SoundHelper
 
     public static void stopNote(String uuid)
     {
-        if (uuidStreaming.containsKey(uuid) && uuidStreaming.get(uuid)) sndSystem.fadeOut(uuid, null, 150L);
+        if (uuidNote.containsKey(uuid)) sndSystem.fadeOut(uuid, null, 150L);
         uuidNote.remove(uuid);
         uuidEntityId.remove(uuid);
-        uuidStreaming.remove(uuid);
     }
 
     private static void init()
@@ -105,6 +101,11 @@ public class SoundHelper
         }
     }
 
+    public static boolean shouldSendNoteOff(String soundName)
+    {
+        return ((mc.getSoundHandler().getAccessor(ModSoundEvents.getSound(soundName).getSoundName()).cloneEntry()).isStreaming());
+    }
+
     @SubscribeEvent
     public static void onEvent(PlaySoundEvent event)
     {
@@ -116,28 +117,12 @@ public class SoundHelper
     }
 
     @SubscribeEvent
-    public static void onEvent(PlaySoundSourceEvent event)
-    {
-        //if (event.getSound().getSoundLocation().getNamespace().equals(Reference.MOD_ID))
-        if (event.getSound() instanceof NoteSound)
-        {
-            NoteSound sound = (NoteSound) event.getSound();
-            sound.setUuid(event.getUuid());
-            uuidNote.put(event.getUuid(), sound.getMidiNote());
-            uuidEntityId.put(event.getUuid(), sound.getEntityId());
-            uuidStreaming.put(event.getUuid(), false);
-            //ModLogger.info("Note On:  eid: %05d, note: %02d,  UUID: %s, inst: %s", sound.getEntityId(), sound.getMidiNote(), event.getUuid(), sound.getSound().getSoundLocation().getPath());
-        }
-    }
-
-    @SubscribeEvent
     public static void PlayStreamingSourceEvent(PlayStreamingSourceEvent event)
     {
         NoteSound sound = (NoteSound) event.getSound();
         sound.setUuid(event.getUuid());
         uuidNote.put(event.getUuid(), sound.getMidiNote());
         uuidEntityId.put(event.getUuid(), sound.getEntityId());
-        uuidStreaming.put(event.getUuid(), true);
         //ModLogger.info("Note On:  eid: %05d, note: %02d,  UUID: %s, inst: %s", sound.getEntityId(), sound.getMidiNote(), event.getUuid(), sound.getSound().getSoundLocation().getPath());
     }
 
@@ -186,7 +171,7 @@ public class SoundHelper
         SoundSystemConfig.setNumberStreamingChannels(streamChannelCount);
     }
 
-    //    @SubscribeEvent
+//    @SubscribeEvent
     public static void onRenderOverlay(RenderGameOverlayEvent.Post event)
     {
         // display a mini-me when in first-person view, in MIDI mode and an instrument is equipped
@@ -198,16 +183,9 @@ public class SoundHelper
             int x = 130;
             int y = 22;
             if (playingSounds != null)
-                mc.fontRenderer.drawStringWithShadow("Sound count : " + playingSounds.size(), x, y += 10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow("Sound stream: " + uuidStreaming.size(), x, y += 10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow("Sound notes : " + uuidNote.size(), x, y += 10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow("Tween count : " + BardActionHelper.getModelDummy(mc.player).getTweenCount(), x, y += 10, 0xd0d0d0);
-
-            for (EntityPlayer player : mc.world.playerEntities)
-            {
-                RenderEvents.drawCenteredString(String.format("%s %s %5.2f", player.getDisplayName().getUnformattedText(), BardActionHelper.isInstrumentEquipped(player), mc.player.prevTimeInPortal),
-                                                width / 2, y += 10, 0xFFFFFF);
-            }
+                mc.fontRenderer.drawStringWithShadow(String.format("Sound count : %03d", playingSounds.size()), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow(String.format("Sound notes : %03d", uuidNote.size()), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow(String.format("Tween count : %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), x, y += 10, 0xd0d0d0);
         }
     }
 }

@@ -16,17 +16,21 @@
 
 package net.aeronica.mods.bard_mania.client.gui;
 
+import javax.annotation.Nullable;
 import java.io.File;
 
 public class ActionGetFile implements ISelectorAction
 {
     public static final ActionGetFile INSTANCE = new ActionGetFile();
+    @Nullable
     private File file;
 
     @Override
     public void select(File fileIn) { file = fileIn; }
 
-    public String getFileName() { return file.getName(); }
+    @Nullable
+    String getFileName() { return file != null ? file.getName() : null; }
 
+    @Nullable
     public File getFile() { return file; }
 }

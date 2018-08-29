@@ -20,8 +20,10 @@ import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
 import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
+import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.aeronica.mods.bard_mania.server.network.PacketDispatcher;
 import net.aeronica.mods.bard_mania.server.network.server.GuiClosedMessage;
+import net.aeronica.mods.bard_mania.server.object.Instrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -43,6 +45,7 @@ public class GuiKeyboard extends GuiScreen
     private static int[] SHARPES = {1, 3, -1, 6, 8, 10};
     private static int[] NATURAL = {0, 2, 4, 5, 7, 9, 11, 12};
     private String TITLE = I18n.format("gui.bard_mania.gui_keyboard.title");
+    private boolean sendNoteOff;
 
     public GuiKeyboard()
     {
@@ -51,6 +54,8 @@ public class GuiKeyboard extends GuiScreen
     @Override
     public void initGui()
     {
+        Instrument inst = ((ItemInstrument) mc.player.getHeldItemMainhand().getItem()).getInstrument();
+        sendNoteOff = SoundHelper.shouldSendNoteOff(inst.sounds.timbre);
         buttonList.clear();
         int centerNatural = (width - 26 * 8 - 100) / 2;
         int centerSharpes = centerNatural + 12;
@@ -127,7 +132,7 @@ public class GuiKeyboard extends GuiScreen
 
     private void keyUp(char c0, int keyCode)
     {
-        if (KeyHelper.hasKey(keyCode))
+        if (KeyHelper.hasKey(keyCode) && sendNoteOff)
             sendNote(KeyHelper.getKey(keyCode), true);
     }
 

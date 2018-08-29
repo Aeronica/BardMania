@@ -17,6 +17,7 @@
 package net.aeronica.mods.bard_mania.client;
 
 import net.aeronica.mods.bard_mania.BardMania;
+import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
 import net.aeronica.mods.bard_mania.client.gui.GuiGuid;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
@@ -43,25 +44,28 @@ public enum MidiHelper implements Receiver
     INSTANCE;
     private static List<MidiDevice> openDevices = new CopyOnWriteArrayList<>();
     static boolean inUse = false;
+    private static String soundName;
 
     // TODO: rethink and refactor since class this is only for the CLIENT player.
     // TODO: separate MIDI and PC Keyboard logic.
     // TODO: consider other living entity instrument players and machines/TE
 
-    public void setKeyboardNoteReceiver()
+    public void setKeyboardNoteReceiver(String soundNameIn)
     {
         if (ModConfig.client.input_mode == KEYBOARD)
         {
+            soundName = soundNameIn;
             EntityPlayer playerIn = BardMania.proxy.getClientPlayer();
             playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, playerIn.getEntityWorld(), 0, 0, 0);
             inUse = true;
         }
     }
 
-    public void setMidiNoteReceiver()
+    public void setMidiNoteReceiver(String soundNameIn)
     {
         if (ModConfig.client.input_mode == MIDI && !inUse)
         {
+            soundName = soundNameIn;
             MidiDevice device;
             MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
             for (int i = 0; i < infos.length; i++)
@@ -110,7 +114,7 @@ public enum MidiHelper implements Receiver
         int command = msg.getStatus() & 0xF0;
         int channel = msg.getStatus() & 0x0F;
         boolean allChannels = ModConfig.client.midi_options.allChannels;
-        boolean sendNoteOff = true; //ModConfig.client.midi_options.sendNoteOff;
+        boolean sendNoteOff = SoundHelper.shouldSendNoteOff(soundName);
 
         switch (command)
         {

@@ -81,7 +81,7 @@ public class ItemInstrument extends Item implements IActiveNoteReceiver
                 BardMania.proxy.postInputModeToast(heldItem);
             } else
             {
-                BardMania.proxy.setNoteReceiver();
+                BardMania.proxy.setNoteReceiver(instrument.sounds.timbre);
             }
         }
         if (!worldIn.isRemote && playerIn.getActiveHand().equals(EnumHand.MAIN_HAND)/* && !playerIn.isSneaking()*/)

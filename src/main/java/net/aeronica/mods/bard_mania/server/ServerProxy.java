@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 
 public class ServerProxy
 {
-    public void setNoteReceiver() {/* NOP */}
+    public void setNoteReceiver(String soundName) {/* NOP */}
 
     public void notifyRemoved(String message) {/* NOP */}
 

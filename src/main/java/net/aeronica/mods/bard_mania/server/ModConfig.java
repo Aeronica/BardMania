@@ -66,23 +66,19 @@ public class ModConfig
 
         @Config.LangKey("config.bard_mania.midi_options.title")
         @Config.Comment("MIDI Options")
-        public final MIDIOptions midi_options = new MIDIOptions(true, false, 1);
+        public final MIDIOptions midi_options = new MIDIOptions(true, 1);
 
         public static class MIDIOptions
         {
-            public MIDIOptions(final boolean allChannels, final boolean sendNoteOff, int channel)
+            public MIDIOptions(final boolean allChannels, final int channel)
             {
                 this.allChannels = allChannels;
-                this.sendNoteOff = sendNoteOff;
                 this.channel = channel;
             }
 
             @Config.LangKey("config.bard_mania.midi_options.all_channels")
             @Config.Comment("Listen on all channels or specified channel")
             public boolean allChannels;
-
-            @Config.Comment("Send Note Off commands")
-            public boolean sendNoteOff;
 
             @Config.LangKey("config.bard_mania.midi_options.channel")
             @Config.RangeInt(min = 1, max = 16)

@@ -50,13 +50,13 @@ import static net.aeronica.mods.bard_mania.server.ModConfig.Client.INPUT_MODE.MI
 
 public class ClientProxy extends ServerProxy
 {
-
+    // TODO: This is silly. Setting and/or passing the sound name in too many places. Needs a serious rethink.
     @Override
-    public void setNoteReceiver() {
+    public void setNoteReceiver(String soundName) {
         if (ModConfig.client.input_mode == MIDI)
-            MidiHelper.INSTANCE.setMidiNoteReceiver();
+            MidiHelper.INSTANCE.setMidiNoteReceiver(soundName);
         else
-            MidiHelper.INSTANCE.setKeyboardNoteReceiver();
+            MidiHelper.INSTANCE.setKeyboardNoteReceiver(soundName);
     }
 
     @Override
@@ -70,14 +70,14 @@ public class ClientProxy extends ServerProxy
     {
         WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();
         ItemStack heldItem = playerIn.getHeldItemMainhand();
-        if (volumeIn == 0)
+        Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
+        if (volumeIn == 0 && SoundHelper.shouldSendNoteOff(instrument.sounds.timbre))
         {
             SoundHelper.noteOff(playerIn, noteIn);
             return;
         }
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemInstrument)
         {
-            Instrument instrument = ((ItemInstrument) heldItem.getItem()).getInstrument();
             //playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1f + (volumeIn/127), calculatePitch(noteIn));
             getMinecraft().getSoundHandler().playSound(new NoteSound(playerIn, ModSoundEvents.getSound(instrument.sounds.timbre), noteIn, calculatePitch(noteIn), 1f + (volumeIn/127), false));
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playerIn.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, playerIn.posY + 2.5D, playerIn.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
@@ -90,7 +90,7 @@ public class ClientProxy extends ServerProxy
     {
         WorldClient worldClient = (WorldClient) playerIn.getEntityWorld();
         EntityPlayer playingPlayer = (EntityPlayer) worldClient.getEntityByID(entityId);
-        if (volumeIn == 0)
+        if (volumeIn == 0  && SoundHelper.shouldSendNoteOff(soundName))
         {
             SoundHelper.noteOff(playingPlayer, noteIn);
             return;
