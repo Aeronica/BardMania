@@ -119,11 +119,14 @@ public class SoundHelper
     @SubscribeEvent
     public static void PlayStreamingSourceEvent(PlayStreamingSourceEvent event)
     {
-        NoteSound sound = (NoteSound) event.getSound();
-        sound.setUuid(event.getUuid());
-        uuidNote.put(event.getUuid(), sound.getMidiNote());
-        uuidEntityId.put(event.getUuid(), sound.getEntityId());
-        //ModLogger.info("Note On:  eid: %05d, note: %02d,  UUID: %s, inst: %s", sound.getEntityId(), sound.getMidiNote(), event.getUuid(), sound.getSound().getSoundLocation().getPath());
+        if (event.getSound() instanceof NoteSound)
+        {
+            NoteSound sound = (NoteSound) event.getSound();
+            sound.setUuid(event.getUuid());
+            uuidNote.put(event.getUuid(), sound.getMidiNote());
+            uuidEntityId.put(event.getUuid(), sound.getEntityId());
+            //ModLogger.info("Note On:  eid: %05d, note: %02d,  UUID: %s, inst: %s", sound.getEntityId(), sound.getMidiNote(), event.getUuid(), sound.getSound().getSoundLocation().getPath());
+        }
     }
 
     @SubscribeEvent
