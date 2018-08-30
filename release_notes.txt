@@ -1,3 +1,13 @@
+2018-08-29 bard-mania_1.12.2-0.9.0-alpha
+Fixes Crash:
+    https://github.com/Aeronica/BardMania/issues/7
+    Time: 8/30/18 2:14 PM
+    Description: Unexpected error
+
+    java.lang.ClassCastException: net.minecraft.client.audio.PositionedSoundRecord cannot be cast to net.aeronica.mods.bard_mania.client.audio.NoteSound
+    	at net.aeronica.mods.bard_mania.client.audio.SoundHelper.PlayStreamingSourceEvent(SoundHelper.java:122)
+
+----
 2018-08-29 bard-mania_1.12.2-0.8.0-alpha
 Changes:
     Localize strings in GuiPlayMidi and GuiModelSetup. Thanks to Snownee for the Chinese Translation for same.
