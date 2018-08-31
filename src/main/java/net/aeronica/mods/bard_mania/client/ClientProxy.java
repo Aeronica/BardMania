@@ -78,10 +78,10 @@ public class ClientProxy extends ServerProxy
         }
         if (!heldItem.isEmpty() && heldItem.getItem() instanceof ItemInstrument)
         {
-            //playerIn.playSound(ModSoundEvents.getSound(instrument.sounds.timbre), 1f + (volumeIn/127), calculatePitch(noteIn));
             getMinecraft().getSoundHandler().playSound(new NoteSound(playerIn, ModSoundEvents.getSound(instrument.sounds.timbre), noteIn, calculatePitch(noteIn), 1f + (volumeIn/127), false));
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playerIn.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, playerIn.posY + 2.5D, playerIn.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
             ActionManager.playAction(playerIn, noteIn);
+            SoundHelper.stopBackgroundMusic();
         }
     }
 
@@ -97,10 +97,10 @@ public class ClientProxy extends ServerProxy
         }
         if ((playingPlayer != null) && (playerIn.getEntityId() != entityId))
         {
-            //worldClient.playSound(playingPlayer.posX, (double) playingPlayer.posY + 2.5D, (double) playingPlayer.posZ, ModSoundEvents.getSound(soundName), SoundCategory.PLAYERS, 1f + (volumeIn/127), calculatePitch(noteIn), false);
             getMinecraft().getSoundHandler().playSound(new NoteSound(playingPlayer, ModSoundEvents.getSound(soundName), noteIn, calculatePitch(noteIn), 1f + (volumeIn/127), true));
             worldClient.spawnParticle(EnumParticleTypes.NOTE, playingPlayer.posX + (worldClient.rand.nextDouble() * 0.5D) - 0.25D , playingPlayer.posY + 2.5D, playingPlayer.posZ + (worldClient.rand.nextDouble() * 0.5D) - 0.25D, (double) normalizeNote(noteIn) / 24.0D, 0.0D, 0.0D);
             ActionManager.playAction(playingPlayer, noteIn);
+            SoundHelper.stopBackgroundMusic();
         }
     }
 

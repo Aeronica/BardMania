@@ -22,6 +22,7 @@ import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
+import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
 import net.aeronica.mods.bard_mania.server.IPlaceableBounding;
 import net.aeronica.mods.bard_mania.server.LocationArea;
 import net.aeronica.mods.bard_mania.server.ModConfig;
@@ -261,7 +262,8 @@ public class RenderEvents
             motionSimple += motionIncDec;
             if (motionSimple > 1F) motionIncDec = -0.0250F;
             if (motionSimple < -1F) motionIncDec = 0.0250F;
-            decrementPlayTimers(mc);
+            decrementPlayTimers();
+            SoundHelper.updateBackgroundMusicPausing();
         }
     }
 
@@ -269,7 +271,7 @@ public class RenderEvents
     public static void onRenderLivingEvent(RenderLivingEvent.Pre event)
     {
         renderLivingBase = event.getRenderer();
-        renderPartyingWhilePlaying(mc);
+        renderPartyingWhilePlaying();
     }
 
     @SubscribeEvent

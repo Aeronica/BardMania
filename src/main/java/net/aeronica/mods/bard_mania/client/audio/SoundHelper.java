@@ -16,12 +16,14 @@
 
 package net.aeronica.mods.bard_mania.client.audio;
 
+import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,7 +32,6 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.event.sound.PlayStreamingSourceEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.BufferUtils;
@@ -48,11 +49,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SoundHelper
 {
     private static Minecraft mc = Minecraft.getMinecraft();
-    private static final String SRG_sndManager = "field_147694_f";
-    private static final String SRG_sndSystem = "field_148620_e";
-    private static final String SRG_playingSounds = "field_148629_h";
-    private static Map<String, ISound> playingSounds;
-    private static SoundSystem sndSystem;
+    private static Map<String, ISound> playingSounds = null;
+    private static SoundSystem sndSystem = null;
+    private static SoundHandler handler;
+    private static MusicTicker musicTicker;
+    private static boolean backgroundMusicPaused = false;
+    private static int counter = 0;
 
     private static Map<String, Integer> uuidEntityId = new ConcurrentHashMap<>();
     private static Map<String, Integer> uuidNote = new ConcurrentHashMap<>();
@@ -92,12 +94,11 @@ public class SoundHelper
     {
         if (sndSystem == null || sndSystem.randomNumberGenerator == null)
         {
-            SoundManager sndManager = ObfuscationReflectionHelper.getPrivateValue(SoundHandler.class, mc.getSoundHandler(),
-                                                                                  "sndManager", SRG_sndManager);
-            sndSystem = ObfuscationReflectionHelper.getPrivateValue(SoundManager.class, sndManager,
-                                                                    "sndSystem", SRG_sndSystem);
-            playingSounds = ObfuscationReflectionHelper.getPrivateValue(SoundManager.class, sndManager,
-                                                                        "playingSounds", SRG_playingSounds);
+            handler = Minecraft.getMinecraft().getSoundHandler();
+            SoundManager sndManager = handler.sndManager;
+            sndSystem = sndManager.sndSystem;
+            musicTicker = Minecraft.getMinecraft().getMusicTicker();
+            setBackgroundMusicPaused(false);
         }
     }
 
@@ -110,10 +111,7 @@ public class SoundHelper
     public static void onEvent(PlaySoundEvent event)
     {
         if (event.getSound() instanceof NoteSound)
-        {
             init();
-            //ModLogger.info("NoteSound name: %s. %s", event.getName(), event.getSound().getAttenuationType());
-        }
     }
 
     @SubscribeEvent
@@ -125,14 +123,12 @@ public class SoundHelper
             sound.setUuid(event.getUuid());
             uuidNote.put(event.getUuid(), sound.getMidiNote());
             uuidEntityId.put(event.getUuid(), sound.getEntityId());
-            //ModLogger.info("Note On:  eid: %05d, note: %02d,  UUID: %s, inst: %s", sound.getEntityId(), sound.getMidiNote(), event.getUuid(), sound.getSound().getSoundLocation().getPath());
         }
     }
 
     @SubscribeEvent
     public static void soundSetupEvent(SoundSetupEvent event) // throws SoundSystemException
     {
-        ModLogger.info("Sound Setup Event %s", event);
         configureSound();
     }
 
@@ -174,6 +170,60 @@ public class SoundHelper
         SoundSystemConfig.setNumberStreamingChannels(streamChannelCount);
     }
 
+    /*
+     * Background Music Management
+     */
+
+    // Copied from vanilla 1.11.2 MusicTicker class
+    private static void stopMusic()
+    {
+        if (sndSystem != null && musicTicker.currentMusic != null)
+        {
+            handler.stopSound(musicTicker.currentMusic);
+            musicTicker.currentMusic = null;
+            setBackgroundMusicTimer(0);
+        }
+    }
+
+    public static void stopBackgroundMusic()
+    {
+        if (isBackgroundMusicPaused()) return;
+
+        setBackgroundMusicPaused(true);
+        stopMusic();
+        setBackgroundMusicTimer(Integer.MAX_VALUE);
+    }
+
+    private static void resumeBackgroundMusic() { setBackgroundMusicTimer(500); }
+
+    private static void setBackgroundMusicTimer(int value)
+    {
+        if (sndSystem != null)
+            musicTicker.timeUntilNextMusic = value;
+    }
+
+    private static void setBackgroundMusicPaused(boolean pause) { backgroundMusicPaused = pause; }
+
+    private static boolean isBackgroundMusicPaused() { return backgroundMusicPaused; }
+
+    public static void updateBackgroundMusicPausing()
+    {
+        if ((sndSystem != null) && ((counter++ % 80) == 0))
+        {
+            if(isBackgroundMusicPaused() && ActionManager.getActionsCount() == 0)
+            {
+                resumeBackgroundMusic();
+                setBackgroundMusicPaused(false);
+            }  else if (ActionManager.getActionsCount() > 0)
+            {
+                setBackgroundMusicTimer(Integer.MAX_VALUE);
+            }
+        }
+    }
+
+    /*
+     * Development Information Overlay
+     */
 //    @SubscribeEvent
     public static void onRenderOverlay(RenderGameOverlayEvent.Post event)
     {

@@ -66,6 +66,11 @@ public class ActionManager
         actions.add(new RemoveAction(playerIn, modelDummy));
     }
 
+    public static int getActionsCount()
+    {
+        return (actions != null) ? actions.size() : 0;
+    }
+
     public static ModelDummy getModelDummy(EntityPlayer playerIn)
     {
         return playerIn.hasCapability(Reference.BARD_ACTION_CAP, null) ? BardActionHelper.getModelDummy(playerIn) : modelDummy;
