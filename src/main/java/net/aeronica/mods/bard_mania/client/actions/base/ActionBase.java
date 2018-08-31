@@ -83,7 +83,7 @@ public abstract class ActionBase
 
     private void testDone()
     {
-        if(0 >= --timeToLive) isDone = false;
+        if(0 >= --timeToLive) isDone = true;
     }
 
     public ModelDummy getModelDummy() { return modelDummy; }
