@@ -27,21 +27,23 @@ import net.minecraft.world.World;
 
 public class RenderHelper
 {
+    private static Minecraft mc = Minecraft.getMinecraft();
+
     static boolean canRenderEquippedInstrument(EntityPlayer player)
     {
         return (ActionManager.getModelDummy(player).hasTween() || BardActionHelper.isInstrumentEquipped(player));
     }
 
-    static void decrementPlayTimers(Minecraft mc)
+    static void decrementPlayTimers()
     {
-        if (mc.player != null)
-            mc.player.getEntityWorld().playerEntities.forEach(player -> ActionManager.getModelDummy(player).decrementPlayTimer());
+        if (mc.world != null)
+            mc.world.playerEntities.forEach(player -> ActionManager.getModelDummy(player).decrementPlayTimer());
     }
 
-    static void renderPartyingWhilePlaying(Minecraft mc)
+    static void renderPartyingWhilePlaying()
     {
-        if (mc.player != null)
-            mc.player.getEntityWorld().playerEntities.forEach(RenderHelper::setPartyingWhilePlaying);
+        if (mc.world != null)
+            mc.world.playerEntities.forEach(RenderHelper::setPartyingWhilePlaying);
     }
 
     private static void setPartyingWhilePlaying(EntityPlayer playerIn)
