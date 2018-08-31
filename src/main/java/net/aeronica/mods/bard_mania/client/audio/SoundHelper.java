@@ -22,7 +22,6 @@ import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
@@ -49,9 +48,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SoundHelper
 {
     private static Minecraft mc = Minecraft.getMinecraft();
-    private static Map<String, ISound> playingSounds = null;
     private static SoundSystem sndSystem = null;
     private static SoundHandler handler;
+    private static SoundManager sndManager;
     private static MusicTicker musicTicker;
     private static boolean backgroundMusicPaused = false;
     private static int counter = 0;
@@ -95,7 +94,7 @@ public class SoundHelper
         if (sndSystem == null || sndSystem.randomNumberGenerator == null)
         {
             handler = Minecraft.getMinecraft().getSoundHandler();
-            SoundManager sndManager = handler.sndManager;
+            sndManager = handler.sndManager;
             sndSystem = sndManager.sndSystem;
             musicTicker = Minecraft.getMinecraft().getMusicTicker();
             setBackgroundMusicPaused(false);
@@ -133,7 +132,7 @@ public class SoundHelper
     }
 
     /*
-     * This section Poached from Dynamic Surroundings
+     * This configureSound Poached from Dynamic Surroundings
      */
     private static void configureSound()
     {
@@ -235,8 +234,8 @@ public class SoundHelper
             int height = event.getResolution().getScaledHeight() - 40;
             int x = 130;
             int y = 22;
-            if (playingSounds != null)
-                mc.fontRenderer.drawStringWithShadow(String.format("Sound count : %03d", playingSounds.size()), x, y += 10, 0xd0d0d0);
+            if (sndSystem!= null && sndManager.playingSounds != null)
+                mc.fontRenderer.drawStringWithShadow(String.format("Sound count : %03d", sndManager.playingSounds.size()), x, y += 10, 0xd0d0d0);
             mc.fontRenderer.drawStringWithShadow(String.format("Sound notes : %03d", uuidNote.size()), x, y += 10, 0xd0d0d0);
             mc.fontRenderer.drawStringWithShadow(String.format("Tween count : %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), x, y += 10, 0xd0d0d0);
         }
