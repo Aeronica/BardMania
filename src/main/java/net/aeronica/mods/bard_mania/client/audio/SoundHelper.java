@@ -58,7 +58,7 @@ public class SoundHelper
     private static Map<String, Integer> uuidEntityId = new ConcurrentHashMap<>();
     private static Map<String, Integer> uuidNote = new ConcurrentHashMap<>();
 
-    private static final int MAX_STREAM_CHANNELS = 24;
+    private static final int DESIRED_STREAM_CHANNELS = 24;
 
     public static void noteOff(EntityLivingBase livingEntity, int midiNote)
     {
@@ -153,13 +153,13 @@ public class SoundHelper
             ModLogger.error(e);
         }
 
-        int normalChannelCount = 28;// ModConfig.getNormalSoundChannelCount();
-        int streamChannelCount = 4; // ModConfig.getStreamingSoundChannelCount();
+        int normalChannelCount = SoundSystemConfig.getNumberNormalChannels();
+        int streamChannelCount = SoundSystemConfig.getNumberStreamingChannels();
 
-        if (/*ModConfig.getAutoConfigureChannels() && */totalChannels > 64)
+        if (totalChannels > 64)
         {
             totalChannels = ((totalChannels + 1) * 3) / 4;
-            streamChannelCount = Math.min(totalChannels / 5, MAX_STREAM_CHANNELS);
+            streamChannelCount = Math.min(totalChannels / 5, DESIRED_STREAM_CHANNELS);
             normalChannelCount = totalChannels - streamChannelCount;
         }
 
@@ -178,7 +178,10 @@ public class SoundHelper
     {
         if (sndSystem != null && musicTicker.currentMusic != null)
         {
-            handler.stopSound(musicTicker.currentMusic);
+            if (sndManager.invPlayingSounds.containsKey(musicTicker.currentMusic))
+                sndSystem.fadeOut(sndManager.invPlayingSounds.get(musicTicker.currentMusic), null, 1000);
+            else
+                handler.stopSound(musicTicker.currentMusic);
             musicTicker.currentMusic = null;
             setBackgroundMusicTimer(0);
         }
@@ -235,9 +238,10 @@ public class SoundHelper
             int x = 130;
             int y = 22;
             if (sndSystem!= null && sndManager.playingSounds != null)
-                mc.fontRenderer.drawStringWithShadow(String.format("Sound count : %03d", sndManager.playingSounds.size()), x, y += 10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow(String.format("Sound notes : %03d", uuidNote.size()), x, y += 10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow(String.format("Tween count : %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), x, y += 10, 0xd0d0d0);
+                mc.fontRenderer.drawStringWithShadow(String.format("Sound count    : %03d", sndManager.playingSounds.size()), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow(String.format("Sound notes    : %03d", uuidNote.size()), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow(String.format("Tween count    : %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow(String.format("Back paused    : %s", isBackgroundMusicPaused()), x, y += 10, 0xd0d0d0);
         }
     }
 }
