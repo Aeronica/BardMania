@@ -35,6 +35,10 @@ public class ModConfig
 
     public static class Client
     {
+        @Config.Name("Automatically configure sound channels")
+        @Config.LangKey("config.bard_mania:autoConfigureChannels")
+        public boolean autoConfigureChannels = true;
+
         @Config.LangKey("config.bard_mania.input_mode")
         @Config.Comment("Input Mode: Use MIDI or PC Keyboard. Defaults to PC Keyboard.")
         public INPUT_MODE input_mode = INPUT_MODE.KEYBOARD;
@@ -70,7 +74,7 @@ public class ModConfig
 
         public static class MIDIOptions
         {
-            public MIDIOptions(final boolean allChannels, final int channel)
+            MIDIOptions(final boolean allChannels, final int channel)
             {
                 this.allChannels = allChannels;
                 this.channel = channel;
@@ -121,6 +125,8 @@ public class ModConfig
         ModConfig.client.input_mode = ModConfig.client.input_mode.toggle();
         ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
     }
+
+    public static boolean getAutoConfigureChannels() {return client.autoConfigureChannels;}
 
     @Mod.EventBusSubscriber
     private static class EventHandler

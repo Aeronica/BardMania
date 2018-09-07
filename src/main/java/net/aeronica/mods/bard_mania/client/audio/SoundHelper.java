@@ -17,6 +17,7 @@
 package net.aeronica.mods.bard_mania.client.audio;
 
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
+import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
+import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALC11;
 import paulscode.sound.SoundSystem;
@@ -58,7 +60,8 @@ public class SoundHelper
     private static Map<String, Integer> uuidEntityId = new ConcurrentHashMap<>();
     private static Map<String, Integer> uuidNote = new ConcurrentHashMap<>();
 
-    private static final int DESIRED_STREAM_CHANNELS = 24;
+    private static final int MAX_STREAM_CHANNELS = 16;
+    private static final int DESIRED_STREAM_CHANNELS = 12;
 
     public static void noteOff(EntityLivingBase livingEntity, int midiNote)
     {
@@ -134,33 +137,57 @@ public class SoundHelper
     /*
      * This configureSound Poached from Dynamic Surroundings
      */
-    private static void configureSound()
-    {
+    private static void alErrorCheck() {
+        final int error = AL10.alGetError();
+        if (error != AL10.AL_NO_ERROR)
+            ModLogger.warn("OpenAL error: %d", error);
+    }
+
+    private static void configureSound() {
         int totalChannels = -1;
 
-        try
-        {
+        try {
             final boolean create = !AL.isCreated();
             if (create)
+            {
                 AL.create();
+                alErrorCheck();
+            }
+
             final IntBuffer ib = BufferUtils.createIntBuffer(1);
             ALC10.alcGetInteger(AL.getDevice(), ALC11.ALC_MONO_SOURCES, ib);
+            alErrorCheck();
             totalChannels = ib.get(0);
+
             if (create)
                 AL.destroy();
-        } catch (final Throwable e)
-        {
+
+        } catch (final Throwable e) {
             ModLogger.error(e);
         }
 
         int normalChannelCount = SoundSystemConfig.getNumberNormalChannels();
         int streamChannelCount = SoundSystemConfig.getNumberStreamingChannels();
 
-        if (totalChannels > 64)
+        if (ModConfig.getAutoConfigureChannels() && (totalChannels > 64) && (streamChannelCount < DESIRED_STREAM_CHANNELS))
         {
             totalChannels = ((totalChannels + 1) * 3) / 4;
-            streamChannelCount = Math.min(totalChannels / 5, DESIRED_STREAM_CHANNELS);
+            streamChannelCount = Math.min(Math.min(totalChannels / 5, MAX_STREAM_CHANNELS), DESIRED_STREAM_CHANNELS);
             normalChannelCount = totalChannels - streamChannelCount;
+        }
+        else if ((totalChannels != -1) && ((normalChannelCount + streamChannelCount) >= 32))
+        {
+            // Try for at least 6 streaming channels if not using auto configure and we expect default SoundSystemConfig settings
+            while ( streamChannelCount < 6 )
+            {
+                if (normalChannelCount > 24)
+                {
+                    normalChannelCount--;
+                    streamChannelCount++;
+                }
+                else
+                    break;
+            }
         }
 
         ModLogger.info("Sound channels: %d normal, %d streaming (total avail: %s)", normalChannelCount, streamChannelCount,

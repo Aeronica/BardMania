@@ -6,6 +6,7 @@ commands.bard_mania.playmidi.success=Opened Play Midi Gui
 commands.bard_mania.playmidi.failure=Must be holding an instrument in your main hand
 config.bard_mania.title=Bard Mania
 config.bard_mania.client_options.title=Client Options
+config.bard_mania:autoConfigureChannels=Automatically configure sound channels
 config.bard_mania.input_mode=Input Mode
 config.bard_mania.input_mode.midi=MIDI
 config.bard_mania.input_mode.keyboard=PC Keyboard

@@ -4,6 +4,7 @@ commands.bard_mania.playmidi.success=MIDI 演奏界面已打开
 commands.bard_mania.playmidi.failure=主手必须持一件乐器
 config.bard_mania.client_options.title=客户端设置
 config.bard_mania.input_mode=输入模式
+config.bard_mania:autoConfigureChannels=自动配置音频
 config.bard_mania.input_mode.midi=MIDI
 config.bard_mania.input_mode.keyboard=PC 键盘
 config.bard_mania.midi_options.title=MIDI 选项
