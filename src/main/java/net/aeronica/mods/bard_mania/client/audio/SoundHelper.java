@@ -208,15 +208,9 @@ public class SoundHelper
     {
         if (sndSystem != null && musicTicker.currentMusic != null)
         {
-            synchronized (SoundSystemConfig.THREAD_SYNC)
-            {
-                if (sndManager.invPlayingSounds.containsKey(musicTicker.currentMusic))
-                    sndSystem.fadeOut(sndManager.invPlayingSounds.get(musicTicker.currentMusic), null, 1000);
-                else
-                    handler.stopSound(musicTicker.currentMusic);
-                musicTicker.currentMusic = null;
-                setBackgroundMusicTimer(0);
-            }
+            handler.stopSound(musicTicker.currentMusic);
+            musicTicker.currentMusic = null;
+            setBackgroundMusicTimer(0);
         }
     }
 
