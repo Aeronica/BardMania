@@ -87,9 +87,12 @@ public class SoundHelper
 
     public static void stopNote(String uuid)
     {
-        if (uuidNote.containsKey(uuid)) sndSystem.fadeOut(uuid, null, 150L);
-        uuidNote.remove(uuid);
-        uuidEntityId.remove(uuid);
+        synchronized (SoundSystemConfig.THREAD_SYNC)
+        {
+            if (uuidNote.containsKey(uuid)) sndSystem.fadeOut(uuid, null, 150L);
+            uuidNote.remove(uuid);
+            uuidEntityId.remove(uuid);
+        }
     }
 
     private static void init()
@@ -205,12 +208,15 @@ public class SoundHelper
     {
         if (sndSystem != null && musicTicker.currentMusic != null)
         {
-            if (sndManager.invPlayingSounds.containsKey(musicTicker.currentMusic))
-                sndSystem.fadeOut(sndManager.invPlayingSounds.get(musicTicker.currentMusic), null, 1000);
-            else
-                handler.stopSound(musicTicker.currentMusic);
-            musicTicker.currentMusic = null;
-            setBackgroundMusicTimer(0);
+            synchronized (SoundSystemConfig.THREAD_SYNC)
+            {
+                if (sndManager.invPlayingSounds.containsKey(musicTicker.currentMusic))
+                    sndSystem.fadeOut(sndManager.invPlayingSounds.get(musicTicker.currentMusic), null, 1000);
+                else
+                    handler.stopSound(musicTicker.currentMusic);
+                musicTicker.currentMusic = null;
+                setBackgroundMusicTimer(0);
+            }
         }
     }
 
