@@ -29,6 +29,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static net.aeronica.mods.bard_mania.Reference.BARD_ACTION_CAP;
+
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
 public class ActionManager
@@ -39,6 +41,7 @@ public class ActionManager
     private static float deltaTime = 0F;
     private static double total = 0F;
     private static float partialTicks = 0F;
+    private static boolean isGamePaused = true;
 
     private ActionManager() {/* NOP */}
 
@@ -73,18 +76,18 @@ public class ActionManager
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)
     {
-        return playerIn.hasCapability(Reference.BARD_ACTION_CAP, null) ? BardActionHelper.getModelDummy(playerIn) : modelDummy;
+        return playerIn.hasCapability(BARD_ACTION_CAP, null) ? BardActionHelper.getModelDummy(playerIn) : modelDummy;
     }
 
     private static void update(float deltaTimeIn)
     {
-        if (mc.world != null)
+        if (mc.world != null && !isGamePaused)
             actions.forEach(triggerAction -> triggerAction.update(deltaTimeIn));
     }
 
     private static void cleanup()
     {
-        if (mc.world != null)
+        if (mc.world != null && !isGamePaused)
             actions.stream().filter(ActionBase::isDone).forEach(action -> actions.remove(action));
     }
 
@@ -93,6 +96,7 @@ public class ActionManager
     {
         if (event.phase.equals(TickEvent.Phase.START))
         {
+            isGamePaused = mc.isGamePaused();
             partialTicks = event.renderTickTime; // mc.getRenderPartialTicks();
             cleanup();
             return;
@@ -103,7 +107,7 @@ public class ActionManager
 
     private static void calcDelta()
     {
-        if (mc.world != null)
+        if (mc.world != null && !isGamePaused)
         {
             double oldTotal = total;
             total = getElapsedWorldTime(partialTicks);
