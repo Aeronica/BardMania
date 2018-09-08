@@ -61,7 +61,7 @@ public class ModelDummy
     }
 
     /**
-     * Adds and active tween
+     * Adds an active tween
      */
     public void tweenStart() { tweenCount++; }
 
