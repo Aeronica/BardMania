@@ -1,3 +1,8 @@
+2018-09-09 bard-mania_1.12.2-0.11.0-alpha
+Fixes:
+ * Improve tween/action query methods and cleanup: The player now more reliably returns to the vanilla at rest pose after an instrument is unequipped.
+
+----
 2018-09-07 bard-mania_1.12.2-0.10.0-alpha
 Additions:
     [Feature Request #6] Stop background music when playing an instrument.
