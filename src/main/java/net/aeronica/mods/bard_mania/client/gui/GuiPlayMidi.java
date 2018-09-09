@@ -20,6 +20,7 @@ import net.aeronica.mods.bard_mania.BardMania;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.KeyHelper;
 import net.aeronica.mods.bard_mania.client.MidiHelper;
+import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
 import net.aeronica.mods.bard_mania.server.ModLogger;
 import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
@@ -135,7 +136,7 @@ public class GuiPlayMidi extends GuiScreen implements MetaEventListener, Receive
         int posX = (this.width - getFontRenderer().getStringWidth(TITLE)) / 2;
         int posY = 5;
         getFontRenderer().drawStringWithShadow(TITLE, posX, posY, 0xD3D3D3);
-        getFontRenderer().drawStringWithShadow(I18n.format("gui.bard_mania.gui_play_midi.label_tween_count") + String.format(": %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), 10 ,posY, 0xD3D3D3);
+        getFontRenderer().drawStringWithShadow(I18n.format("gui.bard_mania.gui_play_midi.label_tween_count") + String.format(": %03d", ActionManager.getTweenCount(mc.player)), 10 , posY, 0xD3D3D3);
         if ((ActionGetFile.INSTANCE.getFile()) != null)
         {
             String name = ActionGetFile.INSTANCE.getFileName();

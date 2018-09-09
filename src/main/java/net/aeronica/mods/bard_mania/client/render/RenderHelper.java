@@ -31,7 +31,7 @@ public class RenderHelper
 
     static boolean canRenderEquippedInstrument(EntityPlayer player)
     {
-        return (ActionManager.getModelDummy(player).hasTween() || BardActionHelper.isInstrumentEquipped(player));
+        return (ActionManager.hasTweens(player) || BardActionHelper.isInstrumentEquipped(player));
     }
 
     static void decrementPlayTimers()

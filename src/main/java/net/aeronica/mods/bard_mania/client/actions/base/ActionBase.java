@@ -25,6 +25,7 @@ import static net.aeronica.mods.bard_mania.client.KeyHelper.normalizeNote;
 
 public abstract class ActionBase
 {
+    private static final int TIME_TO_LIVE = 1024;
     protected EntityPlayer player;
     protected ModelDummy modelDummy;
     protected boolean isDone;
@@ -40,7 +41,7 @@ public abstract class ActionBase
     {
         this.tweenEngine = TweenEngine.create()
                 .unsafe()
-                .setWaypointsLimit(20)
+                .setWaypointsLimit(10)
                 .setCombinedAttributesLimit(1)
                 .registerAccessor(ModelDummy.class, new ModelAccessor())
                 .build();
@@ -50,7 +51,7 @@ public abstract class ActionBase
         this.normalizedNote = normalizeNote(noteIn);
         isDone = false;
         isStarted = false;
-        timeToLive = 240;
+        timeToLive = TIME_TO_LIVE;
         if (!player.getHeldItemMainhand().isEmpty() && (player.getHeldItemMainhand().getItem() instanceof ItemInstrument))
         {
             instrument = ((ItemInstrument) player.getHeldItemMainhand().getItem()).getInstrument();
@@ -77,13 +78,13 @@ public abstract class ActionBase
     public void update(float deltaTime)
     {
         processStart();
-        testDone();
+        testTTL();
         tweenEngine.update(deltaTime);
     }
 
-    private void testDone()
+    private void testTTL()
     {
-        if(0 >= --timeToLive) isDone = true;
+        if(timeToLive-- < 0) isDone = true;
     }
 
     public ModelDummy getModelDummy() { return modelDummy; }

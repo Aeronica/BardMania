@@ -24,11 +24,9 @@ public class ModelDummy
     // Timer to keep entities dancing between notes.
     private static final int PLAY_TICKS = 15; // 3/4 second
     private int playTimer = 0;
-    // Current active tween count
-    private int tweenCount = 0;
     private ItemStack currentInstrument = ItemStack.EMPTY;
 
-    public void ModelDummy() {/* NOP */}
+    public ModelDummy() {/* NOP */}
 
     public float[] parts = new float[]{
             0f, 0f, 0f, // head_action_rot_x, head_action_rot_y, head_action_rot_z
@@ -55,24 +53,9 @@ public class ModelDummy
     public void reset()
     {
         for(int i = 0 ;i < parts.length;) parts[i++] = 0f;
-        tweenCount = 0;
         playTimer = 0;
         currentInstrument = ItemStack.EMPTY;
     }
-
-    /**
-     * Adds an active tween
-     */
-    public void tweenStart() { tweenCount++; }
-
-    /**
-     * Removes an expired tween
-     */
-    public void tweenStop() { if (tweenCount > 0) tweenCount--; }
-
-    public int getTweenCount() { return tweenCount; }
-
-    public boolean hasTween() { return tweenCount > 0; }
 
     /**
      * Start / Continue Dancing timer
@@ -93,7 +76,13 @@ public class ModelDummy
 
     public ItemStack getInstrumentStack() { return currentInstrument; }
 
-    public float getPartValue(int part) { return parts[part]; }
+    public float getPartValue(int part)
+    {
+        return parts[part];
+    }
 
-    public void setPartValue(int part, float value) { parts[part] = value; }
+    public void setPartValue(int part, float value)
+    {
+            parts[part] = value;
+    }
 }

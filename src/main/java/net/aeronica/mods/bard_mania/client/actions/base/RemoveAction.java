@@ -31,7 +31,6 @@ public class RemoveAction extends ActionBase
     @Override
     protected void start()
     {
-        modelDummy.tweenStart();
         Timeline timeline = tweenEngine.createSequential();
         Timeline newTimeline = ActionDispatcher.select(instrumentId, "remove", player, tweenEngine, timeline, modelDummy, normalizedNote);
 
@@ -40,7 +39,6 @@ public class RemoveAction extends ActionBase
             @Override
             public void onEvent(int type, BaseTween<?> source)
             {
-                modelDummy.tweenStop();
                 isDone = true;
             }
         }).start();

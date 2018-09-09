@@ -35,6 +35,7 @@ import static net.aeronica.mods.bard_mania.Reference.BARD_ACTION_CAP;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
 public class ActionManager
 {
+    private static final ActionManager instance = new ActionManager();
     private static Minecraft mc = Minecraft.getMinecraft();
     private static final ModelDummy modelDummy = new ModelDummy();
     private static List<ActionBase> actions =  new CopyOnWriteArrayList<>();
@@ -72,6 +73,27 @@ public class ActionManager
     public static int getActionsCount()
     {
         return (actions != null) ? actions.size() : 0;
+    }
+
+    private int getActionsCount(EntityPlayer entityPlayer)
+    {
+        int count = 0;
+        ModelDummy modelPlayerDummy = BardActionHelper.getModelDummy(entityPlayer);
+
+        for (ActionBase action : actions)
+            if (modelPlayerDummy == action.getModelDummy()) count++;
+
+        return count;
+    }
+
+    public static int getTweenCount(EntityPlayer entityPlayer)
+    {
+        return instance.getActionsCount(entityPlayer);
+    }
+
+    public static boolean hasTweens(EntityPlayer entityPlayer)
+    {
+        return instance.getActionsCount(entityPlayer) > 0;
     }
 
     public static ModelDummy getModelDummy(EntityPlayer playerIn)

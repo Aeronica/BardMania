@@ -19,7 +19,6 @@ package net.aeronica.mods.bard_mania.client.audio;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ModLogger;
-import net.aeronica.mods.bard_mania.server.caps.BardActionHelper;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
 import net.aeronica.mods.bard_mania.server.item.ItemInstrument;
 import net.minecraft.client.Minecraft;
@@ -267,7 +266,7 @@ public class SoundHelper
             if (sndSystem!= null && sndManager.playingSounds != null)
                 mc.fontRenderer.drawStringWithShadow(String.format("Sound count    : %03d", sndManager.playingSounds.size()), x, y += 10, 0xd0d0d0);
             mc.fontRenderer.drawStringWithShadow(String.format("Sound notes    : %03d", uuidNote.size()), x, y += 10, 0xd0d0d0);
-            mc.fontRenderer.drawStringWithShadow(String.format("Tween count    : %03d", BardActionHelper.getModelDummy(mc.player).getTweenCount()), x, y += 10, 0xd0d0d0);
+            mc.fontRenderer.drawStringWithShadow(String.format("Tween count    : %03d", ActionManager.getTweenCount(mc.player)), x, y += 10, 0xd0d0d0);
             mc.fontRenderer.drawStringWithShadow(String.format("Back paused    : %s", isBackgroundMusicPaused()), x, y += 10, 0xd0d0d0);
         }
     }
