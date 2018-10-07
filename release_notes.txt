@@ -1,3 +1,9 @@
+2018-10-07 bard-mania_1.12.2-0.12.0-alpha
+Fixes:
+  * Update to Obfuscate-0.2.6-1.12.2 due to crash with Forge 14.23.5.2768 (latest/recommended)
+  * Obfuscate deprecated the EntityLivingInitEvent: Moved LayerWearableInstrument.addLayer() to the ClientProxy init.
+  * Update to Forge 14.23.5.2768 (latest/recommended)
+
 2018-09-09 bard-mania_1.12.2-0.11.0-alpha
 Fixes:
  * Improve tween/action query methods and cleanup: The player now more reliably returns to the vanilla at rest pose after an instrument is unequipped.
