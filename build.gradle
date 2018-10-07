@@ -48,7 +48,7 @@ minecraft {
 
 dependencies {
     // compile "com.mrcrayfish:obfuscate:0.2.3-1.12.2"
-	compile files ("lib/obfuscate-0.2.5-1.12.2.jar")
+	compile files ("lib/obfuscate-${obfuscate_version}.jar")
     // compile against the JEI API but do not include it at runtime
     deobfProvided "mezz.jei:jei_${mcversion}:${jei_version}:api"
     // at runtime, use the full JEI jar

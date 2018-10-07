@@ -18,7 +18,6 @@ package net.aeronica.mods.bard_mania.client.render;
 
 import com.mrcrayfish.obfuscate.client.event.ModelPlayerEvent;
 import com.mrcrayfish.obfuscate.client.event.RenderItemEvent;
-import com.mrcrayfish.obfuscate.common.event.EntityLivingInitEvent;
 import net.aeronica.mods.bard_mania.Reference;
 import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.client.actions.base.ModelDummy;
@@ -378,15 +377,6 @@ public class RenderEvents
         dest.rotateAngleX = source.rotateAngleX;
         dest.rotateAngleY = source.rotateAngleY;
         dest.rotateAngleZ = source.rotateAngleZ;
-    }
-
-    @SubscribeEvent
-    public static void EntityLivingInitEvent(EntityLivingInitEvent event)
-    {
-        if (event.getEntity() instanceof EntityPlayerSP)
-        {
-            LayerWearableInstrument.addLayer();
-        }
     }
 
     private static void applyPlayerModelRotation(ModelPlayer model, ModelDummy actions, float motion, boolean leftHand)

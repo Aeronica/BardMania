@@ -21,6 +21,7 @@ import net.aeronica.mods.bard_mania.client.actions.base.ActionManager;
 import net.aeronica.mods.bard_mania.client.audio.NoteSound;
 import net.aeronica.mods.bard_mania.client.audio.SoundHelper;
 import net.aeronica.mods.bard_mania.client.gui.InputModeToast;
+import net.aeronica.mods.bard_mania.client.render.LayerWearableInstrument;
 import net.aeronica.mods.bard_mania.server.ModConfig;
 import net.aeronica.mods.bard_mania.server.ServerProxy;
 import net.aeronica.mods.bard_mania.server.init.ModSoundEvents;
@@ -125,7 +126,11 @@ public class ClientProxy extends ServerProxy
     }
 
     @Override
-    public void init() {super.init();}
+    public void init()
+    {
+        super.init();
+        LayerWearableInstrument.addLayer();
+    }
 
     @Override
     public void postInit()
