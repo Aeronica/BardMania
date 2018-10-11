@@ -30,7 +30,7 @@ public class Reference {
     static final String UPDATES = "https://gist.github.com/Aeronica/3949a80897f4565f759b9a8a0927bb76/raw/bard-mania_update.json";
     static final String FINGERPRINT = "999640c365a8443393a1a21df2c0ede9488400e9";
     static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);"
-                                            + "required-after:obfuscate@[0.2.6,);";
+                                            + "required-after:obfuscate@[0.2.6,);after:enchantmentglint;";
     static final String PROXY_CLIENT = "net.aeronica.mods.bard_mania.client.ClientProxy";
     static final String PROXY_SERVER = "net.aeronica.mods.bard_mania.server.ServerProxy";
     public static final Boolean DEBUG = true;
