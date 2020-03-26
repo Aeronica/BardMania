@@ -35,7 +35,7 @@ if (project.hasProperty('buildQualifier')) {
     version = project.version + '-' + project.buildQualifier
 }
 group = "net.aeronica.mods.bard_mania"
-archivesBaseName = "bard-mania_" + mcversion
+archivesBaseName = "bard-mania" + "-" + mcversion
 
 minecraft {
     version = mcversion + "-" + forgeversion
@@ -47,7 +47,7 @@ minecraft {
 }
 
 dependencies {
-    // compile "com.mrcrayfish:obfuscate:0.2.3-1.12.2"
+    // compile "com.mrcrayfish:obfuscate:${obfuscate_version}"
 	compile files ("lib/obfuscate-${obfuscate_version}.jar")
     // compile against the JEI API but do not include it at runtime
     deobfProvided "mezz.jei:jei_${mcversion}:${jei_version}:api"
