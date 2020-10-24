@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class ModInstruments
 
     static
     {
-        Reader reader = new InputStreamReader(ModInstruments.class.getResourceAsStream("/assets/bard_mania/instruments.json"));
+        Reader reader = new InputStreamReader(ModInstruments.class.getResourceAsStream("/assets/bard_mania/instruments.json"), StandardCharsets.UTF_8);
         JsonParser parser = new JsonParser();
         JsonArray elements = parser.parse(reader).getAsJsonArray();
 
