@@ -35,37 +35,28 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import static net.minecraftforge.fml.common.FMLLog.warning;
 
 @SuppressWarnings("unused")
 @Mod(
         modid = Reference.MOD_ID,
         name = Reference.MOD_NAME,
-        version = Reference.MOD_VERSION,
+        useMetadata = true,
         acceptedMinecraftVersions = Reference.MC_VERSION,
         dependencies = Reference.DEPENDENCIES,
-        updateJSON = Reference.UPDATES,
-        certificateFingerprint = Reference.FINGERPRINT
+        updateJSON = Reference.UPDATES
 )
+
 public class BardMania
 {
-    private BardMania() {/* NOP */}
-
-    private static final class Holder
-    {
-        private Holder() {/* NOP */}
-        private static final BardMania INSTANCE = new BardMania();
-    }
-
-    @Mod.InstanceFactory
-    public static BardMania instance() {return Holder.INSTANCE;}
+    @Mod.Instance(Reference.MOD_ID)
+    public static BardMania instance;
 
     @SidedProxy(clientSide = Reference.PROXY_CLIENT, serverSide = Reference.PROXY_SERVER)
     public static ServerProxy proxy;
 
     public static final CreativeTabs MOD_TAB = new ModTab();
-    private static final Logger LOGGER = LogManager.getFormatterLogger(Reference.MOD_ID);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -83,12 +74,6 @@ public class BardMania
     {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         proxy.init();
-    }
-
-    @EventHandler
-    public void onFingerprintViolation(FMLFingerprintViolationEvent event)
-    {
-        LOGGER.warn("Problem with Signed Jar: %s", event.description());
     }
 
     @EventHandler

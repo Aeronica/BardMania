@@ -6,9 +6,13 @@
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "https://minecraft.curseforge.com/projects/bard-mania",
+  "updateJSON": "https://gist.github.com/Aeronica/3949a80897f4565f759b9a8a0927bb76/raw/bard-mania_update.json",
   "authorList": ["Aeronica"],
   "credits": "The Forge and FML Team, The Modding Community, MrCrayfish, ModDevCafe",
+  "logoFile": "assets/mxtune/textures/logo.png",
   "screenshots": [],
-  "dependencies": ["forge", "obfuscate"]
+  "dependencies": ["required-after:forge@[${mcversion}-${forgeversion},)",
+  "required-after:obfuscate@[0.4.0,0.5.0)",
+  "after:enchantmentglint"]
 }
 ]

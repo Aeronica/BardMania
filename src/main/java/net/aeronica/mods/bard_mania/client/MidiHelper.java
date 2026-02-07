@@ -56,7 +56,7 @@ public enum MidiHelper implements Receiver
         {
             soundName = soundNameIn;
             EntityPlayer playerIn = BardMania.proxy.getClientPlayer();
-            playerIn.openGui(BardMania.instance(), GuiGuid.KEYBOARD, playerIn.getEntityWorld(), 0, 0, 0);
+            playerIn.openGui(BardMania.instance, GuiGuid.KEYBOARD, playerIn.getEntityWorld(), 0, 0, 0);
             inUse = true;
         }
     }

@@ -50,6 +50,6 @@ public class OpenGuiMessage extends AbstractClientMessage<OpenGuiMessage>
     @Override
     public void process(EntityPlayer player, Side side)
     {
-        player.openGui(BardMania.instance(), this.guiGuid, player.world, 0, 0, 0);
+        player.openGui(BardMania.instance, this.guiGuid, player.world, 0, 0, 0);
     }
 }

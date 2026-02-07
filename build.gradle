@@ -1,22 +1,25 @@
 buildscript {
     repositories {
-        jcenter()
         maven { url = "https://files.minecraftforge.net/maven" }
+        maven { url = 'https://plugins.gradle.org/m2/' }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+//apply plugin: 'maven-publish'
 
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
 
 repositories {
-    maven { url = "https://mrcrayfish.com/maven" }
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
@@ -25,75 +28,171 @@ repositories {
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
-        url = "modmaven.k-4u.nl"
+        url = "https://modmaven.dev"
+    }
+    maven {
+        url = "https://cursemaven.com"
+        group = "curse.maven"
     }
 }
 
 
-version = version_major + '.' + version_minor + '.' + version_patch
-if (project.hasProperty('buildQualifier')) {
-    version = project.version + '-' + project.buildQualifier
+version = "${project.modVersionMajor}.${project.modVersionMinor}.${project.modVersionRev}"
+if (project.hasProperty('versionType')) {
+    version = project.version + '-' + versionType
 }
 group = "net.aeronica.mods.bard_mania"
-archivesBaseName = "bard-mania" + "-" + mcversion
+archivesBaseName = "bard-mania" + "-" + version_mc
 
 minecraft {
-    version = mcversion + "-" + forgeversion
-    runDir = "run"
-	mappings = mcp_mappings
-    
-	replaceIn "net/aeronica/mods/bard_mania/Reference.java"
-    replace '@VERSION@', project.version
+    mappings channel: "${mappings_channel}", version: "${mappings_version}"
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+            ideaModule "${project.name}.main"
+
+            args '--username', 'Player075'
+
+            mods {
+                bard_mania {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+            ideaModule "${project.name}.main"
+
+            mods {
+                bard_mania {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 dependencies {
-    // compile "com.mrcrayfish:obfuscate:${obfuscate_version}"
-	compile files ("lib/obfuscate-${obfuscate_version}.jar")
+    minecraft "net.minecraftforge:forge:${project.version_mc}-${project.version_forge}"
+    // These 3 compileOnly lines are for travis CI and sonarcloud using openjdk11. it provides the missing
+    // javax/jakarta/net-beans xml related stuff removed from java 10+
+    compileOnly 'com.sun.activation:javax.activation:1.2.0'
+    compileOnly 'javax.xml.bind:jaxb-api:2.3.0'
+    compileOnly 'com.sun.xml.bind:jaxb-core:2.3.0'
+    //compile files("lib/obfuscate-${obfuscate_version}.jar")
+    // Bard Mania dependent on Obfuscate mod/api
+    compileOnly ("curse.maven:${project.obfuscate_curse}")
+    runtimeOnly fg.deobf("curse.maven:${project.obfuscate_curse}")
     // compile against the JEI API but do not include it at runtime
-    deobfProvided "mezz.jei:jei_${mcversion}:${jei_version}:api"
+    compileOnly ("mezz.jei:jei_${project.version_mc}:${project.jei_version}:api")
     // at runtime, use the full JEI jar
-    runtime "mezz.jei:jei_${mcversion}:${jei_version}"
+    runtimeOnly fg.deobf("mezz.jei:jei_${project.version_mc}:${project.jei_version}")
+
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.addAll(['-Xlint:unchecked', '-Xlint:deprecation'])
 }
 
 jar {
     manifest {
-        attributes 'FMLAT': 'bard_mania_at.cfg'
+        attributes([
+                "Specification-Title"     : "bard_mania",
+                "Specification-Vendor"    : "aeronica",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : "${version}",
+                "Implementation-Vendor"   : "aeronica",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "Built-On-Java"           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",
+                "FMLAT"                   : "accesstransformer.cfg"
+        ])
     }
 }
 
-processResources
-{
+processResources {
+    // Exclude the GIMP image files
+    exclude '**/*.xcf'
+
+    // Exclude the Cubik model files
+    exclude '**/*.bdc3D'
+
+    // Exclude the Paint.NET image files
+    exclude '**/*.pdn'
+
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "mcversion", version_mc
+    inputs.property "forgeversion", version_forge
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
+
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':version, 'mcversion':version_mc, 'forgeversion':version_forge
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
 
-    rename '(.+_at.cfg)', 'META-INF/$1'
-}
-
-task signJar(type: SignJar, dependsOn: reobfJar) {
-    onlyIf {
-        project.hasProperty("keyStore")
+    eachFile {
+        project.logger.info("Processing: $it.name")
+        if (it.relativePath.segments[0] in ['META-INF'])
+            expand project.properties
     }
-
-    keyStore = project.findProperty('keyStore')
-    alias = project.findProperty('keyStoreAlias')
-    storePass = project.findProperty('keyStorePass')
-    keyPass = project.findProperty('keyStoreKeyPass')
-    inputFile = jar.archivePath
-    outputFile = jar.archivePath
 }
 
-build.dependsOn signJar
+sourceSets {
+    main { output.resourcesDir = output.classesDir }
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            artifact jar
+//        }
+//    }
+//    repositories {
+//        maven {
+//            url "file:///${project.projectDir}/mcmodsrepo"
+//        }
+//    }
+//}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+// Fix resources not loading in IDEA. There may be a better way to do this.
+sourceSets {
+    main { output.resourcesDir = output.classesDirs.first() }
+}

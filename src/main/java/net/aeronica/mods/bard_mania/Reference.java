@@ -25,12 +25,9 @@ public class Reference {
     public static final String MOD_ID = "bard_mania";
     public static final String MOD_DOMAIN = MOD_ID + ":";
     public static final String MOD_NAME = "Bard Mania";
-    public static final String MOD_VERSION = "@VERSION@";
     static final String MC_VERSION = "[1.12.2,1.13]";
     static final String UPDATES = "https://gist.github.com/Aeronica/3949a80897f4565f759b9a8a0927bb76/raw/bard-mania_update.json";
-    static final String FINGERPRINT = "999640c365a8443393a1a21df2c0ede9488400e9";
-    static final String DEPENDENCIES = "required-after:forge@[14.23.5.2768,);"
-                                            + "required-after:obfuscate@[0.4.0,);after:enchantmentglint;";
+    static final String DEPENDENCIES = "required-after:forge@[14.23.5.2859,);required-after:obfuscate@[0.4.0,0.5.0);after:enchantmentglint";
     static final String PROXY_CLIENT = "net.aeronica.mods.bard_mania.client.ClientProxy";
     static final String PROXY_SERVER = "net.aeronica.mods.bard_mania.server.ServerProxy";
     public static final Boolean DEBUG = true;
